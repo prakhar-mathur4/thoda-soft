@@ -21,6 +21,7 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [x] **Cart UX** (quantity stepper, discount code, free-shipping bar, upsell) — merged to `main`
 - [x] **Cart performance** (optimistic add-to-cart + cart pre-warm) — merged to `main`
 - [x] **Chat support widget** (quick-reply canned answers + WhatsApp escalation) — merged to `main`
+- [x] **Legal & trust pages** (privacy, terms, returns, shipping, contact) + full footer nav — merged to `main`
 
 ---
 
@@ -42,13 +43,14 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [ ] Confirm GoKwik attaches **phone to a Shopify customer record** (needed for accounts)
 - [ ] Thank-you / order-confirmation page
 
-### Legal & Trust pages 🔴
-- [ ] **Privacy Policy** (required — data + Klaviyo collection)
-- [ ] **Terms & Conditions**
-- [ ] **Refund / Returns & Exchanges** policy (footer link is dead `#`)
-- [ ] **Shipping Policy** (footer link is dead `#`)
-- [ ] **Contact** page (+ business name, address, GST for India compliance)
-- [ ] Wire footer links to the above
+### Legal & Trust pages 🟢 (built — merged to `main`)
+- [x] **Privacy Policy** (DPDP Act 2023)
+- [x] **Terms & Conditions**
+- [x] **Refund / Returns & Exchanges** policy
+- [x] **Shipping Policy**
+- [x] **Contact** page (+ ContactPage JSON-LD)
+- [x] Wire footer links + full footer nav (Explore / Help / Promise / legal)
+- [ ] ⚠️ Fill legal placeholders: business name, registered address, **GSTIN**, jurisdiction, support email — and **lawyer review** before launch
 
 ### Analytics & Tracking 🔴
 - [ ] **GA4**
