@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart, Money } from '@shopify/hydrogen-react';
 import { useCartUI } from './cart-ui-context';
+import { useOptimisticCart, useAddToCart } from './optimistic-cart-context';
 import { CloseIcon, BagIcon } from './icons';
 
 // Free-shipping threshold (INR). Set to 0 to effectively disable the bar.
@@ -41,18 +42,35 @@ export default function CartDrawer() {
     checkoutUrl,
     linesRemove,
     linesUpdate,
-    linesAdd,
     discountCodesUpdate,
     discountCodes,
     status,
   } = useCart();
+  const { pending } = useOptimisticCart();
+  const addToCart = useAddToCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const cartLines = (lines ?? []).filter(Boolean);
-  const isEmpty = cartLines.length === 0;
+  const isEmpty = cartLines.length === 0 && pending.length === 0;
   const updating = status === 'updating' || status === 'creating';
 
   const [code, setCode] = useState('');
   const [recos, setRecos] = useState<Reco[]>([]);
+  // Optimistic quantity overrides (cleared once the server settles).
+  const [qtyOverride, setQtyOverride] = useState<Record<string, number>>({});
+  const wasBusyRef = useRef(false);
+  useEffect(() => {
+    if (status === 'updating' || status === 'creating' || status === 'fetching') {
+      wasBusyRef.current = true;
+    } else if (status === 'idle' && wasBusyRef.current) {
+      wasBusyRef.current = false;
+      setQtyOverride({});
+    }
+  }, [status]);
+
+  const setLineQty = (id: string, quantity: number) => {
+    setQtyOverride((o) => ({ ...o, [id]: quantity }));
+    linesUpdate([{ id, quantity }]);
+  };
 
   // Close on Escape + lock body scroll while open.
   useEffect(() => {
@@ -193,7 +211,10 @@ export default function CartDrawer() {
                   if (!line) return null;
                   const merch = line.merchandise;
                   const img = merch?.image;
-                  const qty = line.quantity ?? 1;
+                  const qty =
+                    (line.id ? qtyOverride[line.id] : undefined) ??
+                    line.quantity ??
+                    1;
                   return (
                     <li key={line.id} className="flex gap-4 py-5">
                       <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-blush">
@@ -221,13 +242,8 @@ export default function CartDrawer() {
                             <button
                               type="button"
                               aria-label="Decrease quantity"
-                              disabled={updating || qty <= 1}
-                              onClick={() =>
-                                line.id &&
-                                linesUpdate([
-                                  { id: line.id, quantity: qty - 1 },
-                                ])
-                              }
+                              disabled={qty <= 1}
+                              onClick={() => line.id && setLineQty(line.id, qty - 1)}
                               className="px-2.5 py-1 text-base leading-none transition hover:text-charcoal-muted disabled:opacity-30"
                             >
                               −
@@ -238,14 +254,8 @@ export default function CartDrawer() {
                             <button
                               type="button"
                               aria-label="Increase quantity"
-                              disabled={updating}
-                              onClick={() =>
-                                line.id &&
-                                linesUpdate([
-                                  { id: line.id, quantity: qty + 1 },
-                                ])
-                              }
-                              className="px-2.5 py-1 text-base leading-none transition hover:text-charcoal-muted disabled:opacity-40"
+                              onClick={() => line.id && setLineQty(line.id, qty + 1)}
+                              className="px-2.5 py-1 text-base leading-none transition hover:text-charcoal-muted"
                             >
                               +
                             </button>
@@ -268,6 +278,35 @@ export default function CartDrawer() {
                     </li>
                   );
                 })}
+
+                {/* Optimistic pending lines (instant feedback) */}
+                {pending.map((p) => (
+                  <li key={p.tempId} className="flex gap-4 py-5 opacity-60">
+                    <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-blush">
+                      {p.image && (
+                        <Image
+                          src={p.image}
+                          alt={p.imageAlt}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="flex flex-1 flex-col">
+                      <p className="font-serif text-sm">{p.title}</p>
+                      {p.variantTitle && (
+                        <p className="text-xs text-charcoal-muted">
+                          {p.variantTitle}
+                        </p>
+                      )}
+                      <p className="mt-1 text-xs text-charcoal-muted">Adding…</p>
+                      <div className="mt-auto pt-2 text-sm">
+                        {formatPrice(Number(p.price) * p.qty, p.currency)}
+                      </div>
+                    </div>
+                  </li>
+                ))}
               </ul>
 
               {/* 4. Upsell — You may also like */}
@@ -309,10 +348,17 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           aria-label={`Add ${p.title} to cart`}
-                          disabled={updating || !p.variantId}
+                          disabled={!p.variantId}
                           onClick={() =>
                             p.variantId &&
-                            linesAdd([{ merchandiseId: p.variantId, quantity: 1 }])
+                            addToCart({
+                              variantId: p.variantId,
+                              title: p.title,
+                              image: p.image,
+                              imageAlt: p.imageAlt,
+                              price: p.price,
+                              currency: p.currency,
+                            })
                           }
                           className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-charcoal/25 text-lg leading-none transition hover:border-charcoal hover:bg-charcoal hover:text-cream disabled:opacity-40"
                         >

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@shopify/hydrogen-react';
 import { useCartUI } from './cart-ui-context';
+import { useOptimisticCart } from './optimistic-cart-context';
 import { SearchIcon, BagIcon, UserIcon, MenuIcon } from './icons';
 import SearchOverlay from './SearchOverlay';
 import MobileMenu from './MobileMenu';
@@ -23,7 +24,9 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { open } = useCartUI();
   const { totalQuantity } = useCart();
-  const count = totalQuantity ?? 0;
+  const { pendingQty } = useOptimisticCart();
+  // Optimistic count: server total + any not-yet-confirmed adds.
+  const count = (totalQuantity ?? 0) + pendingQty;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
