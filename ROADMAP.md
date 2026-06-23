@@ -22,6 +22,8 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [x] **Cart performance** (optimistic add-to-cart + cart pre-warm) — merged to `main`
 - [x] **Chat support widget** (quick-reply canned answers + WhatsApp escalation) — merged to `main`
 - [x] **Legal & trust pages** (privacy, terms, returns, shipping, contact) + full footer nav — merged to `main`
+- [x] **Mobile product carousel** (snap-scroll + dot pagination; grid on desktop) — merged to `main`
+- [x] **Production live on Vercel + connected to Shopify** (fixed missing `SHOPIFY_PRODUCTS_QUERY` env)
 
 ---
 
@@ -69,12 +71,14 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [ ] Decision: enable for Live View / online-store sessions, or skip and rely on GA4
 
 ### Deployment & Ops 🔴
-- [ ] Deploy to **Vercel**
-- [ ] Real **domain** + HTTPS
-- [ ] Set all **env vars** on host (`NEXT_PUBLIC_SITE_URL`, Shopify, Klaviyo, webhook secret)
+- [x] Deploy to **Vercel** (live at thoda-soft.vercel.app)
+- [x] Set **Shopify env vars** on host (incl. the missing `SHOPIFY_PRODUCTS_QUERY` that caused mock fallback) + `NEXT_PUBLIC_SITE_URL`
+- [ ] Real **custom domain** + HTTPS
+- [ ] Remaining env vars on host (Klaviyo, `SHOPIFY_WEBHOOK_SECRET`, `NEXT_PUBLIC_WHATSAPP_NUMBER`)
 - [ ] **Sentry** (error monitoring)
 - [ ] Configure Shopify **webhooks → /api/revalidate** (Product/Inventory)
 - [ ] Submit sitemap to **Google Search Console + Bing**
+- [ ] Align Storefront **API version → 2026-04** (clears hydrogen-react version warning)
 
 ---
 
