@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
 import QuickView from '@/components/QuickView';
+import ChatWidget from '@/components/ChatWidget';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, jsonLd } from '@/lib/site';
 import './globals.css';
 
@@ -85,6 +86,7 @@ export default function RootLayout({
           <Footer />
           <CartDrawer />
           <QuickView />
+          <ChatWidget />
         </Providers>
       </body>
     </html>
