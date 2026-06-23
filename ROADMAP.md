@@ -53,10 +53,20 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [ ] ⚠️ Fill legal placeholders: business name, registered address, **GSTIN**, jurisdiction, support email — and **lawyer review** before launch
 
 ### Analytics & Tracking 🔴
-- [ ] **GA4**
+- [ ] **GA4** — primary funnel/source-of-truth for the headless store
 - [ ] **Meta Pixel** (+ Conversions API ideally)
 - [ ] **GoKwik event tracking** (note: Shopify may not fire all order webhooks for GoKwik)
 - [ ] Conversion / purchase events end-to-end
+
+#### Shopify Analytics (`sendShopifyAnalytics`) 🟡 — complementary, not source of truth
+- [x] Sales/Order reports in Shopify admin — work automatically (orders flow in via checkout/GoKwik)
+- [ ] **Storefront behavior analytics need wiring** — Online-store sessions, top pages, Live View are empty on headless by default (no Liquid theme = no Shopify tracking script)
+- [ ] Add **`sendShopifyAnalytics`** via hydrogen-react (already installed) to feed Shopify's dashboard:
+  - [ ] `useShopifyCookies()` + cookie-consent gate
+  - [ ] `getClientBrowserParameters()` + shop params (shopId, currency, etc.)
+  - [ ] Emit events: `page_view`, `product_view`, `collection_view`, `search_view`, `add_to_cart`
+- [ ] **Caveat:** GoKwik owns checkout → Shopify's checkout-step funnel/attribution will be **partial** (sales/orders still record). Treat Shopify Analytics as complementary; **GA4 + Meta Pixel remain primary**.
+- [ ] Decision: enable for Live View / online-store sessions, or skip and rely on GA4
 
 ### Deployment & Ops 🔴
 - [ ] Deploy to **Vercel**
