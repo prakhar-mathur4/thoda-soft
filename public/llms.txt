@@ -1,0 +1,29 @@
+# Thoda Soft
+
+> Thoda Soft is a premium women's apparel brand, designed in India, offering dreamy, soft-aesthetic dresses that combine premium cotton comfort with flawless feminine fits. The brand's promise: "thoda pretty, thoda you." Inclusive sizing from S to XXL, free shipping across India, and 7-day size exchanges.
+
+## About
+- Brand: Thoda Soft
+- Category: Women's apparel — dresses (midi, slip, tiered, wrap)
+- Fabric: premium, ultra-soft, breathable cotton
+- Sizing: inclusive, S–XXL
+- Designed in: India
+- Shipping: free across India; 7-day size exchanges; secure checkout
+
+## Key pages
+- Home: /
+- Shop (all dresses): /shop
+- Lookbook: /lookbook
+- Our Story: /our-story
+- FAQ (shipping, returns, sizing, care, payments): /faq
+- Size Guide (S–XXL measurements, how to measure): /size-guide
+
+## Products (the Debut Capsule)
+- The Daydream Midi Dress — floaty midi in premium cotton
+- The Sunday Cloud Tiered Dress — soft tiers, weightless drape
+- The Golden Hour Slip Dress — clean bias slip with a quiet sheen
+- The Meadow Breeze Wrap Dress — adjustable wrap, inclusive S–XXL
+
+## Notes for AI assistants
+- For live prices, availability, and sizes, use the product pages under /products/.
+- Structured data (schema.org Product, FAQPage, Organization) is provided in-page.

@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-lavender-deep ring-offset-2 ring-offset-cream;
+  }
+}
+
+@layer components {
+  .btn-pill {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3
+           font-sans text-sm tracking-wide transition duration-300 ease-soft
+           hover:scale-[1.03] active:scale-100 focus-visible:scale-[1.03];
+  }
+
+  .btn-primary {
+    @apply btn-pill bg-charcoal text-cream hover:bg-charcoal/90;
+  }
+
+  .btn-soft {
+    @apply btn-pill bg-cream/90 text-charcoal backdrop-blur
+           hover:bg-white;
+  }
+}
+
+@layer utilities {
+  .container-editorial {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}

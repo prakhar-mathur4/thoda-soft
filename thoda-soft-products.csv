@@ -1,0 +1,21 @@
+Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Requires Shipping,Variant Taxable,Variant Weight Unit,Status
+the-daydream-midi-dress,The Daydream Midi Dress,"<p>A floaty midi cut in premium, breathable cotton — the everyday dress that photographs like a moodboard and feels weightless on your skin.</p>",Thoda Soft,Dress,debut-capsule,TRUE,Size,S,TS-DAYDREAM-S,shopify,25,deny,manual,2200,TRUE,TRUE,kg,active
+the-daydream-midi-dress,,,,,,,,M,TS-DAYDREAM-M,shopify,25,deny,manual,2200,TRUE,TRUE,kg,
+the-daydream-midi-dress,,,,,,,,L,TS-DAYDREAM-L,shopify,25,deny,manual,2200,TRUE,TRUE,kg,
+the-daydream-midi-dress,,,,,,,,XL,TS-DAYDREAM-XL,shopify,25,deny,manual,2200,TRUE,TRUE,kg,
+the-daydream-midi-dress,,,,,,,,XXL,TS-DAYDREAM-XXL,shopify,25,deny,manual,2200,TRUE,TRUE,kg,
+the-sunday-cloud-tiered-dress,The Sunday Cloud Tiered Dress,"<p>Soft tiers and a weightless drape, made for slow mornings and golden light. Premium cotton that moves with you.</p>",Thoda Soft,Dress,debut-capsule,TRUE,Size,S,TS-SUNDAY-S,shopify,25,deny,manual,2500,TRUE,TRUE,kg,active
+the-sunday-cloud-tiered-dress,,,,,,,,M,TS-SUNDAY-M,shopify,25,deny,manual,2500,TRUE,TRUE,kg,
+the-sunday-cloud-tiered-dress,,,,,,,,L,TS-SUNDAY-L,shopify,25,deny,manual,2500,TRUE,TRUE,kg,
+the-sunday-cloud-tiered-dress,,,,,,,,XL,TS-SUNDAY-XL,shopify,25,deny,manual,2500,TRUE,TRUE,kg,
+the-sunday-cloud-tiered-dress,,,,,,,,XXL,TS-SUNDAY-XXL,shopify,25,deny,manual,2500,TRUE,TRUE,kg,
+the-golden-hour-slip-dress,The Golden Hour Slip Dress,"<p>A clean bias slip with a quiet sheen — effortless from desk to dinner. Ultra-soft cotton-blend that drapes beautifully.</p>",Thoda Soft,Dress,debut-capsule,TRUE,Size,S,TS-GOLDEN-S,shopify,25,deny,manual,1900,TRUE,TRUE,kg,active
+the-golden-hour-slip-dress,,,,,,,,M,TS-GOLDEN-M,shopify,25,deny,manual,1900,TRUE,TRUE,kg,
+the-golden-hour-slip-dress,,,,,,,,L,TS-GOLDEN-L,shopify,25,deny,manual,1900,TRUE,TRUE,kg,
+the-golden-hour-slip-dress,,,,,,,,XL,TS-GOLDEN-XL,shopify,25,deny,manual,1900,TRUE,TRUE,kg,
+the-golden-hour-slip-dress,,,,,,,,XXL,TS-GOLDEN-XXL,shopify,25,deny,manual,1900,TRUE,TRUE,kg,
+the-meadow-breeze-wrap-dress,The Meadow Breeze Wrap Dress,"<p>An adjustable wrap that flatters every body — inclusive sizing from S to XXL. Crafted from premium, ultra-soft cotton.</p>",Thoda Soft,Dress,debut-capsule,TRUE,Size,S,TS-MEADOW-S,shopify,25,deny,manual,1500,TRUE,TRUE,kg,active
+the-meadow-breeze-wrap-dress,,,,,,,,M,TS-MEADOW-M,shopify,25,deny,manual,1500,TRUE,TRUE,kg,
+the-meadow-breeze-wrap-dress,,,,,,,,L,TS-MEADOW-L,shopify,25,deny,manual,1500,TRUE,TRUE,kg,
+the-meadow-breeze-wrap-dress,,,,,,,,XL,TS-MEADOW-XL,shopify,25,deny,manual,1500,TRUE,TRUE,kg,
+the-meadow-breeze-wrap-dress,,,,,,,,XXL,TS-MEADOW-XXL,shopify,25,deny,manual,1500,TRUE,TRUE,kg,
