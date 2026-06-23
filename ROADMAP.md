@@ -18,6 +18,8 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [x] Logo + brand theme (ivory `#FEF9EB`, brown `#895B3A`, sage, blush)
 - [x] Pushed to GitHub (`prakhar-mathur4/thoda-soft`)
 - [x] Custom **404 page** (branded, correct 404 status) — merged to `main`
+- [x] **Cart UX** (quantity stepper, discount code, free-shipping bar, upsell) — merged to `main`
+- [x] **Cart performance** (optimistic add-to-cart + cart pre-warm) — merged to `main`
 
 ---
 
@@ -72,11 +74,12 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [ ] **Progressive email capture** post-login → save to Shopify customer
 - [ ] Secure session (httpOnly cookie), OTP rate limiting, E.164 phone normalization
 
-### Cart UX 🟡
-- [ ] **Quantity stepper** in cart drawer (`cartLinesUpdate`) — currently remove-only
-- [ ] **Discount / promo code** field
-- [ ] **Free-shipping progress bar**
-- [ ] **Cart upsell** ("you may also like") in drawer
+### Cart UX 🟢 (done — merged to `main`)
+- [x] **Quantity stepper** in cart drawer (`cartLinesUpdate`)
+- [x] **Discount / promo code** field
+- [x] **Free-shipping progress bar** (configurable threshold)
+- [x] **Cart upsell** ("you may also like") in drawer
+- [x] **Optimistic add-to-cart** (instant count + line) + **cart pre-warm** (perf)
 
 ### Merchandising & social proof 🟡
 - [ ] **Product reviews + ratings** (+ Review/AggregateRating schema) — conversion + SEO
@@ -110,6 +113,8 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [ ] 🟠 Run **Lighthouse / Core Web Vitals** on the deployed build
 - [ ] 🟠 Add **tests** (unit + e2e/Playwright) + **CI** (GitHub Actions)
 - [ ] 🟠 Full **accessibility audit** (screen reader pass)
+- [ ] 🟠 Lean **cart fragment** (trim hydrogen-react default) — deferred; needs browser e2e to verify safely
+- [ ] 🟠 Free-shipping bar vs "free shipping on all orders" copy — align messaging or set threshold to 0
 - [ ] 🟠 Plan note: legacy Shopify customer accounts deprecated — accounts go via phone-OTP/GoKwik
 
 ---
