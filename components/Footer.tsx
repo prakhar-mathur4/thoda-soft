@@ -4,9 +4,15 @@ import { ClockIcon, LockIcon } from './icons';
 
 const SHOP_LINKS = [
   { label: 'FAQ', href: '/faq' },
-  { label: 'Shipping Policy', href: '#' },
-  { label: 'Returns & Exchanges', href: '#' },
+  { label: 'Shipping Policy', href: '/shipping' },
+  { label: 'Returns & Exchanges', href: '/returns' },
   { label: 'Size Guide', href: '/size-guide' },
+];
+
+const LEGAL_LINKS = [
+  { label: 'Contact', href: '/contact' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms', href: '/terms' },
 ];
 
 export default function Footer() {
@@ -71,9 +77,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-charcoal/10 pt-6 text-xs text-charcoal-muted sm:flex-row">
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-charcoal/10 pt-6 text-xs text-charcoal-muted sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Thoda Soft. Designed in India.</p>
-          <p>Made with soft cotton &amp; softer pixels.</p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {LEGAL_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="transition-colors hover:text-charcoal"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
