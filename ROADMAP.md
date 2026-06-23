@@ -20,6 +20,7 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 - [x] Custom **404 page** (branded, correct 404 status) — merged to `main`
 - [x] **Cart UX** (quantity stepper, discount code, free-shipping bar, upsell) — merged to `main`
 - [x] **Cart performance** (optimistic add-to-cart + cart pre-warm) — merged to `main`
+- [x] **Chat support widget** (quick-reply canned answers + WhatsApp escalation) — merged to `main`
 
 ---
 
@@ -89,7 +90,7 @@ Legend: 🔴 launch blocker · 🟡 important · 🟢 done · 🟠 polish/debt
 
 ### Retention & support 🟡
 - [ ] Configure **Klaviyo** (welcome flow, abandoned cart)
-- [ ] **WhatsApp / chat support** (near-mandatory for Indian D2C trust)
+- [x] ~~**WhatsApp / chat support**~~ — Phase 1 done (browser widget + WhatsApp escalation); Phase 2 (WhatsApp Business API: order/abandoned-cart automation) pending
 - [x] ~~Custom **404 page**~~ — done (merged via `feat/custom-404`)
 
 ---
