@@ -5,24 +5,27 @@ import type { Product } from '@/lib/types';
 import ProductCard from './ProductCard';
 
 /**
- * Mobile: horizontal snap-carousel with a small scroll-position slider below.
- * Desktop (sm+): 2-col grid (slider hidden — nothing to scroll).
+ * Mobile: horizontal snap-carousel with pagination dots below.
+ * Desktop (sm+): 2-col grid (dots hidden — nothing to scroll).
  */
 export default function ProductCarousel({ products }: { products: Product[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [thumb, setThumb] = useState({ width: 100, left: 0 });
+  const [active, setActive] = useState(0);
 
   const update = useCallback(() => {
     const el = ref.current;
     if (!el) return;
-    const { scrollWidth, clientWidth, scrollLeft } = el;
-    if (scrollWidth <= clientWidth + 1) {
-      setThumb({ width: 100, left: 0 });
-      return;
-    }
-    const width = (clientWidth / scrollWidth) * 100;
-    const left = (scrollLeft / (scrollWidth - clientWidth)) * (100 - width);
-    setThumb({ width, left });
+    const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    let best = 0;
+    let bestDist = Infinity;
+    Array.from(el.children).forEach((c, i) => {
+      const d = Math.abs((c as HTMLElement).offsetLeft - pad - el.scrollLeft);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    });
+    setActive(best);
   }, []);
 
   useEffect(() => {
@@ -30,6 +33,15 @@ export default function ProductCarousel({ products }: { products: Product[] }) {
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, [update]);
+
+  const goTo = (i: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const child = el.children[i] as HTMLElement | undefined;
+    if (!child) return;
+    const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    el.scrollTo({ left: child.offsetLeft - pad, behavior: 'smooth' });
+  };
 
   return (
     <div>
@@ -48,15 +60,23 @@ export default function ProductCarousel({ products }: { products: Product[] }) {
         ))}
       </div>
 
-      {/* Scroll-position slider — mobile only */}
-      <div className="mt-6 flex justify-center sm:hidden">
-        <div className="relative h-1 w-28 rounded-full bg-charcoal/15">
-          <div
-            className="absolute top-0 h-full rounded-full bg-charcoal"
-            style={{ width: `${thumb.width}%`, left: `${thumb.left}%` }}
-          />
+      {/* Pagination dots — mobile only */}
+      {products.length > 1 && (
+        <div className="mt-6 flex justify-center gap-2 sm:hidden">
+          {products.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to item ${i + 1}`}
+              aria-current={i === active}
+              className={`h-1.5 rounded-full transition-all duration-300 ease-soft ${
+                i === active ? 'w-5 bg-charcoal' : 'w-1.5 bg-charcoal/30'
+              }`}
+            />
+          ))}
         </div>
-      </div>
+      )}
     </div>
   );
 }
