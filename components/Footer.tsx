@@ -2,11 +2,24 @@ import Image from 'next/image';
 import NewsletterForm from './NewsletterForm';
 import { ClockIcon, LockIcon } from './icons';
 
-const SHOP_LINKS = [
+const EXPLORE_LINKS = [
+  { label: 'Shop', href: '/shop' },
+  { label: 'Lookbook', href: '/lookbook' },
+  { label: 'Our Story', href: '/our-story' },
+];
+
+const HELP_LINKS = [
   { label: 'FAQ', href: '/faq' },
-  { label: 'Shipping Policy', href: '#' },
-  { label: 'Returns & Exchanges', href: '#' },
   { label: 'Size Guide', href: '/size-guide' },
+  { label: 'Shipping Policy', href: '/shipping' },
+  { label: 'Returns & Exchanges', href: '/returns' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const LEGAL_LINKS = [
+  { label: 'Contact', href: '/contact' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms', href: '/terms' },
 ];
 
 export default function Footer() {
@@ -15,7 +28,7 @@ export default function Footer() {
       <div className="container-editorial border-t border-charcoal/10 py-14 sm:py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           {/* Brand + newsletter */}
-          <div className="md:col-span-6">
+          <div className="md:col-span-5">
             <Image
               src="/images/logo-color.png"
               alt="Thoda Soft"
@@ -31,49 +44,75 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          <nav
-            aria-label="Footer"
-            className="md:col-span-3 md:col-start-8"
-          >
-            <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-charcoal-muted">
-              Help
-            </h2>
-            <ul className="space-y-2.5 text-sm">
-              {SHOP_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-charcoal/80 transition-colors hover:text-charcoal"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Link columns */}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-7">
+            <nav aria-label="Explore">
+              <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-charcoal-muted">
+                Explore
+              </h2>
+              <ul className="space-y-2.5 text-sm">
+                {EXPLORE_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-charcoal/80 transition-colors hover:text-charcoal"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          {/* Trust badges */}
-          <div className="md:col-span-2">
-            <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-charcoal-muted">
-              Promise
-            </h2>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-2.5">
-                <ClockIcon className="h-4 w-4 text-charcoal" />
-                7-Day Size Exchanges
-              </li>
-              <li className="flex items-center gap-2.5">
-                <LockIcon className="h-4 w-4 text-charcoal" />
-                Secure Checkout
-              </li>
-            </ul>
+            <nav aria-label="Help">
+              <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-charcoal-muted">
+                Help
+              </h2>
+              <ul className="space-y-2.5 text-sm">
+                {HELP_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-charcoal/80 transition-colors hover:text-charcoal"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="col-span-2 sm:col-span-1">
+              <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-charcoal-muted">
+                Promise
+              </h2>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-center gap-2.5">
+                  <ClockIcon className="h-4 w-4 text-charcoal" />
+                  7-Day Size Exchanges
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <LockIcon className="h-4 w-4 text-charcoal" />
+                  Secure Checkout
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-charcoal/10 pt-6 text-xs text-charcoal-muted sm:flex-row">
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-charcoal/10 pt-6 text-xs text-charcoal-muted sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Thoda Soft. Designed in India.</p>
-          <p>Made with soft cotton &amp; softer pixels.</p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {LEGAL_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="transition-colors hover:text-charcoal"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
