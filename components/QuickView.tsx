@@ -7,6 +7,7 @@ import { useCart } from '@shopify/hydrogen-react';
 import type { ProductImage } from '@/lib/types';
 import { useQuickView } from './quickview-context';
 import { useCartUI } from './cart-ui-context';
+import { useAddToCart } from './optimistic-cart-context';
 import { CloseIcon } from './icons';
 import SizeGuideModal from './SizeGuideModal';
 import { lockScroll, unlockScroll } from '@/lib/scroll-lock';
@@ -25,7 +26,8 @@ function formatPrice(amount: string, currency: string) {
 
 export default function QuickView() {
   const { product, isOpen, close } = useQuickView();
-  const { linesAdd, status } = useCart();
+  const { status } = useCart();
+  const addToCart = useAddToCart();
   const { open: openCart } = useCartUI();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [images, setImages] = useState<ProductImage[]>([]);
@@ -105,8 +107,16 @@ export default function QuickView() {
   }, [product, hasSizes, selectedSize]);
 
   const handleAdd = () => {
-    if (!selectedVariantId) return;
-    linesAdd([{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    if (!product || !selectedVariantId) return;
+    addToCart({
+      variantId: selectedVariantId,
+      title: product.title,
+      variantTitle: selectedSize ?? undefined,
+      image: images[0]?.url ?? null,
+      imageAlt: images[0]?.altText ?? product.title,
+      price: product.priceRange.minVariantPrice.amount,
+      currency: product.priceRange.minVariantPrice.currencyCode,
+    });
     close();
     openCart();
   };

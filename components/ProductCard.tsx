@@ -8,6 +8,7 @@ import { useCart } from '@shopify/hydrogen-react';
 import type { Product } from '@/lib/types';
 import { useCartUI } from './cart-ui-context';
 import { useQuickView } from './quickview-context';
+import { useAddToCart } from './optimistic-cart-context';
 import { EyeIcon, BagIcon, CloseIcon } from './icons';
 import { lockScroll, unlockScroll } from '@/lib/scroll-lock';
 
@@ -25,11 +26,17 @@ function formatPrice(amount: string, currencyCode: string) {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { linesAdd, status } = useCart();
+  const { status } = useCart();
+  const addToCart = useAddToCart();
   const { open } = useCartUI();
   const { open: openQuickView } = useQuickView();
   const [added, setAdded] = useState(false);
   const [showMobileSizes, setShowMobileSizes] = useState(false);
+
+  const ccy = product.priceRange.minVariantPrice.currencyCode;
+  const amount = product.priceRange.minVariantPrice.amount;
+  const imgUrl = product.featuredImage?.url ?? null;
+  const imgAlt = product.featuredImage?.altText ?? product.title;
 
   // First option (typically "Size"); placeholder "Title" option is filtered upstream.
   const sizeOption = product.options[0] ?? null;
@@ -65,9 +72,15 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const handleAdd = () => {
     if (!selectedVariantId) return;
-    // Optimistic: open the drawer immediately; hydrogen-react reconciles the
-    // line once the Cart API mutation resolves.
-    linesAdd([{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    addToCart({
+      variantId: selectedVariantId,
+      title: product.title,
+      variantTitle: selectedSize ?? undefined,
+      image: imgUrl,
+      imageAlt: imgAlt,
+      price: amount,
+      currency: ccy,
+    });
     setAdded(true);
     open();
     setTimeout(() => setAdded(false), 1800);
@@ -86,7 +99,15 @@ export default function ProductCard({ product }: { product: Product }) {
   const addSize = (value: string) => {
     const variant = variantByValue(value);
     if (!variant?.availableForSale) return;
-    linesAdd([{ merchandiseId: variant.id, quantity: 1 }]);
+    addToCart({
+      variantId: variant.id,
+      title: product.title,
+      variantTitle: value,
+      image: imgUrl,
+      imageAlt: imgAlt,
+      price: amount,
+      currency: ccy,
+    });
     setShowMobileSizes(false);
     open();
   };
