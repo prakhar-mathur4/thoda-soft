@@ -1,5 +1,5 @@
 import { getCollectionProducts } from '@/lib/shopify';
-import ProductCard from './ProductCard';
+import ProductCarousel from './ProductCarousel';
 import Reveal from './Reveal';
 
 /**
@@ -22,10 +22,9 @@ export default async function ProductGrid() {
           </p>
         </Reveal>
 
-        <Reveal stagger className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        {/* Mobile: swipeable snap-carousel + slider · Desktop (sm+): 2-col grid */}
+        <Reveal>
+          <ProductCarousel products={products} />
         </Reveal>
       </div>
     </section>
