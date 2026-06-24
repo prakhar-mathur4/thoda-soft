@@ -15,6 +15,8 @@ type RevealProps = {
   delay?: number;
   /** When true, animate direct children in sequence (e.g. a grid of cards). */
   stagger?: boolean;
+  /** Play on mount instead of waiting for scroll (for content in the first view). */
+  immediate?: boolean;
   as?: ElementType;
 };
 
@@ -29,6 +31,7 @@ export default function Reveal({
   y = 24,
   delay = 0,
   stagger = false,
+  immediate = false,
   as: Tag = 'div',
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
@@ -40,6 +43,25 @@ export default function Reveal({
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const targets = stagger ? Array.from(el.children) : el;
+
+      if (immediate) {
+        // Play once on mount (content already in the first view). fromTo keeps the
+        // end state explicit so it can't stick hidden under dev double-invoke.
+        gsap.fromTo(
+          targets,
+          { y, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            delay,
+            stagger: stagger ? 0.12 : 0,
+          },
+        );
+        return;
+      }
+
       gsap.from(targets, {
         y,
         autoAlpha: 0,

@@ -15,6 +15,8 @@ export default function TrustBar() {
       <Reveal
         as="ul"
         stagger
+        immediate
+        delay={0.5}
         className="container-editorial hidden grid-cols-4 gap-x-4 py-8 md:grid"
       >
         {ITEMS.map(({ icon: Icon, label }) => (

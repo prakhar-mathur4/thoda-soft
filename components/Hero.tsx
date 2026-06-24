@@ -14,8 +14,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  *
  * Avoids the usual fashion clichés (full-bleed photo + centred overlay, carousel,
  * generic "new collection" banner). Instead: an asymmetric editorial grid with a
- * masked line-by-line serif headline beside a layered, floating photo collage that
- * drapes with fabric-like motion and responds to cursor depth.
+ * masked line-by-line serif headline beside a layered photo collage that wipes
+ * open on entrance and drifts gently on scroll.
  *
  * Motion is entirely GSAP-driven and gated behind prefers-reduced-motion; with
  * motion off (or JS disabled) the static layout is fully visible and legible.
@@ -32,63 +32,65 @@ export default function Hero() {
       const q = gsap.utils.selector(el);
 
       // — Entrance choreography ————————————————————————————————
+      // fromTo (explicit end states) rather than from(), so the final frame is
+      // always the visible state even under React Strict Mode's double-invoke in
+      // dev (a bare .from() can record a mid-revert value as its "end" and stick).
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.from(q('[data-anim="rule"]'), {
-        scaleX: 0,
-        transformOrigin: 'left center',
-        duration: 0.9,
-      })
-        .from(
+      tl.fromTo(
+        q('[data-anim="rule"]'),
+        { scaleX: 0, transformOrigin: 'left center' },
+        { scaleX: 1, duration: 0.9 },
+      )
+        .fromTo(
           q('[data-anim="eyebrow"] > *'),
-          { yPercent: 130, opacity: 0, stagger: 0.06, duration: 0.6 },
+          { yPercent: 130, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.06, duration: 0.6 },
           '-=0.55',
         )
-        .from(
+        .fromTo(
           q('[data-anim="line"]'),
-          { yPercent: 115, stagger: 0.1, duration: 0.95, ease: 'power4.out' },
+          { yPercent: 115 },
+          { yPercent: 0, stagger: 0.1, duration: 0.95, ease: 'power4.out' },
           '-=0.3',
         )
-        .from(
+        .fromTo(
           q('[data-anim="standfirst"]'),
-          { y: 18, opacity: 0, duration: 0.7 },
+          { y: 18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7 },
           '-=0.55',
         )
-        .from(
+        .fromTo(
           q('[data-anim="cta"]'),
-          { y: 16, opacity: 0, stagger: 0.1, duration: 0.6 },
+          { y: 16, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.1, duration: 0.6 },
           '-=0.45',
         )
         // Photo frames wipe open like a turning page.
-        .from(
+        .fromTo(
           q('[data-anim="frame-primary"]'),
-          { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.15, ease: 'power4.inOut' },
+          { clipPath: 'inset(100% 0% 0% 0%)' },
+          { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.15, ease: 'power4.inOut' },
           0.15,
         )
-        .from(
+        .fromTo(
           q('[data-anim="frame-secondary"]'),
-          {
-            clipPath: 'inset(0% 0% 100% 0%)',
-            opacity: 0,
-            duration: 1,
-            ease: 'power4.inOut',
-          },
+          { clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 },
+          { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, duration: 1, ease: 'power4.inOut' },
           0.5,
         )
-        .from(q('[data-anim="credit"]'), { opacity: 0, y: 12, duration: 0.6 }, '-=0.25')
-        .from(q('[data-anim="spine"]'), { opacity: 0, duration: 0.9 }, '-=0.6')
-        .from(q('[data-anim="scroll"]'), { opacity: 0, y: -8, duration: 0.6 }, '-=0.4');
-
-      // — Continuous fabric-drape float on the inner images ————————
-      q('[data-float]').forEach((node, i) => {
-        gsap.to(node, {
-          y: i % 2 === 0 ? 16 : -14,
-          duration: 4.5 + i,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          delay: 1 + i * 0.3,
-        });
-      });
+        .fromTo(
+          q('[data-anim="credit"]'),
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          '-=0.25',
+        )
+        .fromTo(q('[data-anim="spine"]'), { opacity: 0 }, { opacity: 1, duration: 0.9 }, '-=0.6')
+        .fromTo(
+          q('[data-anim="scroll"]'),
+          { opacity: 0, y: -8 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          '-=0.4',
+        );
 
       // Soft ambient light drift (the colour glows behind the collage).
       q('[data-glow]').forEach((node, i) => {
@@ -113,27 +115,6 @@ export default function Hero() {
         ease: 'none',
         scrollTrigger: { trigger: el, start: 'top top', end: 'bottom top', scrub: true },
       });
-
-      // — Pointer parallax (desktop / fine pointer only) ——————————
-      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        const layers = q('[data-parallax]') as HTMLElement[];
-        const setters = layers.map((n) => ({
-          x: gsap.quickTo(n, 'x', { duration: 0.9, ease: 'power3' }),
-          y: gsap.quickTo(n, 'y', { duration: 0.9, ease: 'power3' }),
-          depth: Number(n.dataset.parallax) || 1,
-        }));
-        const onMove = (e: PointerEvent) => {
-          const r = el.getBoundingClientRect();
-          const cx = (e.clientX - r.left) / r.width - 0.5;
-          const cy = (e.clientY - r.top) / r.height - 0.5;
-          setters.forEach((s) => {
-            s.x(cx * 30 * s.depth);
-            s.y(cy * 30 * s.depth);
-          });
-        };
-        el.addEventListener('pointermove', onMove);
-        return () => el.removeEventListener('pointermove', onMove);
-      }
     },
     { scope: root },
   );
@@ -143,7 +124,7 @@ export default function Hero() {
       ref={root}
       id="top"
       aria-label="Thoda Soft — the debut capsule"
-      className="relative w-full overflow-hidden bg-gradient-to-br from-cream via-blush/40 to-lavender/30 pb-16 pt-24 md:pb-0 md:pt-28"
+      className="relative w-full overflow-hidden bg-gradient-to-br from-cream via-blush/40 to-lavender/30 pb-14 pt-5 md:pb-0 md:pt-5"
     >
       {/* Ambient colour light — keeps the palette airy, not flat beige. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -193,7 +174,7 @@ export default function Hero() {
             className="mt-4 h-px w-full max-w-sm bg-charcoal/25"
           />
 
-          <h1 className="mt-7 font-serif text-[clamp(2.9rem,9vw,5.75rem)] font-medium leading-[0.95] tracking-[-0.01em] text-charcoal">
+          <h1 className="mt-7 font-serif text-[clamp(2.4rem,5.4vw,4.5rem)] font-medium leading-[0.98] tracking-[-0.02em] text-charcoal">
             <span className="block overflow-hidden">
               <span data-anim="line" className="block">
                 Wear your
@@ -226,7 +207,7 @@ export default function Hero() {
               href="/shop"
               className="group inline-flex items-center gap-3 rounded-full bg-charcoal px-8 py-3.5 text-sm tracking-wide text-cream transition duration-300 ease-soft hover:bg-charcoal/90 hover:scale-[1.02] focus-visible:scale-[1.02]"
             >
-              Explore the capsule
+              Explore the Shop
               <span
                 aria-hidden
                 className="transition-transform duration-300 ease-soft group-hover:translate-x-1"
@@ -247,18 +228,15 @@ export default function Hero() {
         {/* — Layered photo collage ——————————————————————————— */}
         <div
           data-scroll-photo
-          className="relative order-1 mx-auto aspect-[4/5] w-full max-w-[440px] md:order-none md:col-start-7 md:col-span-6 md:row-start-1 md:mx-0 md:aspect-auto md:h-[80vh] md:max-w-none"
+          className="relative order-1 mx-auto h-[48svh] min-h-[330px] w-full max-w-[400px] md:order-none md:col-start-7 md:col-span-6 md:row-start-1 md:mx-0 md:h-[80vh] md:max-w-none"
         >
           {/* Primary portrait */}
-          <div
-            data-parallax="0.5"
-            className="absolute right-0 top-0 h-[82%] w-[74%] md:h-[88%] md:w-[68%]"
-          >
+          <div className="absolute right-0 top-0 h-[82%] w-[74%] md:h-[88%] md:w-[68%]">
             <div
               data-anim="frame-primary"
               className="relative h-full w-full overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(137,91,58,0.45)] ring-1 ring-white/40"
             >
-              <div data-float className="absolute inset-0 scale-105">
+              <div className="absolute inset-0 scale-105">
                 <Image
                   src="/images/product_top_1.png"
                   alt="A woman in a hand-embroidered ivory cotton blouse, lit by golden afternoon sun"
@@ -272,15 +250,12 @@ export default function Hero() {
           </div>
 
           {/* Overlapping "look" card */}
-          <div
-            data-parallax="1.15"
-            className="absolute bottom-0 left-0 h-[52%] w-[50%] md:h-[50%] md:w-[44%]"
-          >
+          <div className="absolute bottom-0 left-0 h-[52%] w-[50%] md:h-[50%] md:w-[44%]">
             <div
               data-anim="frame-secondary"
               className="relative h-full w-full overflow-hidden rounded-[1.5rem] border-[5px] border-cream shadow-[0_24px_50px_-24px_rgba(137,91,58,0.5)]"
             >
-              <div data-float className="absolute inset-0 scale-105">
+              <div className="absolute inset-0 scale-105">
                 <Image
                   src="/images/hero_banner.png"
                   alt="A tiered floral sundress in motion across a wildflower meadow at sunset"
@@ -290,39 +265,12 @@ export default function Hero() {
                 />
               </div>
             </div>
-
-            {/* Shoppable editorial credit */}
-            <Link
-              data-anim="credit"
-              href="/shop"
-              className="group absolute -bottom-4 left-3 right-3 flex items-center justify-between gap-2 rounded-full bg-cream/95 px-4 py-2.5 text-charcoal shadow-[0_10px_30px_-12px_rgba(137,91,58,0.55)] backdrop-blur transition hover:bg-cream"
-            >
-              <span className="text-[0.7rem] uppercase tracking-[0.18em]">
-                Nº 01 — The Sundress
-              </span>
-              <span className="flex items-center gap-1 whitespace-nowrap text-[0.7rem] font-medium tracking-wide">
-                Shop the look
-                <span
-                  aria-hidden
-                  className="transition-transform duration-300 ease-soft group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </span>
-            </Link>
           </div>
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <div
-        data-anim="scroll"
-        aria-hidden
-        className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-charcoal/60 md:flex"
-      >
-        <span className="text-[0.6rem] uppercase tracking-[0.4em]">Scroll</span>
-        <span className="h-10 w-px animate-pulse bg-charcoal/40 motion-reduce:animate-none" />
-      </div>
+      {/* Scroll cue — bottom-left, clear of the photo collage */}
+
     </section>
   );
 }
