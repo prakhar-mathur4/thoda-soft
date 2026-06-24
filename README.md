@@ -60,7 +60,8 @@ app/
   api/revalidate        # Shopify webhook → revalidateTag('products')
 components/
   Header.tsx            # sticky, transparent→solid on scroll, live cart badge
-  Hero.tsx              # priority hero image + overlay CTA
+  Hero.tsx              # "Living Editorial" layered hero — masked headline,
+                        #   floating photo collage, shoppable look card (GSAP)
   TrustBar.tsx          # USP bar
   ProductGrid.tsx       # Server Component, fetches collection
   ProductCard.tsx       # hover image swap + optimistic add-to-cart
