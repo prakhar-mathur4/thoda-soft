@@ -300,7 +300,9 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
 
       <div className="mt-4 flex items-baseline justify-between gap-3">
-        <h3 className="font-serif text-base text-charcoal sm:text-lg">
+        {/* Reserve two lines so cards with a one-line title match the height of
+            those whose title wraps — keeps the mobile carousel cards uniform. */}
+        <h3 className="min-h-[2lh] font-serif text-base leading-snug text-charcoal line-clamp-2 sm:text-lg">
           <Link href={href} className="transition hover:text-charcoal-muted">
             {product.title}
           </Link>

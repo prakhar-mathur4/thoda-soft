@@ -1,5 +1,5 @@
 import 'server-only';
-import type { Product, ProductDetail } from './types';
+import type { Product, ProductDetail, ProductImage } from './types';
 import { MOCK_PRODUCTS } from './mock-products';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
@@ -161,6 +161,38 @@ export async function getCollectionProducts(
   } catch (err) {
     console.error('[shopify] falling back to mock products:', err);
     return MOCK_PRODUCTS.slice(0, first);
+  }
+}
+
+export type HeroImages = {
+  primary: ProductImage | null;
+  secondary: ProductImage | null;
+};
+
+/**
+ * Hero art comes from products tagged `hero` in Shopify. The first hero-tagged
+ * product supplies the primary image; the second (or the first product's hover
+ * image) supplies the secondary. Returns nulls when nothing is tagged — so
+ * <Hero /> falls back to its bundled editorial stills — and never falls back to
+ * the mock catalogue.
+ */
+export async function getHeroImages(): Promise<HeroImages> {
+  if (!isShopifyConfigured) return { primary: null, secondary: null };
+
+  try {
+    const data = await shopifyFetch<{ products: { nodes: RawProduct[] } }>(
+      PRODUCTS_QUERY,
+      { first: 2, query: 'tag:hero' },
+    );
+    const nodes = (data.products?.nodes ?? []).map(normalize);
+    if (nodes.length === 0) return { primary: null, secondary: null };
+    return {
+      primary: nodes[0].featuredImage,
+      secondary: nodes[1]?.featuredImage ?? nodes[0].hoverImage,
+    };
+  } catch (err) {
+    console.error('[shopify] getHeroImages error:', err);
+    return { primary: null, secondary: null };
   }
 }
 

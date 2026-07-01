@@ -159,7 +159,7 @@ export default function QuickView() {
         role="dialog"
         aria-modal="true"
         aria-label={product?.title ?? 'Quick view'}
-        className={`relative grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-3xl bg-cream shadow-[0_24px_70px_rgba(46,43,41,0.25)] transition-all duration-[600ms] ease-soft sm:grid-cols-2 sm:min-h-[560px] ${
+        className={`relative grid max-h-[calc(100dvh-2rem)] w-full max-w-5xl grid-cols-1 overflow-y-auto overflow-x-hidden rounded-3xl bg-cream shadow-[0_24px_70px_rgba(46,43,41,0.25)] transition-all duration-[600ms] ease-soft sm:grid-cols-2 sm:min-h-[560px] sm:overflow-hidden ${
           isOpen ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-4 scale-[0.98] opacity-0'
         }`}
       >
@@ -184,7 +184,7 @@ export default function QuickView() {
                 {images.map((image, i) => (
                   <div
                     key={`${image.url}-${i}`}
-                    className="relative aspect-[4/5] w-full shrink-0 snap-center sm:aspect-auto sm:min-h-[560px]"
+                    className="relative aspect-square w-full shrink-0 snap-center sm:aspect-auto sm:min-h-[560px]"
                   >
                     <Image
                       src={image.url}
