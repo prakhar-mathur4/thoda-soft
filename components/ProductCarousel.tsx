@@ -48,12 +48,12 @@ export default function ProductCarousel({ products }: { products: Product[] }) {
       <div
         ref={ref}
         onScroll={update}
-        className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:px-0 sm:pb-0"
+        className="-mr-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mr-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:pr-0 sm:pb-0"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="min-w-[80%] shrink-0 snap-start sm:min-w-0"
+            className="w-[80%] shrink-0 snap-start sm:w-full"
           >
             <ProductCard product={product} />
           </div>

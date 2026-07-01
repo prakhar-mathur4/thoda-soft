@@ -22,8 +22,8 @@ export function SearchIcon(props: SVGProps<SVGSVGElement>) {
 export function BagIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
-      <path d="M6 8h12l-1 12H7L6 8Z" />
-      <path d="M9 8a3 3 0 0 1 6 0" />
+      <path d="M6 8.5h12a1 1 0 0 1 1 1.06l-.62 9a2 2 0 0 1-2 1.94H7.62a2 2 0 0 1-2-1.94l-.62-9a1 1 0 0 1 1-1.06Z" />
+      <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" />
     </svg>
   );
 }

@@ -20,8 +20,31 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * Motion is entirely GSAP-driven and gated behind prefers-reduced-motion; with
  * motion off (or JS disabled) the static layout is fully visible and legible.
  */
-export default function Hero() {
+type HeroImage = { url: string; altText: string | null } | null | undefined;
+
+/**
+ * `primaryImage` / `secondaryImage` are sourced from Shopify (the featured
+ * images of the debut-capsule products, passed down from the home page Server
+ * Component). They fall back to the bundled editorial stills so the hero still
+ * renders when Shopify isn't configured.
+ */
+export default function Hero({
+  primaryImage,
+  secondaryImage,
+}: {
+  primaryImage?: HeroImage;
+  secondaryImage?: HeroImage;
+} = {}) {
   const root = useRef<HTMLElement>(null);
+
+  const primarySrc = primaryImage?.url ?? '/images/product_top_1.png';
+  const primaryAlt =
+    primaryImage?.altText ??
+    'A woman in a hand-embroidered ivory cotton blouse, lit by golden afternoon sun';
+  const secondarySrc = secondaryImage?.url ?? '/images/hero_banner.png';
+  const secondaryAlt =
+    secondaryImage?.altText ??
+    'A tiered floral sundress in motion across a wildflower meadow at sunset';
 
   useGSAP(
     () => {
@@ -175,17 +198,17 @@ export default function Hero() {
           />
 
           <h1 className="mt-7 font-serif text-[clamp(2.4rem,5.4vw,4.5rem)] font-medium leading-[0.98] tracking-[-0.02em] text-charcoal">
-            <span className="block overflow-hidden">
+            <span className="block overflow-hidden pb-[0.16em] -mb-[0.16em]">
               <span data-anim="line" className="block">
                 Wear your
               </span>
             </span>
-            <span className="block overflow-hidden">
+            <span className="block overflow-hidden pb-[0.16em] -mb-[0.16em]">
               <span data-anim="line" className="block font-light italic">
                 softness
               </span>
             </span>
-            <span className="block overflow-hidden">
+            <span className="block overflow-hidden pb-[0.16em] -mb-[0.16em]">
               <span data-anim="line" className="block">
                 like confidence.
               </span>
@@ -238,8 +261,8 @@ export default function Hero() {
             >
               <div className="absolute inset-0 scale-105">
                 <Image
-                  src="/images/product_top_1.png"
-                  alt="A woman in a hand-embroidered ivory cotton blouse, lit by golden afternoon sun"
+                  src={primarySrc}
+                  alt={primaryAlt}
                   fill
                   priority
                   sizes="(min-width: 768px) 40vw, 70vw"
@@ -257,8 +280,8 @@ export default function Hero() {
             >
               <div className="absolute inset-0 scale-105">
                 <Image
-                  src="/images/hero_banner.png"
-                  alt="A tiered floral sundress in motion across a wildflower meadow at sunset"
+                  src={secondarySrc}
+                  alt={secondaryAlt}
                   fill
                   sizes="(min-width: 768px) 26vw, 50vw"
                   className="object-cover"
