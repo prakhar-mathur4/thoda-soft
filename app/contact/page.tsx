@@ -21,7 +21,15 @@ const contactJsonLd = {
   publisher: {
     '@type': 'Organization',
     name: SITE_NAME,
-    email: 'hello@thodasoft.com',
+    email: 'thodasoft@gmail.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '76/22, Shipra Path, Mansarovar',
+      addressLocality: 'Jaipur',
+      addressRegion: 'Rajasthan',
+      postalCode: '302020',
+      addressCountry: 'IN',
+    },
   },
 };
 
@@ -44,7 +52,7 @@ export default function ContactPage() {
         <ul>
           <li>
             <strong>Email:</strong>{' '}
-            <a href="mailto:hello@thodasoft.com">hello@thodasoft.com</a>
+            <a href="mailto:thodasoft@gmail.com">thodasoft@gmail.com</a>
           </li>
           <li>
             <strong>WhatsApp:</strong>{' '}
@@ -55,6 +63,10 @@ export default function ContactPage() {
           <li>
             <strong>Support hours:</strong> Mon–Sat, 10am–7pm IST. We typically
             reply within one business day.
+          </li>
+          <li>
+            <strong>Address:</strong> 76/22, Shipra Path, Mansarovar,
+            Jaipur (Raj.) — 302020
           </li>
         </ul>
 
@@ -76,8 +88,8 @@ export default function ContactPage() {
 
         <h2>Business details</h2>
         <p className="text-charcoal-muted">
-          [Registered business name], [Registered address]. GSTIN: [GSTIN].
-          Replace these placeholders with your legal entity details.
+          Thoda Soft, 76/22, Shipra Path, Mansarovar, Jaipur (Raj.) —
+          302020.
         </p>
       </PolicyPage>
     </>

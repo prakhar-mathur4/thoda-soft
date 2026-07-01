@@ -32,7 +32,7 @@ export default function ReturnsPage() {
       <h2>How to request an exchange</h2>
       <p>
         Email us at{' '}
-        <a href="mailto:hello@thodasoft.com">hello@thodasoft.com</a> or message
+        <a href="mailto:thodasoft@gmail.com">thodasoft@gmail.com</a> or message
         us on WhatsApp with your <strong>order number</strong> and the{' '}
         <strong>size</strong> you&apos;d like. We&apos;ll guide you through the
         rest.

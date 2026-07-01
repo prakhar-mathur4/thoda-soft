@@ -181,7 +181,7 @@ export default function FaqPage() {
           one business day.
         </p>
         <a
-          href="mailto:hello@thodasoft.com"
+          href="mailto:thodasoft@gmail.com"
           className="btn-primary mt-6"
         >
           Email Us

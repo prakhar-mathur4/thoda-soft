@@ -73,7 +73,7 @@ export default function PrivacyPolicyPage() {
         You may request access to, correction of, or deletion of your personal
         data, and withdraw consent for marketing at any time. To exercise these
         rights, contact us at{' '}
-        <a href="mailto:hello@thodasoft.com">hello@thodasoft.com</a>.
+        <a href="mailto:thodasoft@gmail.com">thodasoft@gmail.com</a>.
       </p>
 
       <h2>Data security &amp; retention</h2>
@@ -86,7 +86,7 @@ export default function PrivacyPolicyPage() {
       <h2>Contact</h2>
       <p>
         Questions about this policy? Reach us at{' '}
-        <a href="mailto:hello@thodasoft.com">hello@thodasoft.com</a> or via our{' '}
+        <a href="mailto:thodasoft@gmail.com">thodasoft@gmail.com</a> or via our{' '}
         <Link href="/contact">contact page</Link>.
       </p>
 

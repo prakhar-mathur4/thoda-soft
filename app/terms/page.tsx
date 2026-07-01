@@ -71,7 +71,7 @@ export default function TermsPage() {
       <h2>Contact</h2>
       <p>
         Questions? Email{' '}
-        <a href="mailto:hello@thodasoft.com">hello@thodasoft.com</a> or visit our{' '}
+        <a href="mailto:thodasoft@gmail.com">thodasoft@gmail.com</a> or visit our{' '}
         <Link href="/contact">contact page</Link>.
       </p>
     </PolicyPage>
