@@ -1,6 +1,9 @@
 {%- liquid
   assign menu = section.settings.menu
   assign account_url = settings.account_url | default: routes.account_url
+  # Logo: header section setting takes priority, else the global brand logo.
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_width = section.settings.logo_width | default: settings.logo_width | default: 200
 -%}
 
 <header
@@ -35,13 +38,14 @@
       href="{{ routes.root_url }}"
       aria-label="{{ shop.name | escape }} — home"
       class="col-start-2 flex h-11 items-center justify-self-center sm:h-12"
-      style="width: {{ settings.logo_width | default: 200 }}px; max-width: 100%;"
+      style="width: {{ logo_width }}px; max-width: 100%;"
     >
-      {%- if settings.logo -%}
+      {%- if logo -%}
         <img
-          src="{{ settings.logo | image_url: width: 400 }}"
+          src="{{ logo | image_url: width: 600 }}"
+          srcset="{{ logo | image_url: width: 300 }} 1x, {{ logo | image_url: width: 600 }} 2x"
           alt="{{ shop.name | escape }}"
-          width="{{ settings.logo_width | default: 200 }}"
+          width="{{ logo_width }}"
           height="53"
           class="h-full w-full object-contain"
           fetchpriority="high">
@@ -130,6 +134,22 @@
 {
   "name": "Header",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Overrides the logo in Theme settings → Brand. Recommended height ~53px."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 120,
+      "max": 280,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 200
+    },
     {
       "type": "link_list",
       "id": "menu",
