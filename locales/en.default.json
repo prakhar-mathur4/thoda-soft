@@ -1,5 +1,14 @@
 {
   "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "password_page": {
+      "login_form_heading": "Opening soon",
+      "password_placeholder": "Enter password",
+      "login_form_submit": "Enter"
+    },
     "accessibility": {
       "skip_to_content": "Skip to products",
       "close": "Close",
@@ -67,6 +76,11 @@
     "apply": "Apply",
     "results": "{{ count }} products",
     "empty": "No products match these filters."
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Here's your {{ value }} gift card!"
+    }
   },
   "customer": {
     "account": "Account",
