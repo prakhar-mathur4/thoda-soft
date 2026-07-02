@@ -1,0 +1,155 @@
+<div class="container-editorial py-16 max-w-3xl">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <h1 class="font-serif text-3xl">{{ 'customer.addresses' | t | default: 'Addresses' }}</h1>
+    <a href="{{ routes.account_url }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted underline underline-offset-2 hover:text-charcoal">&larr; Back to account</a>
+  </div>
+
+  {%- comment -%} Add a new address {%- endcomment -%}
+  <section class="mt-10 rounded-3xl bg-blush p-6 sm:p-8">
+    <h2 class="font-serif text-2xl">Add a new address</h2>
+
+    {%- form 'customer_address', customer.new_address, class: 'mt-6 space-y-5' -%}
+      {{ form.errors | default_errors }}
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label for="AddressFirstNameNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">First name</label>
+          <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+        <div>
+          <label for="AddressLastNameNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Last name</label>
+          <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+      </div>
+
+      <div>
+        <label for="AddressAddress1New" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Address</label>
+        <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+      </div>
+
+      <div>
+        <label for="AddressAddress2New" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Apartment, suite, etc.</label>
+        <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label for="AddressCityNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">City</label>
+          <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+        <div>
+          <label for="AddressZipNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">ZIP / Postal code</label>
+          <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+        <div>
+          <label for="AddressProvinceNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Province / State</label>
+          <input type="text" id="AddressProvinceNew" name="address[province]" value="{{ form.province }}" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+        <div>
+          <label for="AddressCountryNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Country</label>
+          <input type="text" id="AddressCountryNew" name="address[country]" value="{{ form.country }}" autocomplete="country-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+        </div>
+      </div>
+
+      <div>
+        <label for="AddressPhoneNew" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Phone</label>
+        <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+      </div>
+
+      <label class="flex items-center gap-2 text-sm text-charcoal">
+        {{ form.set_as_default_checkbox }}
+        <span>Set as default address</span>
+      </label>
+
+      <button type="submit" class="btn-primary">Add address</button>
+    {%- endform -%}
+  </section>
+
+  {%- comment -%} Existing addresses {%- endcomment -%}
+  {%- if customer.addresses.size > 0 -%}
+    <div class="mt-10 space-y-6">
+      {%- for address in customer.addresses -%}
+        <div class="rounded-3xl border border-charcoal/10 p-6">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              {%- if address == customer.default_address -%}
+                <p class="mb-2 text-xs uppercase tracking-[0.12em] text-charcoal-muted">Default</p>
+              {%- endif -%}
+              <div class="text-sm text-charcoal/80 leading-relaxed">{{ address | format_address }}</div>
+            </div>
+            <div class="flex items-center gap-4 text-xs uppercase tracking-[0.12em]">
+              <a href="#edit-address-{{ address.id }}" data-address-edit="{{ address.id }}" class="text-charcoal-muted underline underline-offset-2 hover:text-charcoal">Edit</a>
+              <a
+                href="#"
+                data-address-delete="{{ address.url }}"
+                data-confirm-message="Are you sure you want to delete this address?"
+                class="text-charcoal-muted underline underline-offset-2 hover:text-charcoal">Delete</a>
+            </div>
+          </div>
+
+          {%- comment -%} Edit form (toggled open by global.js) {%- endcomment -%}
+          <div id="edit-address-{{ address.id }}" class="hidden [&:not(.hidden)]:block">
+            {%- form 'customer_address', address, class: 'mt-6 space-y-5 border-t border-charcoal/10 pt-6' -%}
+              {{ form.errors | default_errors }}
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                  <label for="AddressFirstName{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">First name</label>
+                  <input type="text" id="AddressFirstName{{ address.id }}" name="address[first_name]" value="{{ address.first_name }}" autocomplete="given-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+                <div>
+                  <label for="AddressLastName{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Last name</label>
+                  <input type="text" id="AddressLastName{{ address.id }}" name="address[last_name]" value="{{ address.last_name }}" autocomplete="family-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+              </div>
+
+              <div>
+                <label for="AddressAddress1{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Address</label>
+                <input type="text" id="AddressAddress1{{ address.id }}" name="address[address1]" value="{{ address.address1 }}" autocomplete="address-line1" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+              </div>
+
+              <div>
+                <label for="AddressAddress2{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Apartment, suite, etc.</label>
+                <input type="text" id="AddressAddress2{{ address.id }}" name="address[address2]" value="{{ address.address2 }}" autocomplete="address-line2" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                  <label for="AddressCity{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">City</label>
+                  <input type="text" id="AddressCity{{ address.id }}" name="address[city]" value="{{ address.city }}" autocomplete="address-level2" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+                <div>
+                  <label for="AddressZip{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">ZIP / Postal code</label>
+                  <input type="text" id="AddressZip{{ address.id }}" name="address[zip]" value="{{ address.zip }}" autocapitalize="characters" autocomplete="postal-code" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+                <div>
+                  <label for="AddressProvince{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Province / State</label>
+                  <input type="text" id="AddressProvince{{ address.id }}" name="address[province]" value="{{ address.province }}" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+                <div>
+                  <label for="AddressCountry{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Country</label>
+                  <input type="text" id="AddressCountry{{ address.id }}" name="address[country]" value="{{ address.country }}" autocomplete="country-name" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+                </div>
+              </div>
+
+              <div>
+                <label for="AddressPhone{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Phone</label>
+                <input type="tel" id="AddressPhone{{ address.id }}" name="address[phone]" value="{{ address.phone }}" autocomplete="tel" class="mt-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40 w-full">
+              </div>
+
+              <label class="flex items-center gap-2 text-sm text-charcoal">
+                {{ form.set_as_default_checkbox }}
+                <span>Set as default address</span>
+              </label>
+
+              <div class="flex items-center gap-4">
+                <button type="submit" class="btn-primary">Update address</button>
+                <a href="#" data-address-edit-cancel="{{ address.id }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted underline underline-offset-2 hover:text-charcoal">Cancel</a>
+              </div>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>

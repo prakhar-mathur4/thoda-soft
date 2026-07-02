@@ -1,0 +1,63 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Thoda Soft",
+    "theme_version": "1.0.0",
+    "theme_author": "Thoda Soft",
+    "theme_documentation_url": "https://thodasoft.com",
+    "theme_support_url": "https://thodasoft.com/pages/contact"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 120,
+        "max": 280,
+        "step": 4,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 200
+      },
+      {
+        "type": "text",
+        "id": "account_url",
+        "label": "Account URL",
+        "info": "Where the account icon links. Use /account for Shopify customer accounts, or a full URL for a hosted login.",
+        "default": "/account"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_cream", "label": "Background (cream)", "default": "#FEF9EB" },
+      { "type": "color", "id": "color_charcoal", "label": "Text & buttons (warm brown)", "default": "#895B3A" },
+      { "type": "color", "id": "color_charcoal_muted", "label": "Secondary text", "default": "#A98A73" },
+      { "type": "color", "id": "color_blush", "label": "Blush accent", "default": "#F6E7E4" },
+      { "type": "color", "id": "color_lavender_deep", "label": "Lavender accent", "default": "#B7AEDC" },
+      { "type": "color", "id": "color_sage", "label": "Sage accent", "default": "#CBD6C2" }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Country code + number, no + or spaces. e.g. 9198XXXXXXXX" }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "checkbox", "id": "cart_free_shipping_enabled", "label": "Show free-shipping progress bar", "default": false },
+      { "type": "number", "id": "cart_free_shipping_threshold", "label": "Free-shipping threshold", "info": "Amount in your store currency's base unit (e.g. rupees)." }
+    ]
+  }
+]

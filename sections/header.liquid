@@ -1,0 +1,141 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign account_url = settings.account_url | default: routes.account_url
+-%}
+
+<header
+  data-header
+  class="fixed inset-x-0 top-0 z-50 bg-cream/95 backdrop-blur transition-shadow duration-500 ease-soft"
+>
+  <nav
+    class="container-editorial grid h-14 grid-cols-[1fr_auto_1fr] items-center sm:h-16"
+    aria-label="Primary"
+  >
+    {%- comment -%} Left: hamburger (mobile) + nav links (desktop) {%- endcomment -%}
+    <div class="flex items-center">
+      <button
+        type="button"
+        data-mobile-menu-open
+        aria-label="{{ 'general.accessibility.menu' | t }}"
+        class="-ml-2 rounded-full p-2 text-charcoal transition hover:opacity-70 md:hidden"
+      >
+        {%- render 'icon', name: 'menu', class: 'h-6 w-6' -%}
+      </button>
+      <ul class="hidden items-center gap-7 text-sm text-charcoal/80 md:flex">
+        {%- for link in linklists[menu].links -%}
+          <li>
+            <a href="{{ link.url }}" class="transition-opacity hover:opacity-70">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    {%- comment -%} Center: logo {%- endcomment -%}
+    <a
+      href="{{ routes.root_url }}"
+      aria-label="{{ shop.name | escape }} — home"
+      class="col-start-2 flex h-11 items-center justify-self-center sm:h-12"
+      style="width: {{ settings.logo_width | default: 200 }}px; max-width: 100%;"
+    >
+      {%- if settings.logo -%}
+        <img
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ settings.logo_width | default: 200 }}"
+          height="53"
+          class="h-full w-full object-contain"
+          fetchpriority="high">
+      {%- else -%}
+        <span class="w-full text-center font-serif text-xl uppercase tracking-[0.2em] text-charcoal">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- comment -%} Right: icons {%- endcomment -%}
+    <div class="col-start-3 flex items-center justify-end gap-2 text-charcoal sm:gap-3">
+      <button
+        type="button"
+        data-search-open
+        aria-label="{{ 'general.accessibility.search' | t }}"
+        class="hidden rounded-full p-2 transition hover:opacity-70 md:inline-flex"
+      >
+        {%- render 'icon', name: 'search' -%}
+      </button>
+      <a
+        href="{{ account_url }}"
+        aria-label="{{ 'general.accessibility.account' | t }}"
+        class="hidden rounded-full p-2 transition hover:opacity-70 md:inline-flex"
+      >
+        {%- render 'icon', name: 'user' -%}
+      </a>
+      <button
+        type="button"
+        data-cart-open
+        aria-label="{{ 'general.accessibility.cart' | t }}"
+        class="relative rounded-full p-2 transition hover:opacity-70"
+      >
+        {%- render 'icon', name: 'bag' -%}
+        <span
+          data-cart-count
+          class="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-lavender-deep px-1 text-[11px] font-medium text-white{% if cart.item_count == 0 %} hidden{% endif %}"
+        >{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+{%- comment -%} Mobile slide-in menu {%- endcomment -%}
+<div data-mobile-menu class="fixed inset-0 z-[65] pointer-events-none md:hidden" aria-hidden="true">
+  <div data-mobile-menu-overlay class="absolute inset-0 bg-charcoal/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-500 ease-soft"></div>
+  <div
+    data-mobile-menu-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'general.accessibility.menu' | t }}"
+    class="absolute left-0 top-0 flex h-full w-[82%] max-w-xs -translate-x-full flex-col bg-cream shadow-[8px_0_40px_rgba(46,43,41,0.15)] transition-transform duration-500 ease-soft"
+  >
+    <div class="flex items-center justify-between border-b border-charcoal/10 px-6 py-5">
+      <span class="font-serif text-lg">{{ 'general.accessibility.menu' | t }}</span>
+      <button type="button" data-mobile-menu-close aria-label="{{ 'general.accessibility.close' | t }}" class="rounded-full p-1.5 transition hover:bg-charcoal/5">
+        {%- render 'icon', name: 'close' -%}
+      </button>
+    </div>
+    <nav class="flex flex-1 flex-col px-6 py-6">
+      <button
+        type="button"
+        data-search-open
+        class="mb-6 flex items-center gap-3 rounded-full border border-[#c9dce6] bg-white px-5 py-3 text-sm text-charcoal-muted shadow-sm transition hover:bg-blush/30"
+      >
+        {%- render 'icon', name: 'search', class: 'h-4 w-4' -%}
+        {{ 'general.search.placeholder' | t }}
+      </button>
+      <ul>
+        {%- for link in linklists[menu].links -%}
+          <li>
+            <a href="{{ link.url }}" class="block border-b border-charcoal/10 py-4 font-serif text-2xl text-charcoal transition hover:text-charcoal-muted">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <a
+        href="{{ account_url }}"
+        class="mt-auto flex items-center gap-3 border-t border-charcoal/10 pt-6 text-sm uppercase tracking-[0.12em] text-charcoal transition hover:opacity-70"
+      >
+        {%- render 'icon', name: 'user' -%}
+        {{ 'general.accessibility.account' | t }}
+      </a>
+    </nav>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

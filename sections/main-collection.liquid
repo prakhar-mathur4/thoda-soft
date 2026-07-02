@@ -1,0 +1,115 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign per_page = section.settings.products_per_page | default: 12
+-%}
+<div class="container-editorial py-12 sm:py-16">
+  {%- comment -%} Header {%- endcomment -%}
+  <div class="mx-auto mb-8 max-w-xl text-center" data-reveal>
+    <h1 class="font-serif text-3xl sm:text-4xl">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="mt-3 text-pretty text-sm text-charcoal-muted sm:text-base">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- paginate collection.products by per_page -%}
+    {%- comment -%} Toolbar: filters toggle + sort {%- endcomment -%}
+    <div class="mb-8 flex items-center justify-between gap-4 border-y border-charcoal/10 py-3">
+      {%- if collection.filters.size > 0 -%}
+        <button type="button" data-filters-open class="flex items-center gap-2 text-sm text-charcoal transition hover:opacity-70 lg:hidden">
+          {%- render 'icon', name: 'sparkle', class: 'h-4 w-4' -%} {{ 'collection.filter' | t }}
+        </button>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+      <p class="hidden text-xs uppercase tracking-[0.14em] text-charcoal-muted lg:block">{{ 'collection.results' | t: count: collection.products_count }}</p>
+      <form class="flex items-center gap-2" data-sort-form>
+        <label for="SortBy" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">{{ 'collection.sort' | t }}</label>
+        <select id="SortBy" name="sort_by" data-sort class="rounded-full border border-charcoal/20 bg-white px-4 py-2 text-sm text-charcoal outline-none">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+          {%- endfor -%}
+        </select>
+      </form>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-[220px_1fr] lg:gap-12">
+      {%- comment -%} Filters (Search & Discovery) {%- endcomment -%}
+      {%- if collection.filters.size > 0 -%}
+        <aside data-filters class="hidden lg:block">
+          <form data-filters-form>
+            {%- if sort_by -%}<input type="hidden" name="sort_by" value="{{ sort_by }}">{%- endif -%}
+            <div class="flex items-center justify-between lg:hidden">
+              <span class="font-serif text-lg">{{ 'collection.filter' | t }}</span>
+              <button type="button" data-filters-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', name: 'close' -%}</button>
+            </div>
+            {%- for filter in collection.filters -%}
+              <details open class="border-b border-charcoal/10 py-4">
+                <summary class="flex cursor-pointer list-none items-center justify-between text-xs uppercase tracking-[0.12em] text-charcoal">{{ filter.label }}<span class="text-charcoal-muted">+</span></summary>
+                <div class="mt-3 space-y-2">
+                  {%- case filter.type -%}
+                    {%- when 'list', 'boolean' -%}
+                      {%- for value in filter.values -%}
+                        <label class="flex items-center gap-2 text-sm text-charcoal{% if value.count == 0 and value.active == false %} opacity-40{% endif %}">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="h-4 w-4 rounded border-charcoal/30 text-charcoal">
+                          <span>{{ value.label }} <span class="text-charcoal-muted">({{ value.count }})</span></span>
+                        </label>
+                      {%- endfor -%}
+                    {%- when 'price_range' -%}
+                      <div class="flex items-center gap-2 text-sm">
+                        <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}" placeholder="{{ 0 | money_without_currency }}" class="w-full rounded-full border border-charcoal/20 px-3 py-1.5">
+                        <span class="text-charcoal-muted">–</span>
+                        <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}" placeholder="{{ filter.range_max | money_without_currency }}" class="w-full rounded-full border border-charcoal/20 px-3 py-1.5">
+                      </div>
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endfor -%}
+            <div class="mt-5 flex gap-2">
+              <button type="submit" class="btn-primary flex-1 lg:hidden">{{ 'collection.apply' | t }}</button>
+              <a href="{{ collection.url }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted underline underline-offset-2 hover:text-charcoal">{{ 'collection.clear' | t }}</a>
+            </div>
+          </form>
+        </aside>
+      {%- endif -%}
+
+      {%- comment -%} Product grid {%- endcomment -%}
+      <div>
+        {%- if collection.products.size > 0 -%}
+          <div class="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-3" data-reveal data-reveal-stagger>
+            {%- for product in collection.products -%}
+              {%- render 'product-card', product: product -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="mt-14 flex items-center justify-center gap-2 text-sm" aria-label="Pagination">
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="rounded-full border border-charcoal/20 px-3.5 py-1.5 transition hover:border-charcoal">{{ part.title }}</a>
+                {%- elsif part.title == paginate.current_page -%}
+                  <span class="rounded-full bg-charcoal px-3.5 py-1.5 text-cream">{{ part.title }}</span>
+                {%- else -%}
+                  <span class="px-2 text-charcoal-muted">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <div class="py-16 text-center">
+            <p class="font-serif text-xl">{{ 'collection.empty' | t }}</p>
+            <a href="{{ collection.url }}" class="btn-primary mt-5">{{ 'collection.clear' | t }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "min": 8, "max": 24, "step": 4, "label": "Products per page", "default": 12 }
+  ]
+}
+{% endschema %}

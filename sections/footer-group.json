@@ -1,0 +1,30 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "promise_exchange": {
+          "type": "promise",
+          "settings": { "icon": "clock", "text": "7-Day Size Exchanges" }
+        },
+        "promise_secure": {
+          "type": "promise",
+          "settings": { "icon": "lock", "text": "Secure Checkout" }
+        }
+      },
+      "block_order": ["promise_exchange", "promise_secure"],
+      "settings": {
+        "newsletter_text": "Join the mood board. Get 10% off your first capsule piece.",
+        "menu_1_title": "Explore",
+        "menu_1": "footer",
+        "menu_2_title": "Help",
+        "promise_title": "Promise",
+        "copyright_suffix": "Designed in India.",
+        "menu_legal": "footer"
+      }
+    }
+  },
+  "order": ["footer"]
+}

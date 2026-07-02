@@ -1,0 +1,69 @@
+<article class="container-editorial max-w-2xl py-12 sm:py-16">
+  <header class="text-center" data-reveal>
+    <h1 class="font-serif text-3xl sm:text-4xl">{{ article.title }}</h1>
+    <p class="mt-4 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+      {%- if article.author != blank -%}{{ article.author }} &middot; {% endif -%}
+      {{ article.published_at | date: '%b %d, %Y' }}
+    </p>
+  </header>
+
+  {%- if article.image -%}
+    <img
+      src="{{ article.image | image_url: width: 1200 }}"
+      alt="{{ article.title | escape }}"
+      width="1200"
+      height="800"
+      class="mt-8 w-full rounded-3xl object-cover">
+  {%- endif -%}
+
+  <div class="mt-8 text-charcoal/80 leading-relaxed [&_p]:mb-4 [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:mt-8 [&_a]:underline [&_a]:underline-offset-2">
+    {{ article.content }}
+  </div>
+
+  {%- if blog.comments_enabled? -%}
+    <section class="mt-14 border-t border-charcoal/10 pt-10">
+      <h2 class="font-serif text-2xl">Comments</h2>
+
+      {%- if article.comments_count > 0 -%}
+        <ul class="mt-6 space-y-6">
+          {%- for comment in article.comments -%}
+            <li class="rounded-3xl bg-blush p-6">
+              <div class="text-charcoal/80 leading-relaxed [&_p]:mb-3">{{ comment.content }}</div>
+              <p class="mt-3 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+                {{ comment.author }} &middot; {{ comment.created_at | date: '%b %d, %Y' }}
+              </p>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- form 'new_comment', article, class: 'mt-8 space-y-4' -%}
+        {%- if form.errors -%}
+          <p class="text-sm text-charcoal">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="rounded-3xl bg-sage p-4 text-sm text-charcoal">Thanks — your comment has been submitted.</p>
+        {%- endif -%}
+        <div>
+          <label for="CommentAuthor" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Name</label>
+          <input type="text" id="CommentAuthor" name="comment[author]" value="{{ form.author }}" class="mt-1 w-full rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">
+        </div>
+        <div>
+          <label for="CommentEmail" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Email</label>
+          <input type="email" id="CommentEmail" name="comment[email]" value="{{ form.email }}" class="mt-1 w-full rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">
+        </div>
+        <div>
+          <label for="CommentBody" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted">Comment</label>
+          <textarea id="CommentBody" name="comment[body]" rows="4" class="mt-1 w-full rounded-3xl border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">{{ form.body }}</textarea>
+        </div>
+        <button type="submit" class="btn-primary">Post comment</button>
+      {%- endform -%}
+    </section>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Blog post"
+}
+{% endschema %}

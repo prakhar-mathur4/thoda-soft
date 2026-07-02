@@ -1,0 +1,62 @@
+{%- liquid
+  assign email = section.settings.email | default: shop.email
+  assign wa = settings.whatsapp_number
+-%}
+<div class="container-editorial py-14 sm:py-20">
+  <div class="mx-auto max-w-3xl">
+    <header class="mb-8" data-reveal>
+      <p class="mb-3 text-xs uppercase tracking-[0.25em] text-charcoal-muted">{{ section.settings.eyebrow | default: 'Contact' }}</p>
+      <h1 class="font-serif text-3xl sm:text-4xl">{{ page.title | default: 'Contact Us' }}</h1>
+      {%- if section.settings.intro != blank -%}<p class="mt-3 max-w-xl text-pretty text-charcoal-muted">{{ section.settings.intro }}</p>{%- endif -%}
+    </header>
+
+    <div class="grid gap-10 md:grid-cols-2" data-reveal>
+      {%- comment -%} Reach us {%- endcomment -%}
+      <div>
+        <h2 class="mb-4 font-serif text-xl">Reach us</h2>
+        <ul class="space-y-3 text-sm text-charcoal/85">
+          <li><strong class="text-charcoal">Email:</strong> <a href="mailto:{{ email }}" class="underline underline-offset-2 hover:text-charcoal">{{ email }}</a></li>
+          {%- if wa != blank -%}<li><strong class="text-charcoal">WhatsApp:</strong> <a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-charcoal">Chat with us</a></li>{%- endif -%}
+          {%- if section.settings.hours != blank -%}<li><strong class="text-charcoal">Support hours:</strong> {{ section.settings.hours }}</li>{%- endif -%}
+          {%- if section.settings.address != blank -%}<li><strong class="text-charcoal">Address:</strong> {{ section.settings.address }}</li>{%- endif -%}
+        </ul>
+
+        {%- if page.content != blank -%}
+          <div class="prose-editorial mt-8 max-w-none text-sm text-charcoal/80 leading-relaxed [&_h2]:mt-6 [&_h2]:font-serif [&_h2]:text-lg [&_h2]:text-charcoal [&_p]:mb-3 [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-5 [&_a]:underline">{{ page.content }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Contact form (native) {%- endcomment -%}
+      <div>
+        <h2 class="mb-4 font-serif text-xl">Send a message</h2>
+        {%- form 'contact' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="rounded-2xl bg-sage/40 px-5 py-3 text-sm text-charcoal">Thanks — we&apos;ll be in touch shortly.</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="mb-3 text-sm text-charcoal">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+          <div class="space-y-3">
+            <input type="text" name="contact[name]" placeholder="Name" aria-label="Name" required class="w-full rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">
+            <input type="email" name="contact[email]" placeholder="Email" aria-label="Email" required class="w-full rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">
+            <textarea name="contact[body]" rows="5" placeholder="How can we help?" aria-label="Message" required class="w-full rounded-3xl border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40"></textarea>
+            <button type="submit" class="btn-primary w-full">Send</button>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Contact" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "We'd love to help — with sizing, orders, exchanges, or anything else." },
+    { "type": "text", "id": "email", "label": "Email", "default": "thodasoft@gmail.com" },
+    { "type": "text", "id": "hours", "label": "Support hours", "default": "Mon–Sat, 10am–7pm IST. We typically reply within one business day." },
+    { "type": "text", "id": "address", "label": "Address", "default": "76/22, Shipra Path, Mansarovar, Jaipur (Raj.) — 302020" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+<div data-quickview class="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none" aria-hidden="true">
+  <div data-quickview-overlay class="absolute inset-0 bg-charcoal/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-[600ms] ease-soft"></div>
+  <div
+    data-quickview-dialog
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'products.product.quick_view' | t }}"
+    class="relative max-h-[calc(100dvh-2rem)] w-full max-w-5xl translate-y-4 scale-[0.98] overflow-y-auto overflow-x-hidden rounded-3xl bg-cream opacity-0 shadow-[0_24px_70px_rgba(46,43,41,0.25)] transition-all duration-[600ms] ease-soft"
+  >
+    <button type="button" data-quickview-close aria-label="{{ 'general.accessibility.close' | t }}" class="absolute right-3 top-3 z-10 rounded-full bg-cream/80 p-2 text-charcoal backdrop-blur transition hover:bg-white">
+      {%- render 'icon', name: 'close' -%}
+    </button>
+    <div data-quickview-content class="min-h-[320px]"></div>
+  </div>
+</div>

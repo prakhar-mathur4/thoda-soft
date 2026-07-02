@@ -1,0 +1,14 @@
+# Build sources & tooling — never uploaded to Shopify
+node_modules/
+src/
+package.json
+package-lock.json
+tailwind.config.js
+postcss.config.js
+.theme-check.yml
+.shopifyignore
+.gitignore
+.env*
+README.md
+*.csv
+.DS_Store

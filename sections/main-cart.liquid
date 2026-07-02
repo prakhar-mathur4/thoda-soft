@@ -1,0 +1,55 @@
+<div class="container-editorial py-12 sm:py-16">
+  <h1 class="mb-8 font-serif text-3xl sm:text-4xl">{{ 'cart.title' | t }}</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="py-16 text-center">
+      {%- render 'icon', name: 'bag', class: 'mx-auto h-10 w-10 text-charcoal/30' -%}
+      <p class="mt-4 font-serif text-xl">{{ 'cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn-primary mt-5">{{ 'cart.empty_cta' | t }}</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" data-cart-page-form class="grid gap-10 lg:grid-cols-[1fr_320px] lg:gap-16">
+      <div>
+        <ul class="divide-y divide-charcoal/10 border-y border-charcoal/10">
+          {%- for item in cart.items -%}
+            <li class="flex gap-5 py-6" data-cart-line="{{ item.key }}">
+              <a href="{{ item.url }}" class="relative h-32 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-blush">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.image.alt | escape }}" width="96" height="128" loading="lazy" class="h-full w-full object-cover">
+                {%- endif -%}
+              </a>
+              <div class="flex flex-1 flex-col">
+                <a href="{{ item.url }}" class="font-serif text-base transition hover:text-charcoal-muted">{{ item.product.title }}</a>
+                {%- unless item.variant.title contains 'Default' -%}<p class="text-sm text-charcoal-muted">{{ item.variant.title }}</p>{%- endunless -%}
+                <div class="mt-3 flex items-center gap-3">
+                  <div class="inline-flex items-center rounded-full border border-charcoal/20">
+                    <button type="button" data-qty-change data-line="{{ item.key }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity" class="px-3 py-1.5 text-base leading-none">&minus;</button>
+                    <span class="w-8 text-center text-sm">{{ item.quantity }}</span>
+                    <button type="button" data-qty-change data-line="{{ item.key }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity" class="px-3 py-1.5 text-base leading-none">+</button>
+                  </div>
+                  <button type="button" data-qty-change data-line="{{ item.key }}" data-qty="0" class="text-xs text-charcoal-muted underline-offset-2 transition hover:text-charcoal hover:underline">{{ 'cart.remove' | t }}</button>
+                </div>
+                <div class="mt-auto pt-3 text-sm">{{ item.final_line_price | money }}</div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <div class="rounded-3xl border border-charcoal/10 p-6">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-charcoal-muted">{{ 'cart.subtotal' | t }}</span>
+            <span class="font-serif text-xl">{{ cart.items_subtotal_price | money }}</span>
+          </div>
+          <p class="mt-2 text-xs text-charcoal-muted">{{ 'cart.shipping_note' | t }}</p>
+          <button type="submit" name="checkout" class="btn-primary mt-5 w-full">{{ 'cart.checkout' | t }}</button>
+        </div>
+      </aside>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}

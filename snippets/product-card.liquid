@@ -1,0 +1,95 @@
+{%- comment -%}
+  Product card. Accepts:
+    product  - the product object (required)
+  Mirrors the original React ProductCard: hover image swap, desktop quick-add
+  size pills + Quick Look + Add to Cart, mobile eye/bag controls, uniform title.
+{%- endcomment -%}
+{%- liquid
+  assign has_sizes = false
+  unless product.has_only_default_variant
+    assign has_sizes = true
+  endunless
+  assign hover_image = product.images[1]
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<article class="group flex flex-col" data-product-card data-product-handle="{{ product.handle }}">
+  <div class="relative aspect-[4/5] w-full overflow-hidden rounded-4xl bg-blush">
+    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}" class="absolute inset-0 z-10">
+      {%- if product.featured_media -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 700 }}"
+          srcset="{{ product.featured_media | image_url: width: 400 }} 400w, {{ product.featured_media | image_url: width: 700 }} 700w, {{ product.featured_media | image_url: width: 1000 }} 1000w"
+          sizes="(min-width: 768px) 45vw, 90vw"
+          alt="{{ product.featured_media.alt | escape | default: product.title }}"
+          width="700" height="875" loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-soft {% if hover_image %}group-hover:opacity-0{% else %}group-hover:scale-105{% endif %}">
+      {%- endif -%}
+      {%- if hover_image -%}
+        <img
+          src="{{ hover_image | image_url: width: 700 }}"
+          sizes="(min-width: 768px) 45vw, 90vw"
+          alt="{{ hover_image.alt | escape | default: product.title }}"
+          width="700" height="875" loading="lazy"
+          class="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-0 transition-all duration-[900ms] ease-soft group-hover:scale-100 group-hover:opacity-100">
+      {%- endif -%}
+    </a>
+
+    {%- comment -%} Pointer (mouse) controls {%- endcomment -%}
+    <div class="absolute inset-x-3 bottom-3 z-20 hidden translate-y-3 flex-col gap-2 opacity-0 transition-all duration-300 ease-soft can-hover:flex group-hover:translate-y-0 group-hover:opacity-100" data-card-controls>
+      {%- if has_sizes -%}
+        <div role="radiogroup" aria-label="Select size" class="flex w-auto max-w-full flex-wrap justify-center gap-1 self-center rounded-full bg-cream/90 px-1.5 py-1.5 shadow-sm backdrop-blur" data-card-sizes>
+          {%- for variant in product.variants -%}
+            <button
+              type="button"
+              role="radio"
+              data-card-size
+              data-variant-id="{{ variant.id }}"
+              data-available="{{ variant.available }}"
+              aria-checked="false"
+              {% unless variant.available %}disabled{% endunless %}
+              title="{{ variant.title }}{% unless variant.available %} — sold out{% endunless %}"
+              class="h-7 min-w-7 rounded-full px-2 text-xs text-charcoal transition ease-soft hover:bg-charcoal/10 aria-checked:bg-charcoal aria-checked:text-cream {% unless variant.available %}cursor-not-allowed text-charcoal/30 line-through hover:bg-transparent{% endunless %}">
+              {{ variant.option1 }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <button type="button" data-quickview-open="{{ product.handle }}" class="rounded-full border border-charcoal/15 bg-cream/95 py-2.5 text-[11px] uppercase tracking-[0.1em] text-charcoal shadow-sm backdrop-blur transition hover:bg-white sm:flex-1">{{ 'products.product.quick_look' | t }}</button>
+        <button
+          type="button"
+          data-card-add
+          data-variant-id="{{ current_variant.id }}"
+          {% unless product.available %}disabled{% endunless %}
+          class="rounded-full bg-charcoal/90 py-2.5 text-[11px] uppercase tracking-[0.1em] text-cream shadow-sm backdrop-blur transition hover:bg-charcoal disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1">
+          {% if product.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} Touch controls {%- endcomment -%}
+    <div class="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between can-hover:hidden">
+      <button type="button" data-quickview-open="{{ product.handle }}" aria-label="{{ 'products.product.quick_view' | t }} {{ product.title | escape }}" class="rounded-full bg-cream/95 p-2.5 text-charcoal shadow-sm backdrop-blur transition active:scale-95">
+        {%- render 'icon', name: 'eye' -%}
+      </button>
+      <button
+        type="button"
+        {% if has_sizes %}data-quickview-open="{{ product.handle }}"{% else %}data-card-add data-variant-id="{{ current_variant.id }}"{% endif %}
+        {% unless product.available %}disabled{% endunless %}
+        aria-label="Add {{ product.title | escape }} to cart"
+        class="rounded-full bg-charcoal/90 p-2.5 text-cream shadow-sm backdrop-blur transition active:scale-95 disabled:opacity-60">
+        {%- render 'icon', name: 'bag' -%}
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-4 flex items-baseline justify-between gap-3">
+    <h3 class="line-clamp-2 min-h-[2lh] font-serif text-base leading-snug text-charcoal sm:text-lg">
+      <a href="{{ product.url }}" class="transition hover:text-charcoal-muted">{{ product.title }}</a>
+    </h3>
+    <span class="whitespace-nowrap text-sm text-charcoal-muted">
+      {%- if product.price_varies -%}{{ 'products.product.from' | t }} {% endif -%}{{ product.price | money }}
+    </span>
+  </div>
+</article>

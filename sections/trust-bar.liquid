@@ -1,0 +1,67 @@
+<section aria-label="Brand promises" class="bg-blush">
+  {%- comment -%} Desktop: static 4-up row {%- endcomment -%}
+  <ul class="container-editorial hidden gap-x-4 py-8 md:grid" style="grid-template-columns: repeat({{ section.blocks.size | default: 4 }}, minmax(0, 1fr));" data-reveal data-reveal-stagger>
+    {%- for block in section.blocks -%}
+      <li class="flex items-center justify-center gap-3 text-center" {{ block.shopify_attributes }}>
+        {%- render 'icon', name: block.settings.icon, class: 'h-5 w-5 text-charcoal' -%}
+        <span class="text-sm tracking-wide text-charcoal">{{ block.settings.label }}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  {%- comment -%} Mobile: continuously-scrolling marquee {%- endcomment -%}
+  <div class="overflow-hidden py-3.5 md:hidden">
+    <div class="flex w-max animate-marquee [animation-direction:reverse] motion-reduce:animate-none">
+      {%- for dup in (1..2) -%}
+        <ul class="flex shrink-0 items-center" {% if dup == 2 %}aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <li class="flex items-center gap-2 whitespace-nowrap px-5 text-xs tracking-wide text-charcoal">
+              {%- render 'icon', name: block.settings.icon, class: 'h-4 w-4 shrink-0' -%}
+              <span>{{ block.settings.label }}</span>
+              <span aria-hidden="true" class="ml-5 h-1 w-1 rounded-full bg-charcoal/30"></span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Promise",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "pin", "label": "Pin" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "lock", "label": "Lock" }
+          ],
+          "default": "leaf"
+        },
+        { "type": "text", "id": "label", "label": "Label", "default": "Premium Cotton" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "leaf", "label": "Premium Cotton" } },
+        { "type": "item", "settings": { "icon": "sparkle", "label": "Inclusive Sizing (S–XXL)" } },
+        { "type": "item", "settings": { "icon": "pin", "label": "Designed in India" } },
+        { "type": "item", "settings": { "icon": "clock", "label": "Limited Drop" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

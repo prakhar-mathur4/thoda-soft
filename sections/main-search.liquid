@@ -1,0 +1,50 @@
+{%- liquid
+  assign terms = search.terms | default: ''
+-%}
+<div class="container-editorial py-12 sm:py-16">
+  <div class="mx-auto mb-8 max-w-xl text-center" data-reveal>
+    <h1 class="font-serif text-3xl sm:text-4xl">{{ 'general.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="mx-auto mt-6 flex max-w-md items-center gap-2">
+      <input type="hidden" name="type" value="product">
+      <input type="search" name="q" value="{{ terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}" class="min-w-0 flex-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm outline-none focus:border-charcoal/40">
+      <button type="submit" class="btn-primary shrink-0">{{ 'general.accessibility.search' | t }}</button>
+    </form>
+  </div>
+
+  {%- if search.performed -%}
+    {%- if search.results_count > 0 -%}
+      <p class="mb-8 text-center text-xs uppercase tracking-[0.14em] text-charcoal-muted">{{ 'collection.results' | t: count: search.results_count }}</p>
+      {%- paginate search.results by 12 -%}
+        <div class="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-3" data-reveal data-reveal-stagger>
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', product: item -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="mt-14 flex items-center justify-center gap-2 text-sm" aria-label="Pagination">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="rounded-full border border-charcoal/20 px-3.5 py-1.5 transition hover:border-charcoal">{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="rounded-full bg-charcoal px-3.5 py-1.5 text-cream">{{ part.title }}</span>
+              {%- else -%}
+                <span class="px-2 text-charcoal-muted">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="py-12 text-center">
+        <p class="font-serif text-xl">{{ 'general.search.no_results' | t: terms: terms }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn-primary mt-5">Shop all</a>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Search results" }
+{% endschema %}

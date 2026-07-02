@@ -1,0 +1,46 @@
+{%- liquid
+  assign bg = section.settings.bg_color | default: '#ccd1b2'
+-%}
+<section id="{{ section.settings.anchor | default: 'story' }}" class="scroll-mt-24" style="background-color: {{ bg }};">
+  <div class="grid grid-cols-1 items-stretch md:grid-cols-2">
+    <div class="relative aspect-[4/3] w-full md:aspect-auto md:min-h-[520px]">
+      {%- if section.settings.image -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          srcset="{{ section.settings.image | image_url: width: 700 }} 700w, {{ section.settings.image | image_url: width: 1200 }} 1200w"
+          sizes="(min-width: 768px) 50vw, 100vw"
+          alt="{{ section.settings.image.alt | escape }}"
+          width="1200" height="900" loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover">
+      {%- else -%}
+        <div class="absolute inset-0 bg-sage"></div>
+      {%- endif -%}
+    </div>
+
+    <div class="flex items-center px-6 py-14 sm:px-12 md:py-20">
+      <div class="max-w-md" data-reveal>
+        <h2 class="text-balance font-serif text-3xl leading-snug sm:text-4xl">{{ section.settings.heading | default: 'Aesthetic meets Everyday Wearability.' }}</h2>
+        <p class="mt-5 text-pretty text-base leading-relaxed text-charcoal/80">{{ section.settings.body | default: "You shouldn't have to choose between a beautiful moodboard and breathable comfort. Crafted from premium, ultra-soft cotton, our pieces are designed to look flawless on your feed and feel weightless on your skin." }}</p>
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn-primary mt-8">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand story",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ccd1b2" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Aesthetic meets Everyday Wearability." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "You shouldn't have to choose between a beautiful moodboard and breathable comfort. Crafted from premium, ultra-soft cotton, our pieces are designed to look flawless on your feed and feel weightless on your skin." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore the capsule" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "story" }
+  ],
+  "presets": [{ "name": "Brand story" }]
+}
+{% endschema %}

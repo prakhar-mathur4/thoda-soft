@@ -1,0 +1,41 @@
+<div class="container-editorial py-16 max-w-3xl">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <h1 class="font-serif text-3xl">Hi, {{ customer.name | default: customer.email }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted underline underline-offset-2 hover:text-charcoal">{{ 'customer.log_out' | t | default: 'Log out' }}</a>
+  </div>
+
+  <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+    <a href="{{ routes.account_addresses_url }}" class="underline underline-offset-2 hover:text-charcoal">{{ 'customer.addresses' | t | default: 'Addresses' }}</a>
+  </div>
+
+  <h2 class="mt-12 font-serif text-2xl">{{ 'customer.order_history' | t | default: 'Order history' }}</h2>
+
+  {%- if customer.orders.size > 0 -%}
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full min-w-[560px] text-left text-sm">
+        <thead>
+          <tr class="border-b border-charcoal/10 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+            <th class="py-3 pr-4 font-normal">Order</th>
+            <th class="py-3 pr-4 font-normal">Date</th>
+            <th class="py-3 pr-4 font-normal">Payment</th>
+            <th class="py-3 pr-4 font-normal">Fulfillment</th>
+            <th class="py-3 pr-4 font-normal">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr class="border-b border-charcoal/10">
+              <td class="py-3 pr-4"><a href="{{ order.customer_url }}" class="underline underline-offset-2 hover:opacity-70">{{ order.name }}</a></td>
+              <td class="py-3 pr-4 text-charcoal-muted">{{ order.created_at | date: '%b %d, %Y' }}</td>
+              <td class="py-3 pr-4">{{ order.financial_status_label }}</td>
+              <td class="py-3 pr-4">{{ order.fulfillment_status_label }}</td>
+              <td class="py-3 pr-4">{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  {%- else -%}
+    <p class="mt-6 text-sm text-charcoal-muted">{{ 'customer.no_orders' | t | default: "You haven't placed any orders yet." }}</p>
+  {%- endif -%}
+</div>

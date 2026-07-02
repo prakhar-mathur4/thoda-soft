@@ -1,0 +1,35 @@
+{%- comment -%}
+  Rendered via the Predictive Search Section Rendering API:
+  {{ routes.predictive_search_url }}?q=TERM&section_id=predictive-search&resources[type]=product
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- assign products = predictive_search.resources.products -%}
+  {%- if products.size == 0 -%}
+    <div class="py-10 text-center">
+      <p class="font-serif text-lg text-charcoal">No matches for &ldquo;{{ predictive_search.terms | escape }}&rdquo;</p>
+      <p class="mt-1 text-sm text-charcoal-muted">Try a different word, or browse the full capsule.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn-primary mt-5">Shop all</a>
+    </div>
+  {%- else -%}
+    <p class="mb-2 text-xs uppercase tracking-[0.18em] text-charcoal-muted">{{ 'general.search.products' | t }}</p>
+    <ul>
+      {%- for product in products -%}
+        <li>
+          <a href="{{ product.url }}" class="group flex items-center gap-4 rounded-2xl px-2 py-2.5 transition hover:bg-blush/50">
+            <span class="relative block h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-blush">
+              {%- if product.featured_media -%}
+                <img src="{{ product.featured_media | image_url: width: 128 }}" alt="{{ product.featured_media.alt | escape }}" width="64" height="80" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-soft group-hover:scale-105">
+              {%- endif -%}
+            </span>
+            <span class="flex-1 font-serif text-base text-charcoal">{{ product.title }}</span>
+            <span class="text-sm text-charcoal-muted">{{ product.price | money }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product" class="mt-4 block w-full border-t border-charcoal/10 pt-4 text-center text-xs uppercase tracking-[0.14em] text-charcoal transition hover:opacity-70">{{ 'general.search.view_all' | t }} &rarr;</a>
+  {%- endif -%}
+{%- endif -%}
+{% schema %}
+{ "name": "Predictive search" }
+{% endschema %}

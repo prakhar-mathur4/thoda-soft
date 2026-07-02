@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "trust-bar": {
+      "type": "trust-bar",
+      "blocks": {
+        "b1": { "type": "item", "settings": { "icon": "leaf", "label": "Premium Cotton" } },
+        "b2": { "type": "item", "settings": { "icon": "sparkle", "label": "Inclusive Sizing (S–XXL)" } },
+        "b3": { "type": "item", "settings": { "icon": "pin", "label": "Designed in India" } },
+        "b4": { "type": "item", "settings": { "icon": "clock", "label": "Limited Drop" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Limited Drop",
+        "heading": "The Debut Capsule",
+        "subtext": "Four pieces. Endlessly wearable. Made to be lived in.",
+        "products_count": 4,
+        "anchor": "capsule"
+      }
+    },
+    "brand-story": {
+      "type": "brand-story",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "trust-bar", "featured-products", "brand-story"]
+}

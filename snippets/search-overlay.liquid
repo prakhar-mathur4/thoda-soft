@@ -1,0 +1,49 @@
+<div data-search-overlay class="fixed inset-0 z-[60] pointer-events-none" aria-hidden="true">
+  <div data-search-overlay-bg class="absolute inset-0 bg-charcoal/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-[800ms] ease-soft"></div>
+
+  <div
+    data-search-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'general.search.title' | t }}"
+    class="absolute inset-x-0 top-0 origin-top -translate-y-6 bg-cream opacity-0 shadow-[0_12px_40px_rgba(46,43,41,0.15)] transition-all duration-[800ms] ease-soft"
+  >
+    <div class="container-editorial py-8 sm:py-10">
+      <form action="{{ routes.search_url }}" method="get" role="search" data-predictive-search-form class="flex items-center gap-3">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <div class="flex flex-1 items-center gap-3.5 rounded-full border border-[#c9dce6] bg-white px-6 py-4 shadow-[0_4px_24px_rgba(46,43,41,0.05)]">
+          {%- render 'icon', name: 'search', class: 'h-5 w-5 shrink-0 text-charcoal-muted' -%}
+          <input
+            type="search"
+            name="q"
+            data-predictive-input
+            autocomplete="off"
+            placeholder="{{ 'general.search.placeholder' | t }}"
+            aria-label="{{ 'general.search.placeholder' | t }}"
+            class="w-full bg-transparent text-base font-light tracking-wide text-charcoal outline-none placeholder:font-light placeholder:text-charcoal/35 sm:text-lg [&::-webkit-search-cancel-button]:appearance-none">
+          <button type="button" data-search-clear aria-label="Clear search" class="hidden shrink-0 rounded-full p-1 text-charcoal-muted transition hover:bg-charcoal/5 hover:text-charcoal">
+            {%- render 'icon', name: 'close', class: 'h-4 w-4' -%}
+          </button>
+        </div>
+        <button type="button" data-search-close aria-label="{{ 'general.accessibility.close' | t }}" class="hidden shrink-0 rounded-full px-4 py-2 text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal sm:block">{{ 'general.accessibility.close' | t }}</button>
+        <button type="button" data-search-close aria-label="{{ 'general.accessibility.close' | t }}" class="shrink-0 rounded-full p-2.5 text-charcoal transition hover:bg-charcoal/5 sm:hidden">
+          {%- render 'icon', name: 'close' -%}
+        </button>
+      </form>
+
+      <div class="mt-6 max-h-[65vh] overflow-y-auto">
+        <div data-search-default>
+          <p class="mb-3 text-xs uppercase tracking-[0.18em] text-charcoal-muted">Popular searches</p>
+          <div class="flex flex-wrap gap-2">
+            {%- assign popular = 'Midi,Slip,Wrap,Tiered' | split: ',' -%}
+            {%- for term in popular -%}
+              <button type="button" data-search-suggest="{{ term }}" class="rounded-full border border-charcoal/20 px-4 py-1.5 text-sm text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{{ term }}</button>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div data-predictive-results></div>
+      </div>
+    </div>
+  </div>
+</div>

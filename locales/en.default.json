@@ -1,0 +1,80 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to products",
+      "close": "Close",
+      "menu": "Menu",
+      "search": "Search",
+      "account": "Account",
+      "cart": "Cart"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search for something soft…",
+      "no_results": "No results for “{{ terms }}”.",
+      "products": "Products",
+      "view_all": "View all results"
+    },
+    "newsletter": {
+      "heading": "Join the mood board. Get 10% off your first capsule piece.",
+      "placeholder": "Your email",
+      "button": "Subscribe",
+      "success": "Thanks — check your inbox to confirm."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were looking for drifted off. Let's get you back to the good stuff.",
+      "link": "Back to home"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "quick_look": "Quick Look",
+      "quick_view": "Quick view",
+      "added": "Added ✓",
+      "select_size": "Select a size",
+      "size_chart": "Size chart",
+      "view_details": "View full details",
+      "from": "From",
+      "sale": "Sale",
+      "shipping_note": "Shipping & taxes calculated at checkout"
+    }
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is soft and empty.",
+    "empty_cta": "Start shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Secure Checkout",
+    "updating": "Updating…",
+    "remove": "Remove",
+    "discount": "Discount code",
+    "apply": "Apply",
+    "shipping_note": "Shipping & taxes calculated at checkout",
+    "free_shipping_progress": "You're {{ amount }} away from free shipping",
+    "free_shipping_reached": "You've unlocked free shipping ✓"
+  },
+  "collection": {
+    "filter": "Filter",
+    "sort": "Sort by",
+    "clear": "Clear all",
+    "apply": "Apply",
+    "results": "{{ count }} products",
+    "empty": "No products match these filters."
+  },
+  "customer": {
+    "account": "Account",
+    "log_in": "Log in",
+    "log_out": "Log out",
+    "orders": "Orders",
+    "order_history": "Order history",
+    "addresses": "Addresses",
+    "no_orders": "You haven't placed any orders yet."
+  }
+}

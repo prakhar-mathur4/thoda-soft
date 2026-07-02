@@ -1,0 +1,25 @@
+{
+  "current": {
+    "logo_width": 200,
+    "account_url": "/account",
+    "color_cream": "#FEF9EB",
+    "color_charcoal": "#895B3A",
+    "color_charcoal_muted": "#A98A73",
+    "color_blush": "#F6E7E4",
+    "color_lavender_deep": "#B7AEDC",
+    "color_sage": "#CBD6C2",
+    "cart_free_shipping_enabled": false
+  },
+  "presets": {
+    "Thoda Soft": {
+      "logo_width": 200,
+      "account_url": "/account",
+      "color_cream": "#FEF9EB",
+      "color_charcoal": "#895B3A",
+      "color_charcoal_muted": "#A98A73",
+      "color_blush": "#F6E7E4",
+      "color_lavender_deep": "#B7AEDC",
+      "color_sage": "#CBD6C2"
+    }
+  }
+}

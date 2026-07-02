@@ -1,0 +1,30 @@
+<div data-size-guide class="fixed inset-0 z-[75] flex items-center justify-center p-4 pointer-events-none" aria-hidden="true">
+  <div data-size-guide-overlay class="absolute inset-0 bg-charcoal/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-500 ease-soft"></div>
+  <div role="dialog" aria-modal="true" aria-label="Size guide" class="relative max-h-[85dvh] w-full max-w-lg translate-y-4 overflow-y-auto rounded-3xl bg-cream p-6 opacity-0 shadow-[0_24px_70px_rgba(46,43,41,0.25)] transition-all duration-500 ease-soft sm:p-8" data-size-guide-dialog>
+    <button type="button" data-size-guide-close aria-label="{{ 'general.accessibility.close' | t }}" class="absolute right-3 top-3 rounded-full p-2 text-charcoal-muted transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'close' -%}
+    </button>
+    <p class="mb-1 text-xs uppercase tracking-[0.2em] text-charcoal-muted">Fit guide</p>
+    <h2 class="font-serif text-2xl">Size Guide</h2>
+    <p class="mt-2 text-sm text-charcoal-muted">Measurements in inches. Between sizes? Size down for a closer fit.</p>
+    <div class="mt-5 overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="border-b border-charcoal/15 text-left text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+            <th class="py-2 pr-4 font-medium">Size</th>
+            <th class="py-2 pr-4 font-medium">Bust</th>
+            <th class="py-2 pr-4 font-medium">Waist</th>
+            <th class="py-2 font-medium">Hip</th>
+          </tr>
+        </thead>
+        <tbody class="text-charcoal">
+          <tr class="border-b border-charcoal/10"><td class="py-2 pr-4">S</td><td class="py-2 pr-4">32–34</td><td class="py-2 pr-4">26–28</td><td class="py-2">35–37</td></tr>
+          <tr class="border-b border-charcoal/10"><td class="py-2 pr-4">M</td><td class="py-2 pr-4">35–37</td><td class="py-2 pr-4">29–31</td><td class="py-2">38–40</td></tr>
+          <tr class="border-b border-charcoal/10"><td class="py-2 pr-4">L</td><td class="py-2 pr-4">38–40</td><td class="py-2 pr-4">32–34</td><td class="py-2">41–43</td></tr>
+          <tr class="border-b border-charcoal/10"><td class="py-2 pr-4">XL</td><td class="py-2 pr-4">41–43</td><td class="py-2 pr-4">35–37</td><td class="py-2">44–46</td></tr>
+          <tr><td class="py-2 pr-4">XXL</td><td class="py-2 pr-4">44–46</td><td class="py-2 pr-4">38–40</td><td class="py-2">47–49</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

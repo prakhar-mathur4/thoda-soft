@@ -1,0 +1,15 @@
+# Shopify theme-check configuration
+# Run: shopify theme check
+extends: theme-check:recommended
+
+ignore:
+  - node_modules/
+  - src/
+  - assets/theme.css
+
+# assets/theme.css is compiled from Tailwind (src/theme.css); it is intentionally
+# committed so the theme is self-contained and CLI-pushable without a build step
+# on Shopify's side.
+AssetSizeCSS:
+  enabled: true
+  threshold_in_bytes: 200000

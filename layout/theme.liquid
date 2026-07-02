@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="{{ settings.color_cream }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.logo -%}
+      <link rel="icon" type="image/png" href="{{ settings.logo | image_url: width: 64 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- comment -%} Fonts: Playfair Display (serif headings) + Jost (sans body) {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+      rel="stylesheet">
+
+    {%- comment -%} Brand color overrides from theme settings {%- endcomment -%}
+    <style>
+      :root {
+        --color-cream: {{ settings.color_cream }};
+        --color-charcoal: {{ settings.color_charcoal }};
+        --color-charcoal-muted: {{ settings.color_charcoal_muted }};
+        --color-blush: {{ settings.color_blush }};
+        --color-lavender-deep: {{ settings.color_lavender_deep }};
+        --color-sage: {{ settings.color_sage }};
+      }
+    </style>
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="bg-cream text-charcoal font-sans antialiased">
+    <a
+      href="#MainContent"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-charcoal focus:px-5 focus:py-2 focus:text-cream"
+    >
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="pt-14 sm:pt-16" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {%- render 'cart-drawer' -%}
+    {%- render 'quick-view' -%}
+    {%- render 'search-overlay' -%}
+    {%- render 'chat-widget' -%}
+
+    <script>
+      window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        cart_url: '{{ routes.cart_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
+      };
+      window.cartStrings = {
+        added: {{ 'products.product.added' | t | json }},
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }}
+      };
+    </script>
+  </body>
+</html>

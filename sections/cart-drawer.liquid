@@ -1,0 +1,8 @@
+{%- comment -%}
+  Section used only by the Cart AJAX Section Rendering API so global.js can
+  re-render the drawer contents after add / change / remove without a reload.
+{%- endcomment -%}
+{%- render 'cart-drawer-contents' -%}
+{% schema %}
+{ "name": "Cart drawer" }
+{% endschema %}

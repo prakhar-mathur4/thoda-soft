@@ -1,0 +1,75 @@
+{%- comment -%}
+  Quick-view content. Fetched by global.js via
+  /products/{handle}?section_id=quick-view and injected into the quick-view modal.
+{%- endcomment -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_sizes = false
+  unless product.has_only_default_variant
+    assign has_sizes = true
+  endunless
+  assign images = product.media | where: 'media_type', 'image'
+-%}
+<div class="grid grid-cols-1 sm:grid-cols-2" data-quickview-product>
+  {%- comment -%} Gallery {%- endcomment -%}
+  <div class="relative bg-blush">
+    <div data-qv-gallery class="flex h-full snap-x snap-mandatory overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {%- for media in images -%}
+        <div class="relative aspect-square w-full shrink-0 snap-center sm:aspect-auto sm:min-h-[560px]">
+          <img src="{{ media | image_url: width: 800 }}" alt="{{ media.alt | escape | default: product.title }}" width="560" height="560" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Info {%- endcomment -%}
+  <div class="flex flex-col p-6 sm:p-10">
+    <p class="mb-2 text-xs uppercase tracking-[0.2em] text-charcoal-muted">{{ section.settings.eyebrow | default: 'The Debut Capsule' }}</p>
+    <h2 class="font-serif text-2xl uppercase leading-tight tracking-[0.02em]">{{ product.title }}</h2>
+    <p class="mt-3 text-lg text-charcoal" data-qv-price>{{ current_variant.price | money }}</p>
+
+    {%- if product.description != blank -%}
+      <p class="mt-4 line-clamp-3 text-sm leading-relaxed text-charcoal/70">{{ product.description | strip_html | truncatewords: 40 }}</p>
+    {%- endif -%}
+
+    <form data-product-form novalidate>
+      <input type="hidden" name="id" data-variant-id value="{{ current_variant.id }}">
+      {%- if has_sizes -%}
+        <fieldset class="mt-6">
+          <legend class="mb-2 flex w-full items-center justify-between text-xs uppercase tracking-[0.12em] text-charcoal-muted">
+            <span>{{ product.options_with_values[0].name }}</span>
+          </legend>
+          <div class="flex flex-wrap gap-2" data-variant-picker>
+            {%- for variant in product.variants -%}
+              <button
+                type="button"
+                data-variant-option
+                data-variant-id="{{ variant.id }}"
+                data-available="{{ variant.available }}"
+                data-price="{{ variant.price | money }}"
+                aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                class="min-w-11 rounded-full border px-3 py-2 text-sm uppercase transition border-charcoal/25 text-charcoal hover:border-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream {% unless variant.available %}cursor-not-allowed text-charcoal/30 line-through{% endunless %}">
+                {{ variant.option1 }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endif -%}
+
+      <div class="mt-auto pt-7">
+        <button type="submit" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %} class="w-full bg-charcoal py-3.5 text-xs uppercase tracking-[0.2em] text-cream transition hover:bg-charcoal/90 disabled:cursor-not-allowed disabled:opacity-50">
+          <span data-add-label>{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+        </button>
+        <a href="{{ product.url }}" class="mt-3 block text-center text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal">{{ 'products.product.view_details' | t }} &rarr;</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Quick view",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Debut Capsule" }
+  ]
+}
+{% endschema %}

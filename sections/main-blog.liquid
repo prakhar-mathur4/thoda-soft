@@ -1,0 +1,56 @@
+<div class="container-editorial py-12 sm:py-16">
+  <div class="mx-auto mb-10 max-w-xl text-center" data-reveal>
+    <h1 class="font-serif text-3xl sm:text-4xl">{{ blog.title }}</h1>
+  </div>
+
+  {%- paginate blog.articles by 9 -%}
+    {%- if blog.articles.size > 0 -%}
+      <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3" data-reveal data-reveal-stagger>
+        {%- for article in blog.articles -%}
+          <a href="{{ article.url }}" class="group block">
+            <div class="overflow-hidden rounded-3xl bg-blush">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 700 }}"
+                  alt="{{ article.title | escape }}"
+                  loading="lazy"
+                  width="700"
+                  height="466"
+                  class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-[1.03]">
+              {%- else -%}
+                <div class="aspect-[3/2] w-full"></div>
+              {%- endif -%}
+            </div>
+            <p class="mt-4 text-xs uppercase tracking-[0.12em] text-charcoal-muted">{{ article.published_at | date: '%b %d, %Y' }}</p>
+            <h2 class="mt-2 font-serif text-xl text-charcoal">{{ article.title }}</h2>
+            {%- if article.excerpt != blank -%}
+              <p class="mt-2 text-sm text-charcoal-muted">{{ article.excerpt | strip_html | truncatewords: 24 }}</p>
+            {%- else -%}
+              <p class="mt-2 text-sm text-charcoal-muted">{{ article.content | strip_html | truncatewords: 24 }}</p>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="mt-14 flex items-center justify-center gap-2 text-sm" aria-label="Pagination">
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="rounded-full border border-charcoal/20 px-3.5 py-1.5 transition hover:border-charcoal">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="rounded-full bg-charcoal px-3.5 py-1.5 text-cream">{{ part.title }}</span>
+            {%- else -%}
+              <span class="px-2 text-charcoal-muted">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts"
+}
+{% endschema %}

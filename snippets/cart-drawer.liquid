@@ -1,0 +1,26 @@
+{%- comment -%}
+  Cart drawer — native Shopify cart, updated over the AJAX Cart API by global.js.
+  The markup is re-rendered server-side via the `cart-drawer` section on change.
+{%- endcomment -%}
+<div data-cart-drawer class="fixed inset-0 z-[60] pointer-events-none" aria-hidden="true">
+  <div data-cart-overlay class="absolute inset-0 bg-charcoal/30 opacity-0 transition-opacity duration-300"></div>
+  <div
+    data-cart-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'cart.title' | t }}"
+    tabindex="-1"
+    class="absolute right-0 top-0 flex h-full w-full max-w-md translate-x-full flex-col bg-cream shadow-xl transition-transform duration-[400ms] ease-soft"
+  >
+    <div class="flex items-center justify-between border-b border-charcoal/10 px-6 py-5">
+      <h2 class="font-serif text-lg">{{ 'cart.title' | t }}</h2>
+      <button type="button" data-cart-close aria-label="{{ 'general.accessibility.close' | t }}" class="rounded-full p-2 transition hover:bg-charcoal/5">
+        {%- render 'icon', name: 'close' -%}
+      </button>
+    </div>
+
+    <div data-cart-contents class="flex flex-1 flex-col overflow-hidden">
+      {%- render 'cart-drawer-contents' -%}
+    </div>
+  </div>
+</div>

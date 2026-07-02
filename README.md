@@ -1,88 +1,64 @@
-# Thoda Soft — Headless Storefront
+# Thoda Soft — Shopify Theme
 
-A clean, editorial, mobile-first headless storefront for the women's apparel brand
-**Thoda Soft**. Next.js 14 (App Router) on Vercel + Shopify (Storefront API for
-products/cart, hosted checkout for payments).
-
-## Stack
-
-- **Next.js 14 (App Router)** — Server Components for product data with ISR.
-- **Tailwind CSS** — custom brand theme (no default palette). See `tailwind.config.ts`.
-- **@shopify/hydrogen-react** — `CartProvider` owns cart state (cookie-persisted),
-  drives the optimistic add-to-cart and the slide-out cart drawer.
-- **next/font** — Playfair Display (serif headings) + Jost (sans body), zero CLS.
-- **next/image** — Shopify CDN images optimized; hero uses `priority`.
-
-## Running locally
-
-```bash
-npm install
-cp .env.example .env.local   # fill in Shopify creds (optional for preview)
-npm run dev                  # http://localhost:3000
-```
-
-Without Shopify credentials the homepage renders against the **mock catalogue**
-(`lib/mock-products.ts`) using the local images, so design review works offline.
-Add-to-cart / checkout become live once real Storefront credentials are set.
-
-## Environment variables
-
-See `.env.example`. Key ones:
-
-| Var | Purpose |
-| --- | --- |
-| `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Server-side product fetch |
-| `NEXT_PUBLIC_SHOPIFY_*` | hydrogen-react `CartProvider` (Storefront token is public by design) |
-| `SHOPIFY_DEBUT_COLLECTION_HANDLE` | Collection shown in the grid (default `debut-capsule`) |
-| `SHOPIFY_REVALIDATE_SECRET` | Auth for the webhook revalidation endpoint |
-| `KLAVIYO_PRIVATE_API_KEY`, `KLAVIYO_LIST_ID` | Newsletter capture (optional) |
-
-## ISR + webhooks
-
-Product data is cached with the `products` tag and `revalidate: 3600`. Configure
-Shopify webhooks for **Product update** and **Inventory level update** to POST to:
-
-```
-https://<your-domain>/api/revalidate?secret=<SHOPIFY_REVALIDATE_SECRET>
-```
-
-This busts the `products` tag on demand — no rebuild, no per-request fetching.
-(For production, also verify the `X-Shopify-Hmac-Sha256` header.)
+A native **Shopify Online Store 2.0** theme (Liquid + HTML + CSS + vanilla JS).
+No Next.js, no React, no external runtime — it installs directly on the Shopify store.
 
 ## Structure
 
 ```
-app/
-  layout.tsx            # fonts, providers, skip link, metadata
-  page.tsx              # homepage section composition
-  globals.css           # brand base styles + button/utility components
-  api/newsletter        # Klaviyo subscribe (graceful no-op if unconfigured)
-  api/revalidate        # Shopify webhook → revalidateTag('products')
-components/
-  Header.tsx            # sticky, transparent→solid on scroll, live cart badge
-  Hero.tsx              # "Living Editorial" layered hero — masked headline,
-                        #   floating photo collage, shoppable look card (GSAP)
-  TrustBar.tsx          # USP bar
-  ProductGrid.tsx       # Server Component, fetches collection
-  ProductCard.tsx       # hover image swap + optimistic add-to-cart
-  BrandStory.tsx        # split-screen storytelling
-  Footer.tsx            # newsletter + links + trust badges
-  CartDrawer.tsx        # keyboard-navigable drawer, empty state
-  Providers.tsx         # ShopifyProvider + CartProvider + cart UI context
-lib/
-  shopify.ts            # Storefront GraphQL client + ISR + mock fallback
-  mock-products.ts      # offline catalogue
-  fonts.ts, types.ts
+assets/        theme.css (compiled), global.js
+config/        settings_schema.json, settings_data.json
+layout/        theme.liquid, password.liquid
+locales/       en.default.json
+sections/      hero, trust-bar, featured-products, brand-story, header, footer,
+               main-product, main-collection, main-cart, main-search, main-page,
+               main-contact, quick-view, predictive-search, cart-drawer, …
+snippets/      product-card, icon, cart-drawer, search-overlay, quick-view,
+               chat-widget, size-guide-modal, …
+templates/     *.json (OS 2.0 JSON templates) + customers/*.liquid + policy.liquid
+src/           theme.css  ← Tailwind input (build source, NOT uploaded)
 ```
 
-## Notes
+## Styling — Tailwind as a build step
 
-- Checkout redirects to Shopify-hosted checkout via `cart.checkoutUrl`. Brand the
-  checkout (logo/colors) in Shopify admin → Settings → Checkout.
-- "Track Order" deep-links to the Shopify hosted account page; swap for the
-  Customer Account API when a custom login UI is built.
-- a11y: skip link, focus-visible rings, `aria-modal` drawer with Esc-to-close,
-  body-scroll lock, and alt text sourced from Shopify image `altText`.
-- `npm audit` flags issues whose full fix lands in Next 16 (a breaking major).
-  This project pins the latest stable **Next 14.2.x**; the flagged DoS vectors are
-  mitigated on Vercel. Revisit when migrating to Next 15/16.
+The design is authored with Tailwind utility classes directly in `.liquid`
+files (identical to the original design system). Tailwind compiles them to a
+single committed stylesheet, `assets/theme.css`. The brand palette lives in
+`tailwind.config.js`; fonts (Playfair Display + Jost) are loaded in
+`layout/theme.liquid`.
+
+```bash
+npm install          # tailwindcss, postcss, autoprefixer (build-only)
+npm run build:css    # one-off compile → assets/theme.css
+npm run watch:css    # recompile on change while developing
+```
+
+`assets/theme.css` is committed so the theme is self-contained and pushes with
+the Shopify CLI without any build step on Shopify's side. **Re-run `build:css`
+after editing classes in any `.liquid` file**, then commit the result.
+
+## Develop & deploy (Shopify CLI)
+
+```bash
+npm i -g @shopify/cli @shopify/theme
+shopify theme dev      # local preview against your store
+shopify theme check    # lint
+shopify theme push     # upload to the store
+```
+
+## Editor / merchant controls
+
+- **Theme settings** (`config/settings_schema.json`): logo, brand colors,
+  account URL, WhatsApp number, free-shipping bar.
+- **Sections & blocks**: every homepage section (hero, trust bar, featured
+  products, brand story) plus header/footer are fully editable in the Theme
+  Editor, including images, text, menus, and ordering.
+- **Native data**: products, collections, cart, customer accounts, search
+  (predictive + Search & Discovery filters), and blog use Shopify objects —
+  no custom APIs.
+
+## Notes for apps (GoKwik / Razorpay / KwikPass)
+
+Because this is a standard theme (not headless), Shopify checkout apps install
+normally. Configure Razorpay as the payment provider in Shopify admin, and add
+GoKwik / KwikPass from the App Store — they hook into the theme cart/checkout.
