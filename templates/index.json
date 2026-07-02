@@ -17,10 +17,11 @@
     "featured-products": {
       "type": "featured-products",
       "settings": {
+        "tag": "featured",
+        "products_count": 4,
         "eyebrow": "Limited Drop",
         "heading": "The Debut Capsule",
         "subtext": "Four pieces. Endlessly wearable. Made to be lived in.",
-        "products_count": 4,
         "anchor": "capsule"
       }
     },

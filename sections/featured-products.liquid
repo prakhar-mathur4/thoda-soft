@@ -1,6 +1,15 @@
 {%- liquid
-  assign collection = collections[section.settings.collection]
+  assign tag = section.settings.tag | default: 'featured'
   assign limit = section.settings.products_count | default: 4
+
+  # Source to scan: an explicit collection if chosen, else the whole catalogue.
+  assign source = collections[section.settings.collection]
+  if source == blank
+    assign source = collections.all
+  endif
+
+  # Match the tag case-insensitively, up to the limit.
+  assign lower_tag = tag | downcase
 -%}
 <section id="{{ section.settings.anchor | default: 'capsule' }}" class="scroll-mt-24 bg-cream">
   <div class="container-editorial py-16 sm:py-24">
@@ -20,13 +29,20 @@
           data-carousel-track
           class="-mr-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mr-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:pr-0 sm:pb-0"
         >
-          {%- if collection != blank and collection.products.size > 0 -%}
-            {%- for product in collection.products limit: limit -%}
+          {%- assign shown = 0 -%}
+          {%- for product in source.products -%}
+            {%- assign product_tags_lower = product.tags | join: ',' | downcase | split: ',' -%}
+            {%- if product_tags_lower contains lower_tag -%}
               <div class="w-[80%] shrink-0 snap-start sm:w-full">
                 {%- render 'product-card', product: product -%}
               </div>
-            {%- endfor -%}
-          {%- else -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if shown == 0 -%}
+            {%- comment -%} Editor / empty fallback: keep the layout legible {%- endcomment -%}
             {%- for i in (1..limit) -%}
               <div class="w-[80%] shrink-0 snap-start sm:w-full">
                 <div class="aspect-[4/5] w-full rounded-4xl bg-blush"></div>
@@ -36,10 +52,12 @@
           {%- endif -%}
         </div>
 
-        {%- if collection.products.size > 1 -%}
-          <div data-carousel-dots class="mt-6 flex justify-center gap-2 sm:hidden"></div>
-        {%- endif -%}
+        <div data-carousel-dots class="mt-6 flex justify-center gap-2 sm:hidden"></div>
       </div>
+
+      {%- if shown == 0 and request.design_mode -%}
+        <p class="mt-6 text-center text-xs text-charcoal-muted">No products found with the tag &ldquo;{{ tag }}&rdquo;. Tag products with <strong>{{ tag }}</strong> in Shopify admin to feature them here.</p>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -48,11 +66,14 @@
 {
   "name": "Featured products",
   "settings": [
+    { "type": "paragraph", "content": "Shows products carrying the tag below. Tag products with it in Shopify admin (Products → tags) to feature them here." },
+    { "type": "text", "id": "tag", "label": "Product tag", "default": "featured" },
+    { "type": "range", "id": "products_count", "min": 2, "max": 12, "step": 1, "label": "Products to show", "default": 4 },
+    { "type": "collection", "id": "collection", "label": "Limit to collection (optional)", "info": "Leave empty to scan all products." },
+    { "type": "header", "content": "Text" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Limited Drop" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The Debut Capsule" },
     { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Four pieces. Endlessly wearable. Made to be lived in." },
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "products_count", "min": 2, "max": 12, "step": 1, "label": "Products to show", "default": 4 },
     { "type": "text", "id": "anchor", "label": "Section anchor id", "default": "capsule" }
   ],
   "presets": [{ "name": "Featured products" }]
