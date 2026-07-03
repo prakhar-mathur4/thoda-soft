@@ -37,17 +37,17 @@
     <a
       href="{{ routes.root_url }}"
       aria-label="{{ shop.name | escape }} — home"
-      class="col-start-2 flex h-11 items-center justify-self-center sm:h-12"
-      style="width: {{ logo_width }}px; max-width: 100%;"
+      class="col-start-2 flex items-center justify-self-center"
     >
       {%- if logo -%}
         <img
-          src="{{ logo | image_url: width: 600 }}"
-          srcset="{{ logo | image_url: width: 300 }} 1x, {{ logo | image_url: width: 600 }} 2x"
+          src="{{ logo | image_url: width: 640 }}"
+          srcset="{{ logo | image_url: width: 320 }} 1x, {{ logo | image_url: width: 640 }} 2x"
           alt="{{ shop.name | escape }}"
           width="{{ logo_width }}"
-          height="53"
-          class="h-full w-full object-contain"
+          height="64"
+          class="h-12 w-auto object-contain sm:h-16"
+          style="max-width: min(100%, {{ logo_width }}px);"
           fetchpriority="high">
       {%- else -%}
         <span class="w-full text-center font-serif text-xl uppercase tracking-[0.2em] text-charcoal">{{ shop.name }}</span>
@@ -143,12 +143,12 @@
     {
       "type": "range",
       "id": "logo_width",
-      "min": 120,
-      "max": 280,
+      "min": 140,
+      "max": 360,
       "step": 4,
       "unit": "px",
-      "label": "Logo width",
-      "default": 200
+      "label": "Logo max width",
+      "default": 260
     },
     {
       "type": "link_list",
