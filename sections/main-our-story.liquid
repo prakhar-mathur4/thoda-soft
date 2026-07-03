@@ -1,0 +1,112 @@
+{%- liquid
+  assign hero_img = section.settings.hero_image
+  assign fabric_img = section.settings.fabric_image
+-%}
+<article class="pb-24">
+  {%- comment -%} Intro {%- endcomment -%}
+  <section class="container-editorial py-16 text-center sm:py-24" data-reveal>
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="mb-4 text-xs uppercase tracking-[0.3em] text-charcoal-muted">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="font-serif text-5xl leading-tight sm:text-6xl">{{ section.settings.heading | default: 'Our Story' }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <p class="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-charcoal/75 sm:text-lg">{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%} Full-width image {%- endcomment -%}
+  <div class="relative aspect-[16/10] w-full sm:aspect-[16/8]">
+    {%- if hero_img -%}
+      <img src="{{ hero_img | image_url: width: 2000 }}" srcset="{{ hero_img | image_url: width: 1000 }} 1000w, {{ hero_img | image_url: width: 2000 }} 2000w" sizes="100vw" alt="{{ hero_img.alt | escape | default: 'A soft, sunlit moment captured in a Thoda Soft dress' }}" width="2000" height="1000" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high">
+    {%- else -%}
+      <img src="{{ 'our-story-hero.jpg' | asset_url }}" alt="A soft, sunlit moment captured in a Thoda Soft dress" width="2000" height="1000" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high">
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Narrative {%- endcomment -%}
+  <section class="container-editorial py-16 sm:py-24">
+    <div class="mx-auto max-w-2xl space-y-6 text-base leading-relaxed text-charcoal/80 [&_em]:italic [&_p]:mb-0" data-reveal>
+      {{ section.settings.narrative }}
+      {%- if section.settings.sub1_heading != blank -%}
+        <h2 class="pt-6 font-serif text-2xl text-charcoal">{{ section.settings.sub1_heading }}</h2>
+        {{ section.settings.sub1_body }}
+      {%- endif -%}
+      {%- if section.settings.sub2_heading != blank -%}
+        <h2 class="pt-6 font-serif text-2xl text-charcoal">{{ section.settings.sub2_heading }}</h2>
+        {{ section.settings.sub2_body }}
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} Pull quote {%- endcomment -%}
+  <section class="py-16 sm:py-24" style="background-color: {{ section.settings.quote_bg | default: '#f7dfdf' }};">
+    <blockquote class="container-editorial mx-auto max-w-3xl text-center" data-reveal>
+      <p class="font-serif text-2xl italic leading-snug text-charcoal sm:text-3xl">{{ section.settings.quote | default: 'You shouldn’t have to choose between a beautiful moodboard and breathable comfort.' }}</p>
+      {%- if section.settings.quote_footer != blank -%}
+        <footer class="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal-muted">{{ section.settings.quote_footer }}</footer>
+      {%- endif -%}
+    </blockquote>
+  </section>
+
+  {%- comment -%} Split: image + craftsmanship {%- endcomment -%}
+  <section class="grid grid-cols-1 items-stretch md:grid-cols-2" style="background-color: {{ section.settings.split_bg | default: '#ccd1b2' }};">
+    <div class="relative aspect-[4/3] w-full md:aspect-auto md:min-h-[480px]">
+      {%- if fabric_img -%}
+        <img src="{{ fabric_img | image_url: width: 1200 }}" sizes="(min-width: 768px) 50vw, 100vw" alt="{{ fabric_img.alt | escape | default: 'Close-up of premium, ultra-soft cotton fabric' }}" width="1200" height="900" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
+      {%- else -%}
+        <img src="{{ 'our-story-fabric.jpg' | asset_url }}" alt="Close-up of premium, ultra-soft cotton fabric" width="1200" height="900" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
+      {%- endif -%}
+    </div>
+    <div class="flex items-center px-6 py-14 sm:px-12 md:py-20">
+      <div class="max-w-md" data-reveal>
+        <h2 class="font-serif text-3xl leading-snug sm:text-4xl">{{ section.settings.split_heading | default: 'The fabric is the whole point.' }}</h2>
+        <p class="mt-5 text-base leading-relaxed text-charcoal/80">{{ section.settings.split_body | default: 'We obsess over the hand-feel first. Breathable, weightless cotton that moves with you and softens with every wash — so the piece you reach for on day one becomes the one you reach for on day one hundred.' }}</p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Closing CTA {%- endcomment -%}
+  <section class="container-editorial py-20 text-center sm:py-28" data-reveal>
+    <h2 class="font-serif text-3xl sm:text-4xl">{{ section.settings.cta_heading | default: 'Find your softest piece.' }}</h2>
+    {%- if section.settings.cta_body != blank -%}
+      <p class="mx-auto mt-4 max-w-md text-sm text-charcoal-muted">{{ section.settings.cta_body }}</p>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="btn-primary mt-8">{{ section.settings.cta_label }}</a>
+    {%- endif -%}
+  </section>
+</article>
+
+{% schema %}
+{
+  "name": "Our Story",
+  "settings": [
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Thoda Soft" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Story" },
+    { "type": "textarea", "id": "intro", "label": "Intro paragraph", "default": "We started Thoda Soft for the space between a beautiful moodboard and a real, lived-in life — for the woman who wants to feel as soft as she looks." },
+    { "type": "header", "content": "Full-width image" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image" },
+    { "type": "header", "content": "Narrative" },
+    { "type": "richtext", "id": "narrative", "label": "Opening paragraphs", "default": "<p>It began with a familiar frustration: the dresses we saved on Pinterest never seemed to exist in real life — or when they did, they looked beautiful for a photo and felt impossible to wear for a day. We wanted both. The dreamy, soft-aesthetic silhouette <em>and</em> the kind of comfort that makes you forget you’re even dressed up.</p><p>So we built it ourselves. Every Thoda Soft piece is cut from premium, ultra-soft cotton and designed in India with feminine, flattering fits — pieces meant to be lived in, not just looked at.</p>" },
+    { "type": "text", "id": "sub1_heading", "label": "Subheading 1", "default": "Made for reality" },
+    { "type": "richtext", "id": "sub1_body", "label": "Subheading 1 body", "default": "<p>Real wardrobes aren’t one size. That’s why every style comes in inclusive sizing from S to XXL, designed to drape beautifully on every body. We’d rather make fewer things, better — small, considered drops over endless racks of the forgettable.</p>" },
+    { "type": "text", "id": "sub2_heading", "label": "Subheading 2", "default": "Soft, on purpose" },
+    { "type": "richtext", "id": "sub2_body", "label": "Subheading 2 body", "default": "<p>The name says it: <em>thoda soft</em> — a little soft. Soft on your skin, soft on the eyes, soft on the planet where we can be. It’s a feeling more than a trend, and it’s stitched into everything we make.</p>" },
+    { "type": "header", "content": "Pull quote" },
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "You shouldn’t have to choose between a beautiful moodboard and breathable comfort." },
+    { "type": "text", "id": "quote_footer", "label": "Quote footer", "default": "thoda pretty, thoda you" },
+    { "type": "color", "id": "quote_bg", "label": "Quote background", "default": "#f7dfdf" },
+    { "type": "header", "content": "Split (fabric)" },
+    { "type": "image_picker", "id": "fabric_image", "label": "Image" },
+    { "type": "text", "id": "split_heading", "label": "Heading", "default": "The fabric is the whole point." },
+    { "type": "textarea", "id": "split_body", "label": "Body", "default": "We obsess over the hand-feel first. Breathable, weightless cotton that moves with you and softens with every wash — so the piece you reach for on day one becomes the one you reach for on day one hundred." },
+    { "type": "color", "id": "split_bg", "label": "Split background", "default": "#ccd1b2" },
+    { "type": "header", "content": "Closing call to action" },
+    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Find your softest piece." },
+    { "type": "textarea", "id": "cta_body", "label": "Body", "default": "Explore the debut capsule — limited, considered, made to be lived in." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop The Capsule" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ]
+}
+{% endschema %}

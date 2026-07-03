@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-our-story",
+      "settings": {
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["main"]
+}
