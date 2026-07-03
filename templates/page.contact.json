@@ -5,7 +5,7 @@
       "blocks": {
         "faq": { "type": "quick_link", "settings": { "label": "FAQ", "url": "/pages/faq", "note": "shipping, returns, sizing, payments" } },
         "size": { "type": "quick_link", "settings": { "label": "Size Guide", "url": "/pages/size-guide", "note": "find your fit" } },
-        "returns": { "type": "quick_link", "settings": { "label": "Returns & Exchanges", "url": "/pages/returns", "note": "" } },
+        "returns": { "type": "quick_link", "settings": { "label": "Returns & Exchanges", "url": "/pages/returns-exchanges", "note": "" } },
         "shipping": { "type": "quick_link", "settings": { "label": "Shipping Policy", "url": "/pages/shipping", "note": "" } }
       },
       "block_order": ["faq", "size", "returns", "shipping"],
