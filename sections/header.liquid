@@ -1,9 +1,16 @@
 {%- liquid
-  assign menu = section.settings.menu
   assign account_url = settings.account_url | default: routes.account_url
   # Logo: header section setting takes priority, else the global brand logo.
   assign logo = section.settings.logo | default: settings.logo
-  assign logo_width = section.settings.logo_width | default: settings.logo_width | default: 200
+  assign logo_width = section.settings.logo_width | default: settings.logo_width | default: 300
+
+  # Navigation: use the linked Shopify menu when one is set with links,
+  # otherwise use the editable "Menu item" blocks (default Shop / Our Story /
+  # Lookbook) so the header matches the design out of the box.
+  assign use_menu = false
+  if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0
+    assign use_menu = true
+  endif
 -%}
 
 <header
@@ -25,11 +32,17 @@
         {%- render 'icon', name: 'menu', class: 'h-6 w-6' -%}
       </button>
       <ul class="hidden items-center gap-7 text-sm text-charcoal/80 md:flex">
-        {%- for link in linklists[menu].links -%}
-          <li>
-            <a href="{{ link.url }}" class="transition-opacity hover:opacity-70">{{ link.title }}</a>
-          </li>
-        {%- endfor -%}
+        {%- if use_menu -%}
+          {%- for link in linklists[section.settings.menu].links -%}
+            <li><a href="{{ link.url }}" class="transition-opacity hover:opacity-70">{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'nav_link' -%}
+              <li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" class="transition-opacity hover:opacity-70">{{ block.settings.label }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
     </div>
 
@@ -121,11 +134,17 @@
         {{ 'general.search.placeholder' | t }}
       </button>
       <ul>
-        {%- for link in linklists[menu].links -%}
-          <li>
-            <a href="{{ link.url }}" class="block border-b border-charcoal/10 py-4 font-serif text-2xl text-charcoal transition hover:text-charcoal-muted">{{ link.title }}</a>
-          </li>
-        {%- endfor -%}
+        {%- if use_menu -%}
+          {%- for link in linklists[section.settings.menu].links -%}
+            <li><a href="{{ link.url }}" class="block border-b border-charcoal/10 py-4 font-serif text-2xl text-charcoal transition hover:text-charcoal-muted">{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'nav_link' -%}
+              <li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" class="block border-b border-charcoal/10 py-4 font-serif text-2xl text-charcoal transition hover:text-charcoal-muted">{{ block.settings.label }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
       <a
         href="{{ account_url }}"
@@ -152,17 +171,27 @@
       "type": "range",
       "id": "logo_width",
       "min": 140,
-      "max": 360,
+      "max": 400,
       "step": 4,
       "unit": "px",
       "label": "Logo max width",
-      "default": 260
+      "default": 300
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
+      "label": "Menu (optional)",
+      "info": "Leave empty to use the Menu item blocks below. Choose a Shopify menu to use that instead."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Menu item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Shop" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
     }
   ]
 }

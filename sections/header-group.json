@@ -4,6 +4,12 @@
   "sections": {
     "header": {
       "type": "header",
+      "blocks": {
+        "nav_shop": { "type": "nav_link", "settings": { "label": "Shop", "url": "shopify://collections/all" } },
+        "nav_story": { "type": "nav_link", "settings": { "label": "Our Story", "url": "shopify://pages/our-story" } },
+        "nav_lookbook": { "type": "nav_link", "settings": { "label": "Lookbook", "url": "shopify://pages/lookbook" } }
+      },
+      "block_order": ["nav_shop", "nav_story", "nav_lookbook"],
       "settings": {}
     }
   },
