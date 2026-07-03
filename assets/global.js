@@ -504,6 +504,19 @@
   })();
 
   /* ----------------------------------------------------------------------
+   * Size chart unit toggle (inches / centimetres)
+   * -------------------------------------------------------------------- */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-size-unit]');
+    if (!btn) return;
+    const chart = btn.closest('[data-size-chart]');
+    if (!chart) return;
+    const unit = btn.dataset.sizeUnit;
+    $$('[data-size-unit]', chart).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sizeUnit === unit)));
+    $$('tbody[data-unit]', chart).forEach((tb) => { tb.hidden = tb.dataset.unit !== unit; });
+  });
+
+  /* ----------------------------------------------------------------------
    * Customer address book (edit toggle + delete confirm)
    * -------------------------------------------------------------------- */
   document.addEventListener('click', (e) => {

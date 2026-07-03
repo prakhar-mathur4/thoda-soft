@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-size-guide",
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "How do I measure for the right size?", "answer": "<p>Use a soft measuring tape to measure your bust, waist, and hips, then match them to our size chart. If your measurements fall across two sizes, go by your largest measurement.</p>" } },
+        "q2": { "type": "qa", "settings": { "question": "What if I am between two sizes?", "answer": "<p>Size down for a closer, more fitted look, or size up for extra ease and a relaxed drape. Our dresses are designed to flatter either way.</p>" } },
+        "q3": { "type": "qa", "settings": { "question": "Do Thoda Soft dresses run true to size?", "answer": "<p>Yes — our pieces are true to size with a relaxed, feminine fit, available in inclusive sizing from S to XXL.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": {
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["main"]
+}

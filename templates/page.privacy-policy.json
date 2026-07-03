@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy",
+      "blocks": {
+        "intro_para": { "type": "section", "settings": { "heading": "", "body": "<p>This Privacy Policy describes how <strong>Thoda Soft</strong> (“we”, “us”) handles your personal data when you visit or purchase from our website. We process data in accordance with India’s Digital Personal Data Protection Act, 2023.</p>" } },
+        "collect": { "type": "section", "settings": { "heading": "Information we collect", "body": "<ul><li><strong>Contact & order details</strong> — name, phone number, email, shipping/billing address, and order history.</li><li><strong>Payment information</strong> — processed securely by our payment partners; we do not store your full card details.</li><li><strong>Usage data</strong> — pages viewed, device and browser info, and cookies used for analytics and improving the site.</li></ul>" } },
+        "use": { "type": "section", "settings": { "heading": "How we use your information", "body": "<ul><li>To process, fulfil, and deliver your orders.</li><li>To provide customer support and respond to your queries.</li><li>To send order updates and, with your consent, marketing messages.</li><li>To prevent fraud and improve our products and experience.</li></ul>" } },
+        "share": { "type": "section", "settings": { "heading": "Who we share data with", "body": "<p>We share data only with trusted partners who help us operate:</p><ul><li><strong>Shopify</strong> — our commerce backend and order management.</li><li><strong>Checkout & payment partners</strong> (e.g. our checkout provider) — to process payments and Cash on Delivery.</li><li><strong>Logistics partners</strong> — to ship and track your orders.</li><li><strong>Communication tools</strong> (email/WhatsApp) — for order updates and support.</li></ul>" } },
+        "cookies": { "type": "section", "settings": { "heading": "Cookies & analytics", "body": "<p>We use cookies and analytics to understand how the site is used and to improve it. You can control cookies through your browser settings.</p>" } },
+        "rights": { "type": "section", "settings": { "heading": "Your rights", "body": "<p>You may request access to, correction of, or deletion of your personal data, and withdraw consent for marketing at any time. To exercise these rights, contact us at <a href=\"mailto:thodasoft@gmail.com\">thodasoft@gmail.com</a>.</p>" } },
+        "security": { "type": "section", "settings": { "heading": "Data security & retention", "body": "<p>We use reasonable technical and organisational measures to protect your data and retain it only as long as needed for the purposes above or as required by law.</p>" } },
+        "contact": { "type": "section", "settings": { "heading": "Contact", "body": "<p>Questions about this policy? Reach us at <a href=\"mailto:thodasoft@gmail.com\">thodasoft@gmail.com</a> or via our <a href=\"/pages/contact\">contact page</a>.</p><p>Operated by Thoda Soft, 76/22, Shipra Path, Mansarovar, Jaipur (Raj.) — 302020.</p>" } }
+      },
+      "block_order": ["intro_para", "collect", "use", "share", "cookies", "rights", "security", "contact"],
+      "settings": {
+        "eyebrow": "Thoda Soft",
+        "heading": "Privacy Policy",
+        "intro": "Your trust matters to us. This policy explains what information we collect, how we use it, and the choices you have.",
+        "updated": "June 2026"
+      }
+    }
+  },
+  "order": ["main"]
+}

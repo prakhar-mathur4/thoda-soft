@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy",
+      "blocks": {
+        "promise": { "type": "section", "settings": { "heading": "Our promise", "body": "<p>We offer <strong>7-day size exchanges</strong> from the date of delivery. Your first size exchange within this window is free.</p>" } },
+        "eligibility": { "type": "section", "settings": { "heading": "Eligibility", "body": "<ul><li>Requested within 7 days of delivery.</li><li>Item is unworn, unwashed, and undamaged.</li><li>Original tags are intact and the piece is in its original condition.</li></ul>" } },
+        "how": { "type": "section", "settings": { "heading": "How to request an exchange", "body": "<p>Email us at <a href=\"mailto:thodasoft@gmail.com\">thodasoft@gmail.com</a> or message us on WhatsApp with your <strong>order number</strong> and the <strong>size</strong> you’d like. We’ll guide you through the rest.</p>" } },
+        "refunds": { "type": "section", "settings": { "heading": "Refunds & store credit", "body": "<p>We currently offer <strong>exchanges and store credit</strong> rather than cash refunds, except where an item arrives defective or incorrect — in which case we’ll replace it or refund you in full.</p>" } },
+        "defective": { "type": "section", "settings": { "heading": "Defective or wrong items", "body": "<p>If your order arrives damaged or incorrect, contact us within 48 hours of delivery with photos and we’ll make it right at no cost to you.</p>" } },
+        "nonexchange": { "type": "section", "settings": { "heading": "Non-exchangeable items", "body": "<p>For hygiene reasons, certain items may not be eligible for exchange; this will be noted on the product page where applicable.</p>" } },
+        "help": { "type": "section", "settings": { "heading": "Need help?", "body": "<p>See our <a href=\"/pages/size-guide\">Size Guide</a> to get the fit right the first time, or reach us via our <a href=\"/pages/contact\">contact page</a>.</p>" } }
+      },
+      "block_order": ["promise", "eligibility", "how", "refunds", "defective", "nonexchange", "help"],
+      "settings": {
+        "eyebrow": "Thoda Soft",
+        "heading": "Returns & Exchanges",
+        "intro": "We want you to love the fit. If the size isn’t right, we offer easy exchanges.",
+        "updated": "June 2026"
+      }
+    }
+  },
+  "order": ["main"]
+}
