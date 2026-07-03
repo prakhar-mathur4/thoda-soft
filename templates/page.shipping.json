@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-policy",
+      "blocks": {
+        "charges": { "type": "section", "settings": { "heading": "Shipping charges", "body": "<p>We offer <strong>free shipping on all orders within India</strong>, with no minimum spend.</p>" } },
+        "dispatch": { "type": "section", "settings": { "heading": "Dispatch & delivery", "body": "<ul><li>Orders are dispatched within <strong>1–2 business days</strong>.</li><li>Delivery typically takes <strong>4–7 business days</strong>; metro cities are often faster.</li><li>You’ll receive a tracking link by SMS and email once shipped.</li></ul>" } },
+        "cod": { "type": "section", "settings": { "heading": "Cash on Delivery", "body": "<p>Cash on Delivery (COD) is available on eligible orders and serviceable pincodes. COD availability is confirmed at checkout.</p>" } },
+        "tracking": { "type": "section", "settings": { "heading": "Order tracking", "body": "<p>Track your order via the link sent to you after dispatch. For help with a specific order, reach us through our <a href=\"/pages/contact\">contact page</a> or the chat on this site.</p>" } },
+        "international": { "type": "section", "settings": { "heading": "International shipping", "body": "<p>We currently ship within India only. International shipping is coming soon — join our newsletter to be the first to know.</p>" } },
+        "delays": { "type": "section", "settings": { "heading": "Delays & accuracy", "body": "<p>Estimated timelines may vary due to courier delays, weather, or peak periods. Please ensure your shipping address and phone number are accurate to avoid delivery issues.</p>" } }
+      },
+      "block_order": ["charges", "dispatch", "cod", "tracking", "international", "delays"],
+      "settings": {
+        "eyebrow": "Thoda Soft",
+        "heading": "Shipping Policy",
+        "intro": "Everything you need to know about how and when your order arrives.",
+        "updated": "June 2026"
+      }
+    }
+  },
+  "order": ["main"]
+}
