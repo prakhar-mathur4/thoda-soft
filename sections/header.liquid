@@ -50,7 +50,15 @@
           style="max-width: min(100%, {{ logo_width }}px);"
           fetchpriority="high">
       {%- else -%}
-        <span class="w-full text-center font-serif text-xl uppercase tracking-[0.2em] text-charcoal">{{ shop.name }}</span>
+        {%- comment -%} Fallback to the bundled brand logo asset {%- endcomment -%}
+        <img
+          src="{{ 'logo.png' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ logo_width }}"
+          height="64"
+          class="h-12 w-auto object-contain sm:h-16"
+          style="max-width: min(100%, {{ logo_width }}px);"
+          fetchpriority="high">
       {%- endif -%}
     </a>
 

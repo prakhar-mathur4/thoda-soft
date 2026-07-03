@@ -6,7 +6,7 @@
         {%- if settings.logo -%}
           <img src="{{ settings.logo | image_url: width: 440 }}" alt="{{ shop.name | escape }}" width="220" height="53" class="h-12 w-auto object-contain">
         {%- else -%}
-          <span class="font-serif text-2xl uppercase tracking-[0.2em]">{{ shop.name }}</span>
+          <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="220" height="53" class="h-12 w-auto object-contain">
         {%- endif -%}
         <p class="mt-4 max-w-sm text-pretty text-sm text-charcoal-muted">
           {{ section.settings.newsletter_text | default: 'Join the mood board. Get 10% off your first capsule piece.' }}
