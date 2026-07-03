@@ -39,6 +39,16 @@
         --color-lavender-deep: {{ settings.color_lavender_deep }};
         --color-sage: {{ settings.color_sage }};
       }
+
+      /* Pin the whole header group to the viewport. Applied to Shopify's
+         section-group wrapper so it is immune to inner containing-block quirks. */
+      .shopify-section-group-header-group {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
     </style>
 
     {{ 'theme.css' | asset_url | stylesheet_tag }}
