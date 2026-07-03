@@ -17,12 +17,12 @@
       "block_order": ["promise_exchange", "promise_secure"],
       "settings": {
         "newsletter_text": "Join the mood board. Get 10% off your first capsule piece.",
+        "newsletter_placeholder": "your@email.com",
+        "newsletter_button": "Get 10% Off",
         "menu_1_title": "Explore",
-        "menu_1": "footer",
         "menu_2_title": "Help",
         "promise_title": "Promise",
-        "copyright_suffix": "Designed in India.",
-        "menu_legal": "footer"
+        "copyright_suffix": "Designed in India."
       }
     }
   },
