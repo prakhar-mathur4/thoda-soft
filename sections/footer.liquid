@@ -12,9 +12,9 @@
       {%- comment -%} Brand + newsletter {%- endcomment -%}
       <div class="md:col-span-5">
         {%- if settings.logo -%}
-          <img src="{{ settings.logo | image_url: width: 440 }}" alt="{{ shop.name | escape }}" width="260" height="63" class="h-16 w-auto object-contain sm:h-20">
+          <img src="{{ settings.logo | image_url: width: 440 }}" alt="{{ shop.name | escape }}" width="230" height="55" class="h-14 w-auto object-contain sm:h-16">
         {%- else -%}
-          <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="260" height="63" class="h-16 w-auto object-contain sm:h-20">
+          <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="230" height="55" class="h-14 w-auto object-contain sm:h-16">
         {%- endif -%}
         <p class="mt-4 max-w-sm text-pretty text-sm text-charcoal-muted">
           {{ section.settings.newsletter_text | default: 'Join the mood board. Get 10% off your first capsule piece.' }}
