@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-faq",
+      "blocks": {
+        "cat_ship": { "type": "category", "settings": { "title": "Orders & Shipping" } },
+        "q_ship_1": { "type": "qa", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders are dispatched within 1–2 business days. Standard delivery across India takes 4–7 business days, and metro cities are usually a little faster.</p>" } },
+        "q_ship_2": { "type": "qa", "settings": { "question": "Do you offer free shipping?", "answer": "<p>Yes — shipping is free on all orders within India, with no minimum spend.</p>" } },
+        "q_ship_3": { "type": "qa", "settings": { "question": "Do you ship internationally?", "answer": "<p>Right now we ship within India only. International shipping is on the way — join our newsletter to be the first to know.</p>" } },
+        "q_ship_4": { "type": "qa", "settings": { "question": "How do I track my order?", "answer": "<p>Once your order ships, you’ll receive a tracking link by email and SMS. You can also use the Track Order link in the menu or your account page.</p>" } },
+
+        "cat_returns": { "type": "category", "settings": { "title": "Returns & Exchanges" } },
+        "q_ret_1": { "type": "qa", "settings": { "question": "What is your return and exchange policy?", "answer": "<p>We offer 7-day size exchanges from the date of delivery. Items must be unworn, unwashed, and have their original tags intact.</p>" } },
+        "q_ret_2": { "type": "qa", "settings": { "question": "How do I request an exchange?", "answer": "<p>Email us with your order number and the size you’d like, and we’ll guide you through the quick exchange process.</p>" } },
+        "q_ret_3": { "type": "qa", "settings": { "question": "Are exchanges free?", "answer": "<p>Your first size exchange within the 7-day window is free.</p>" } },
+        "q_ret_4": { "type": "qa", "settings": { "question": "Can I get a refund?", "answer": "<p>We offer size exchanges and store credit rather than refunds, unless an item arrives defective or incorrect — in which case we’ll make it right.</p>" } },
+
+        "cat_size": { "type": "category", "settings": { "title": "Sizing & Fit" } },
+        "q_size_1": { "type": "qa", "settings": { "question": "What sizes do you offer?", "answer": "<p>Every style in the capsule comes in inclusive sizing from S to XXL, designed to drape beautifully on every body.</p>" } },
+        "q_size_2": { "type": "qa", "settings": { "question": "How do I find my size?", "answer": "<p>Each product page includes a Size & Fit guide. If you’re between sizes, size down for a closer fit or up for extra ease.</p>" } },
+        "q_size_3": { "type": "qa", "settings": { "question": "Do the dresses run true to size?", "answer": "<p>Yes — our pieces are true to size with a relaxed, feminine drape.</p>" } },
+
+        "cat_care": { "type": "category", "settings": { "title": "Product & Care" } },
+        "q_care_1": { "type": "qa", "settings": { "question": "What fabric are your pieces made from?", "answer": "<p>Premium, ultra-soft, breathable cotton — thoughtfully designed in India to look flawless and feel weightless.</p>" } },
+        "q_care_2": { "type": "qa", "settings": { "question": "How do I care for my dress?", "answer": "<p>Machine wash cold on a gentle cycle, line dry, and warm iron if needed. Our cotton softens beautifully with every wash.</p>" } },
+
+        "cat_pay": { "type": "category", "settings": { "title": "Payments & Checkout" } },
+        "q_pay_1": { "type": "qa", "settings": { "question": "What payment methods do you accept?", "answer": "<p>We accept all major credit and debit cards, UPI, net banking, and popular wallets through our secure checkout.</p>" } },
+        "q_pay_2": { "type": "qa", "settings": { "question": "Is checkout secure?", "answer": "<p>Absolutely. Payments are processed through Shopify’s PCI-compliant, encrypted checkout — your details are always protected.</p>" } },
+        "q_pay_3": { "type": "qa", "settings": { "question": "Can I modify or cancel my order?", "answer": "<p>Contact us within 12 hours of placing your order and we’ll do our best to update or cancel it before it’s dispatched.</p>" } }
+      },
+      "block_order": [
+        "cat_ship", "q_ship_1", "q_ship_2", "q_ship_3", "q_ship_4",
+        "cat_returns", "q_ret_1", "q_ret_2", "q_ret_3", "q_ret_4",
+        "cat_size", "q_size_1", "q_size_2", "q_size_3",
+        "cat_care", "q_care_1", "q_care_2",
+        "cat_pay", "q_pay_1", "q_pay_2", "q_pay_3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
