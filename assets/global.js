@@ -423,6 +423,18 @@
       });
     }, { rootMargin: '0px 0px -12% 0px' });
     els.forEach((el) => io.observe(el));
+
+    // Failsafe: never let the reveal animation leave content permanently hidden.
+    // If anything goes wrong (observer never fires, JS hiccup), force everything
+    // visible after 2.5s.
+    setTimeout(() => {
+      els.forEach((el) => {
+        const targets = el.hasAttribute('data-reveal-stagger') ? Array.from(el.children) : [el];
+        targets.forEach((t) => {
+          if (getComputedStyle(t).opacity !== '1') { t.style.opacity = '1'; t.style.transform = 'none'; }
+        });
+      });
+    }, 2500);
   })();
 
   /* ----------------------------------------------------------------------
