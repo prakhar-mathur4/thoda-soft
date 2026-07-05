@@ -3,11 +3,13 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "hl_design": { "type": "highlight", "settings": { "icon": "sparkle", "title": "The Design", "text": "Thoughtful, flattering tailoring that moves with you." } },
+        "hl_fabric": { "type": "highlight", "settings": { "icon": "leaf", "title": "The Fabric", "text": "Premium, breathable cotton that softens with every wash." } },
         "fit": { "type": "accordion", "settings": { "title": "Size & Fit", "content": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from S–XXL. Between sizes? Size down for a closer fit, up for extra ease.</p>" } },
         "care": { "type": "accordion", "settings": { "title": "Materials & Care", "content": "<p>Premium ultra-soft cotton. Machine wash cold on a gentle cycle, line dry, warm iron if needed.</p>" } },
         "shipping": { "type": "accordion", "settings": { "title": "Shipping & Returns", "content": "<p>Free shipping on all orders. 7-day size exchanges. Secure checkout, every time.</p>" } }
       },
-      "block_order": ["fit", "care", "shipping"],
+      "block_order": ["hl_design", "hl_fabric", "fit", "care", "shipping"],
       "settings": { "eyebrow": "The Debut Capsule" }
     },
     "recommendations": {
