@@ -9,3 +9,6 @@
 .vercel
 next-env.d.ts
 *.tsbuildinfo
+
+# Theme upload artifact (rebuilt on demand)
+thoda-soft-theme.zip
