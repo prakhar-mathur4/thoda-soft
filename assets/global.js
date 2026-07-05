@@ -488,6 +488,9 @@
     // initial hidden states
     set('[data-anim="rule"]', { transform: 'scaleX(0)', transformOrigin: 'left center' });
     set('[data-anim="eyebrow"] > *', { transform: 'translateY(130%)', opacity: '0' });
+    // Clip the headline masks ONLY while the line-reveal runs, then release so
+    // descenders (e.g. the italic "f" in "softness") are never cut at rest.
+    set('[data-line-mask]', { overflow: 'hidden' });
     set('[data-anim="line"]', { transform: 'translateY(115%)' });
     ['standfirst', 'cta', 'credit', 'scroll'].forEach((k) => set('[data-anim="' + k + '"]', { opacity: '0', transform: 'translateY(16px)' }));
     set('[data-anim="frame-primary"]', { clipPath: 'inset(100% 0% 0% 0%)' });
@@ -506,6 +509,8 @@
       anim($$('[data-anim="rule"]', el), [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 900 });
       anim($$('[data-anim="eyebrow"] > *', el), [{ transform: 'translateY(130%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 600, delay: 250, stagger: 60 });
       anim($$('[data-anim="line"]', el), [{ transform: 'translateY(115%)' }, { transform: 'translateY(0)' }], { duration: 950, delay: 450, stagger: 100, easing: 'cubic-bezier(.16,1,.3,1)' });
+      // Release the mask clip after the lines finish sliding in.
+      setTimeout(() => set('[data-line-mask]', { overflow: 'visible' }), 1700);
       anim($$('[data-anim="standfirst"]', el), [{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 700, delay: 900 });
       anim($$('[data-anim="cta"]', el), [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 600, delay: 1050, stagger: 100 });
       anim($$('[data-anim="frame-primary"]', el), [{ clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)' }], { duration: 1150, delay: 150 });
