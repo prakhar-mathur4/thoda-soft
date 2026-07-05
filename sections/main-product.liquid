@@ -16,23 +16,35 @@
   </nav>
 
   <div class="grid grid-cols-1 items-start gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-16">
-    {%- comment -%} Gallery {%- endcomment -%}
-    <div class="grid grid-cols-1 gap-3 sm:gap-4" data-reveal data-reveal-stagger>
-      {%- if images.size > 0 -%}
-        {%- for media in images -%}
-          <div class="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-blush">
-            <img
-              src="{{ media | image_url: width: 1100 }}"
-              srcset="{{ media | image_url: width: 700 }} 700w, {{ media | image_url: width: 1100 }} 1100w, {{ media | image_url: width: 1400 }} 1400w"
-              sizes="(min-width: 768px) 55vw, 100vw"
-              alt="{{ media.alt | escape | default: product.title }}"
-              width="1100" height="1375"
-              {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
-              class="absolute inset-0 h-full w-full object-cover">
-          </div>
-        {%- endfor -%}
-      {%- else -%}
-        <div class="aspect-[4/5] w-full rounded-3xl bg-blush"></div>
+    {%- comment -%}
+      Gallery — swipeable snap-carousel on mobile, stacked column on desktop.
+      Reuses the carousel dots wired up by global.js.
+    {%- endcomment -%}
+    <div data-carousel data-reveal>
+      <div
+        data-carousel-track
+        class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-1 md:gap-4 md:overflow-visible md:pb-0"
+      >
+        {%- if images.size > 0 -%}
+          {%- for media in images -%}
+            <div class="relative aspect-[4/5] w-full min-w-full shrink-0 snap-start overflow-hidden rounded-3xl bg-blush md:min-w-0">
+              <img
+                src="{{ media | image_url: width: 1100 }}"
+                srcset="{{ media | image_url: width: 700 }} 700w, {{ media | image_url: width: 1100 }} 1100w, {{ media | image_url: width: 1400 }} 1400w"
+                sizes="(min-width: 768px) 55vw, 100vw"
+                alt="{{ media.alt | escape | default: product.title }}"
+                width="1100" height="1375"
+                {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                class="absolute inset-0 h-full w-full object-cover">
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="aspect-[4/5] w-full min-w-full shrink-0 rounded-3xl bg-blush md:min-w-0"></div>
+        {%- endif -%}
+      </div>
+
+      {%- if images.size > 1 -%}
+        <div data-carousel-dots class="mt-4 flex justify-center gap-2 md:hidden"></div>
       {%- endif -%}
     </div>
 
