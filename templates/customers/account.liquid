@@ -1,41 +1,95 @@
-<div class="container-editorial py-16 max-w-3xl">
-  <div class="flex flex-wrap items-center justify-between gap-4">
-    <h1 class="font-serif text-3xl">Hi, {{ customer.name | default: customer.email }}</h1>
-    <a href="{{ routes.account_logout_url }}" class="text-xs uppercase tracking-[0.12em] text-charcoal-muted underline underline-offset-2 hover:text-charcoal">{{ 'customer.log_out' | t | default: 'Log out' }}</a>
+<div class="container-editorial max-w-4xl py-16 sm:py-20">
+  {%- comment -%} Header {%- endcomment -%}
+  <div class="flex flex-wrap items-start justify-between gap-4" data-reveal>
+    <div>
+      <p class="mb-2 text-xs uppercase tracking-[0.25em] text-charcoal-muted">Your account</p>
+      <h1 class="font-serif text-3xl sm:text-4xl">Hi, {{ customer.first_name | default: customer.name | default: 'there' }}</h1>
+      <p class="mt-2 text-sm text-charcoal-muted">Welcome back to Thoda Soft — here's everything in one soft place.</p>
+    </div>
+    <a href="{{ routes.account_logout_url }}" class="shrink-0 rounded-full border border-charcoal/20 px-5 py-2 text-xs uppercase tracking-[0.12em] text-charcoal transition hover:border-charcoal">{{ 'customer.log_out' | t | default: 'Log out' }}</a>
   </div>
 
-  <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
-    <a href="{{ routes.account_addresses_url }}" class="underline underline-offset-2 hover:text-charcoal">{{ 'customer.addresses' | t | default: 'Addresses' }}</a>
+  {%- comment -%} Quick links {%- endcomment -%}
+  <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3" data-reveal data-reveal-stagger>
+    <a href="#orders" class="group flex items-center gap-4 rounded-3xl bg-blush/40 p-5 transition hover:bg-blush/60">
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cream text-charcoal">{%- render 'icon', name: 'bag', class: 'h-5 w-5' -%}</span>
+      <span>
+        <span class="block font-serif text-lg text-charcoal">Orders</span>
+        <span class="block text-xs text-charcoal-muted">{{ customer.orders_count | default: 0 }} placed</span>
+      </span>
+    </a>
+    <a href="{{ routes.account_addresses_url }}" class="group flex items-center gap-4 rounded-3xl bg-blush/40 p-5 transition hover:bg-blush/60">
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cream text-charcoal">{%- render 'icon', name: 'pin', class: 'h-5 w-5' -%}</span>
+      <span>
+        <span class="block font-serif text-lg text-charcoal">Addresses</span>
+        <span class="block text-xs text-charcoal-muted">Manage delivery details</span>
+      </span>
+    </a>
+    <a href="{{ routes.all_products_collection_url }}" class="group flex items-center gap-4 rounded-3xl bg-blush/40 p-5 transition hover:bg-blush/60">
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cream text-charcoal">{%- render 'icon', name: 'sparkle', class: 'h-5 w-5' -%}</span>
+      <span>
+        <span class="block font-serif text-lg text-charcoal">Keep shopping</span>
+        <span class="block text-xs text-charcoal-muted">Explore the capsule</span>
+      </span>
+    </a>
   </div>
 
-  <h2 class="mt-12 font-serif text-2xl">{{ 'customer.order_history' | t | default: 'Order history' }}</h2>
+  {%- comment -%} Default address preview {%- endcomment -%}
+  {%- if customer.default_address -%}
+    <div class="mt-6 rounded-3xl border border-charcoal/10 p-6" data-reveal>
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs uppercase tracking-[0.14em] text-charcoal-muted">Default address</h2>
+        <a href="{{ routes.account_addresses_url }}" class="text-xs uppercase tracking-[0.12em] text-charcoal underline underline-offset-2 hover:text-charcoal-muted">Edit</a>
+      </div>
+      <address class="mt-3 text-sm not-italic leading-relaxed text-charcoal/80">
+        {{ customer.default_address.name }}<br>
+        {{ customer.default_address | format_address }}
+      </address>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Order history {%- endcomment -%}
+  <h2 id="orders" class="mt-14 scroll-mt-24 font-serif text-2xl">{{ 'customer.order_history' | t | default: 'Order history' }}</h2>
 
   {%- if customer.orders.size > 0 -%}
-    <div class="mt-6 overflow-x-auto">
+    {%- paginate customer.orders by 20 -%}
+    <div class="mt-6 overflow-x-auto rounded-3xl border border-charcoal/10" data-reveal>
       <table class="w-full min-w-[560px] text-left text-sm">
         <thead>
           <tr class="border-b border-charcoal/10 text-xs uppercase tracking-[0.12em] text-charcoal-muted">
-            <th class="py-3 pr-4 font-normal">Order</th>
-            <th class="py-3 pr-4 font-normal">Date</th>
-            <th class="py-3 pr-4 font-normal">Payment</th>
-            <th class="py-3 pr-4 font-normal">Fulfillment</th>
-            <th class="py-3 pr-4 font-normal">Total</th>
+            <th class="px-5 py-4 font-normal">Order</th>
+            <th class="px-5 py-4 font-normal">Date</th>
+            <th class="px-5 py-4 font-normal">Payment</th>
+            <th class="px-5 py-4 font-normal">Fulfillment</th>
+            <th class="px-5 py-4 text-right font-normal">Total</th>
           </tr>
         </thead>
         <tbody>
           {%- for order in customer.orders -%}
-            <tr class="border-b border-charcoal/10">
-              <td class="py-3 pr-4"><a href="{{ order.customer_url }}" class="underline underline-offset-2 hover:opacity-70">{{ order.name }}</a></td>
-              <td class="py-3 pr-4 text-charcoal-muted">{{ order.created_at | date: '%b %d, %Y' }}</td>
-              <td class="py-3 pr-4">{{ order.financial_status_label }}</td>
-              <td class="py-3 pr-4">{{ order.fulfillment_status_label }}</td>
-              <td class="py-3 pr-4">{{ order.total_price | money }}</td>
+            <tr class="border-b border-charcoal/5 transition hover:bg-blush/20">
+              <td class="px-5 py-4"><a href="{{ order.customer_url }}" class="font-medium text-charcoal underline-offset-2 hover:underline">{{ order.name }}</a></td>
+              <td class="px-5 py-4 text-charcoal-muted">{{ order.created_at | date: '%b %d, %Y' }}</td>
+              <td class="px-5 py-4">
+                <span class="inline-flex rounded-full bg-charcoal/5 px-2.5 py-1 text-xs text-charcoal">{{ order.financial_status_label }}</span>
+              </td>
+              <td class="px-5 py-4">
+                <span class="inline-flex rounded-full bg-charcoal/5 px-2.5 py-1 text-xs text-charcoal">{{ order.fulfillment_status_label }}</span>
+              </td>
+              <td class="px-5 py-4 text-right font-medium text-charcoal">{{ order.total_price | money }}</td>
             </tr>
           {%- endfor -%}
         </tbody>
       </table>
     </div>
+    {%- if paginate.pages > 1 -%}
+      <div class="mt-6 flex justify-center gap-2 text-sm">{{ paginate | default_pagination }}</div>
+    {%- endif -%}
+    {%- endpaginate -%}
   {%- else -%}
-    <p class="mt-6 text-sm text-charcoal-muted">{{ 'customer.no_orders' | t | default: "You haven't placed any orders yet." }}</p>
+    <div class="mt-6 rounded-3xl bg-blush/40 p-10 text-center" data-reveal>
+      <p class="font-serif text-lg text-charcoal">{{ 'customer.no_orders' | t | default: "You haven't placed any orders yet." }}</p>
+      <p class="mt-1 text-sm text-charcoal-muted">Your softest pieces are waiting.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn-primary mt-6">Start shopping</a>
+    </div>
   {%- endif -%}
 </div>
