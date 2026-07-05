@@ -1,0 +1,75 @@
+{%- comment -%}
+  Instagram-inspired gallery — clean, editorial (not a widget). Square images
+  linking out to Instagram or product/collection pages.
+{%- endcomment -%}
+<section class="bg-cream">
+  <div class="container-editorial py-16 sm:py-24">
+    <div class="mx-auto mb-10 max-w-xl text-center" data-reveal>
+      {%- if section.settings.handle != blank -%}
+        <p class="mb-3 text-xs uppercase tracking-[0.3em] text-charcoal-muted">{{ section.settings.handle }}</p>
+      {%- endif -%}
+      <h2 class="font-serif text-3xl sm:text-4xl">{{ section.settings.heading | default: 'Follow the softness' }}</h2>
+      {%- if section.settings.subtext != blank -%}<p class="mx-auto mt-3 max-w-md text-sm text-charcoal-muted">{{ section.settings.subtext }}</p>{%- endif -%}
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6" data-reveal data-reveal-stagger>
+      {%- for block in section.blocks -%}
+        {%- assign img = block.settings.image -%}
+        <a href="{{ block.settings.link | default: section.settings.profile_url | default: '#' }}" {% if block.settings.link != blank or section.settings.profile_url != blank %}target="_blank" rel="noopener"{% endif %} class="group relative block aspect-square overflow-hidden rounded-2xl bg-blush" {{ block.shopify_attributes }}>
+          {%- if img -%}
+            <img
+              src="{{ img | image_url: width: 500 }}"
+              sizes="(min-width: 1024px) 16vw, (min-width: 640px) 30vw, 45vw"
+              alt="{{ img.alt | escape | default: 'Thoda Soft on Instagram' }}"
+              width="500" height="500" loading="lazy"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-soft group-hover:scale-105">
+          {%- endif -%}
+          <span class="absolute inset-0 flex items-center justify-center bg-charcoal/0 text-cream opacity-0 transition duration-500 ease-soft group-hover:bg-charcoal/25 group-hover:opacity-100">
+            {%- render 'icon', name: 'eye', class: 'h-6 w-6' -%}
+          </span>
+        </a>
+      {%- endfor -%}
+      {%- if section.blocks.size == 0 -%}
+        {%- for i in (1..6) -%}<div class="aspect-square rounded-2xl bg-blush"></div>{%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.profile_url != blank -%}
+      <div class="mt-10 text-center" data-reveal>
+        <a href="{{ section.settings.profile_url }}" target="_blank" rel="noopener" class="text-xs uppercase tracking-[0.16em] text-charcoal underline underline-offset-4 transition hover:text-charcoal-muted">{{ section.settings.cta_label | default: 'Explore more on Instagram' }} &rarr;</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook Instagram",
+  "settings": [
+    { "type": "text", "id": "handle", "label": "Handle", "default": "@thodasoft" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Follow the softness" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Everyday looks, little joys, and behind-the-seams moments." },
+    { "type": "url", "id": "profile_url", "label": "Instagram profile URL" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Explore more on Instagram" }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Post",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook Instagram",
+      "blocks": [
+        { "type": "post" }, { "type": "post" }, { "type": "post" },
+        { "type": "post" }, { "type": "post" }, { "type": "post" }
+      ]
+    }
+  ]
+}
+{% endschema %}

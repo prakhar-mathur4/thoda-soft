@@ -1,0 +1,36 @@
+{%- comment -%}
+  Minimal premium product card for "Shop the Look".
+  Accepts: product (required). Quick Add uses the AJAX cart via global.js.
+{%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+-%}
+<div class="group/lp flex flex-col" data-product-card data-product-handle="{{ product.handle }}">
+  <a href="{{ product.url }}" class="relative block aspect-[4/5] w-full overflow-hidden rounded-2xl bg-cream" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_media -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 400 }}"
+        sizes="(min-width: 640px) 20vw, 45vw"
+        alt="{{ product.featured_media.alt | escape | default: product.title }}"
+        width="400" height="500" loading="lazy"
+        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-soft group-hover/lp:scale-105">
+    {%- endif -%}
+  </a>
+  <div class="mt-2.5 flex flex-1 flex-col">
+    <a href="{{ product.url }}" class="font-serif text-sm leading-snug text-charcoal transition hover:text-charcoal-muted">{{ product.title }}</a>
+    <span class="mt-0.5 text-xs text-charcoal-muted">{% if product.price_varies %}{{ 'products.product.from' | t }} {% endif %}{{ product.price | money }}</span>
+    <div class="mt-2 flex items-center gap-2">
+      <button
+        type="button"
+        data-card-add
+        data-variant-id="{{ variant.id }}"
+        {% unless product.available %}disabled{% endunless %}
+        class="flex-1 rounded-full bg-charcoal/90 py-2 text-[10px] uppercase tracking-[0.12em] text-cream transition hover:bg-charcoal disabled:cursor-not-allowed disabled:opacity-50">
+        {% if product.available %}Quick Add{% else %}Sold Out{% endif %}
+      </button>
+      <a href="{{ product.url }}" aria-label="View {{ product.title | escape }}" class="rounded-full border border-charcoal/20 p-2 text-charcoal transition hover:border-charcoal">
+        {%- render 'icon', name: 'eye', class: 'h-4 w-4' -%}
+      </a>
+    </div>
+  </div>
+</div>

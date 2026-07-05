@@ -1,0 +1,53 @@
+{%- liquid
+  assign img = section.settings.image
+-%}
+<section class="relative h-[92svh] min-h-[520px] w-full overflow-hidden" aria-label="{{ section.settings.heading | default: 'The Lookbook' | escape }}">
+  <div class="absolute inset-0" data-parallax data-parallax-speed="0.18">
+    {%- if img -%}
+      <img
+        src="{{ img | image_url: width: 2400 }}"
+        srcset="{{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1800 }} 1800w, {{ img | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ img.alt | escape | default: 'Thoda Soft lookbook editorial' }}"
+        width="2400" height="1500"
+        fetchpriority="high"
+        class="h-[112%] w-full object-cover">
+    {%- else -%}
+      <div class="h-full w-full bg-gradient-to-br from-blush via-cream to-lavender/40"></div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Soft wash for legibility {%- endcomment -%}
+  <div class="absolute inset-0 bg-gradient-to-t from-charcoal/25 via-transparent to-charcoal/10"></div>
+
+  <div class="relative flex h-full flex-col items-center justify-center px-6 text-center" data-reveal data-reveal-stagger>
+    <p class="mb-5 text-[0.7rem] uppercase tracking-[0.4em] text-cream/90">{{ section.settings.eyebrow | default: 'Thoda Soft' }}</p>
+    <h1 class="font-serif text-[clamp(2.8rem,8vw,6rem)] font-medium leading-[0.95] tracking-[-0.01em] text-cream">{{ section.settings.heading | default: 'The Lookbook' }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="mt-6 max-w-xl text-pretty text-base leading-relaxed text-cream/90 sm:text-lg">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_scroll -%}
+    <div class="absolute inset-x-0 bottom-7 flex flex-col items-center gap-2 text-cream/85 motion-reduce:hidden" aria-hidden="true">
+      <span class="text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
+      <span class="flex h-10 w-[1.5px] justify-center overflow-hidden bg-cream/25">
+        <span class="h-3 w-full animate-scrollcue bg-cream"></span>
+      </span>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Hero image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Thoda Soft" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Lookbook" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Soft moments. Thoughtfully styled. Everyday looks made to feel like you." },
+    { "type": "checkbox", "id": "show_scroll", "label": "Show scroll indicator", "default": true }
+  ],
+  "presets": [{ "name": "Lookbook hero" }]
+}
+{% endschema %}

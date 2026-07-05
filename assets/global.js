@@ -504,6 +504,48 @@
   })();
 
   /* ----------------------------------------------------------------------
+   * Lookbook — "Shop this Look" toggle (reveals the product cards)
+   * -------------------------------------------------------------------- */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-shop-look]');
+    if (!btn) return;
+    const look = btn.closest('[data-look]');
+    if (!look) return;
+    const panel = look.querySelector('[data-look-products]');
+    if (!panel) return;
+    const opening = panel.classList.contains('hidden');
+    panel.classList.toggle('hidden');
+    btn.textContent = opening ? 'Hide' : 'Shop this Look';
+    if (opening) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  /* ----------------------------------------------------------------------
+   * Subtle parallax for [data-parallax] (e.g. lookbook hero image)
+   * -------------------------------------------------------------------- */
+  (function parallax() {
+    const els = $$('[data-parallax]');
+    if (!els.length || reduceMotion) return;
+    let ticking = false;
+    const apply = () => {
+      const vh = window.innerHeight;
+      els.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > vh) return;
+        const speed = parseFloat(el.dataset.parallaxSpeed) || 0.15;
+        const offset = (rect.top - vh / 2) * -speed;
+        el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+      });
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    }, { passive: true });
+    apply();
+  })();
+
+  /* ----------------------------------------------------------------------
    * Size chart unit toggle (inches / centimetres)
    * -------------------------------------------------------------------- */
   document.addEventListener('click', (e) => {

@@ -1,0 +1,18 @@
+<section class="{% if section.settings.bg %}bg-blush/40{% else %}bg-cream{% endif %}">
+  <div class="container-editorial py-16 text-center sm:py-24">
+    <blockquote class="mx-auto max-w-3xl" data-reveal>
+      <p class="text-balance font-serif text-2xl italic leading-snug text-charcoal sm:text-4xl">&ldquo;{{ section.settings.quote | default: 'Soft layers for slower mornings.' }}&rdquo;</p>
+    </blockquote>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook quote",
+  "settings": [
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "Soft layers for slower mornings." },
+    { "type": "checkbox", "id": "bg", "label": "Soft blush background", "default": false }
+  ],
+  "presets": [{ "name": "Lookbook quote" }]
+}
+{% endschema %}

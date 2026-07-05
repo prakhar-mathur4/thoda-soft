@@ -1,0 +1,46 @@
+<section class="{% if section.settings.bg == 'blush' %}bg-blush/50{% elsif section.settings.bg == 'sage' %}bg-sage/40{% else %}bg-cream{% endif %}">
+  <div class="container-editorial py-24 text-center sm:py-32">
+    <div class="mx-auto max-w-2xl" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="mb-5 text-xs uppercase tracking-[0.3em] text-charcoal-muted">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="font-serif text-4xl leading-tight sm:text-6xl">{{ section.settings.heading | default: 'Find Your Soft' }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="mx-auto mt-5 max-w-md text-pretty text-base text-charcoal/75 sm:text-lg">{{ section.settings.text }}</p>
+      {%- endif -%}
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        {%- if section.settings.button_1_label != blank -%}
+          <a href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}" class="btn-primary">{{ section.settings.button_1_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_2_label != blank -%}
+          <a href="{{ section.settings.button_2_link | default: routes.all_products_collection_url }}" class="inline-flex items-center justify-center rounded-full border border-charcoal/25 px-8 py-3 text-sm tracking-wide text-charcoal transition duration-300 ease-soft hover:border-charcoal hover:scale-[1.02]">{{ section.settings.button_2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook CTA",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find Your Soft" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Because getting dressed should feel effortless." },
+    {
+      "type": "select", "id": "bg", "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "blush", "label": "Blush" },
+        { "value": "sage", "label": "Sage" }
+      ],
+      "default": "blush"
+    },
+    { "type": "text", "id": "button_1_label", "label": "Button 1 label", "default": "Shop Collection" },
+    { "type": "url", "id": "button_1_link", "label": "Button 1 link" },
+    { "type": "text", "id": "button_2_label", "label": "Button 2 label", "default": "New Arrivals" },
+    { "type": "url", "id": "button_2_link", "label": "Button 2 link" }
+  ],
+  "presets": [{ "name": "Lookbook CTA" }]
+}
+{% endschema %}

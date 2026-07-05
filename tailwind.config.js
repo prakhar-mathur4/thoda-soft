@@ -55,12 +55,17 @@ module.exports = {
           '100%': { transform: 'translateY(0)' },
         },
         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+        scrollcue: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(340%)' },
+        },
       },
       animation: {
         fadeUp: 'fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
         marquee: 'marquee 20s linear infinite',
         slideUp: 'slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
         fadeIn: 'fadeIn 0.3s ease both',
+        scrollcue: 'scrollcue 1.8s ease-in-out infinite',
       },
     },
   },

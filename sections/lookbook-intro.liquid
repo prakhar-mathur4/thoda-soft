@@ -1,0 +1,21 @@
+<section class="bg-cream">
+  <div class="container-editorial py-20 text-center sm:py-28">
+    <div class="mx-auto max-w-2xl" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="mb-5 text-xs uppercase tracking-[0.3em] text-charcoal-muted">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <p class="text-balance font-serif text-2xl leading-relaxed text-charcoal sm:text-[1.75rem]">{{ section.settings.body | default: 'Clothes should move with your life, not ask you to become someone else. Explore everyday styling ideas inspired by comfort, simplicity, and quiet confidence.' }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook intro",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Styled to inspire" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Clothes should move with your life, not ask you to become someone else. Explore everyday styling ideas inspired by comfort, simplicity, and quiet confidence." }
+  ],
+  "presets": [{ "name": "Lookbook intro" }]
+}
+{% endschema %}
