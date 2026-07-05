@@ -172,14 +172,25 @@
       $$('[data-card-size]', card).forEach((b) => b.setAttribute('aria-checked', 'false'));
       size.setAttribute('aria-checked', 'true');
       const add = $('[data-card-add]', card);
-      if (add) add.dataset.variantId = size.dataset.variantId;
+      if (add) {
+        // A size is now chosen — enable adding and switch the label.
+        add.dataset.variantId = size.dataset.variantId;
+        add.textContent = window.cartStrings ? window.cartStrings.addToCart : 'Add to Cart';
+      }
       return;
     }
     const add = e.target.closest('[data-card-add]');
     if (add) {
       e.preventDefault();
       const id = add.dataset.variantId;
-      if (!id) return;
+      // Sized product with no size chosen → force selection via quick view
+      // (prevents auto-adding the default size, which drives wrong-fit RTOs).
+      if (!id) {
+        const card = add.closest('[data-product-card]');
+        const qv = card && card.querySelector('[data-quickview-open]');
+        if (qv) qv.click();
+        return;
+      }
       add.disabled = true;
       if (cart) { cart.open(); showCartLoading(); }
       cartAdd([{ id: Number(id), quantity: 1 }])

@@ -60,10 +60,10 @@
         <button
           type="button"
           data-card-add
-          data-variant-id="{{ current_variant.id }}"
+          {% unless has_sizes %}data-variant-id="{{ current_variant.id }}"{% endunless %}
           {% unless product.available %}disabled{% endunless %}
           class="rounded-full bg-charcoal/90 py-2.5 text-[11px] uppercase tracking-[0.1em] text-cream shadow-sm backdrop-blur transition hover:bg-charcoal disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1">
-          {% if product.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+          {% if product.available %}{% if has_sizes %}{{ 'products.product.select_size_short' | t | default: 'Select Size' }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
         </button>
       </div>
     </div>
