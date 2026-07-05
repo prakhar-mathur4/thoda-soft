@@ -3,19 +3,19 @@
     "main": {
       "type": "main-policy",
       "blocks": {
-        "charges": { "type": "section", "settings": { "heading": "Shipping charges", "body": "<p>We offer <strong>free shipping on all orders within India</strong>, with no minimum spend.</p>" } },
-        "dispatch": { "type": "section", "settings": { "heading": "Dispatch & delivery", "body": "<ul><li>Orders are dispatched within <strong>1–2 business days</strong>.</li><li>Delivery typically takes <strong>4–7 business days</strong>; metro cities are often faster.</li><li>You’ll receive a tracking link by SMS and email once shipped.</li></ul>" } },
-        "cod": { "type": "section", "settings": { "heading": "Cash on Delivery", "body": "<p>Cash on Delivery (COD) is available on eligible orders and serviceable pincodes. COD availability is confirmed at checkout.</p>" } },
-        "tracking": { "type": "section", "settings": { "heading": "Order tracking", "body": "<p>Track your order via the link sent to you after dispatch. For help with a specific order, reach us through our <a href=\"/pages/contact\">contact page</a> or the chat on this site.</p>" } },
-        "international": { "type": "section", "settings": { "heading": "International shipping", "body": "<p>We currently ship within India only. International shipping is coming soon — join our newsletter to be the first to know.</p>" } },
-        "delays": { "type": "section", "settings": { "heading": "Delays & accuracy", "body": "<p>Estimated timelines may vary due to courier delays, weather, or peak periods. Please ensure your shipping address and phone number are accurate to avoid delivery issues.</p>" } }
+        "charges": { "type": "section", "settings": { "heading": "Shipping Charges", "body": "<p>Shipping charges are calculated at checkout based on your delivery location and the items in your order. The applicable shipping fee will be displayed before you complete your purchase.</p>" } },
+        "dispatch": { "type": "section", "settings": { "heading": "Dispatch & Delivery", "body": "<ul><li>Orders are usually dispatched within <strong>1–2 business days</strong>.</li><li>Delivery typically takes <strong>4–7 business days</strong>, depending on your location.</li><li>Metro cities may receive orders sooner.</li><li>Once your order has been shipped, you’ll receive a tracking link via email and SMS (where available).</li></ul>" } },
+        "cod": { "type": "section", "settings": { "heading": "Cash on Delivery", "body": "<p>Cash on Delivery (COD) is available for eligible orders and serviceable PIN codes. COD availability will be confirmed during checkout.</p>" } },
+        "tracking": { "type": "section", "settings": { "heading": "Order Tracking", "body": "<p>You can track your order using the tracking link shared after dispatch. If you need assistance with your order, please reach out through our <a href=\"/pages/contact\">Contact page</a> or the chat support available on our website.</p>" } },
+        "international": { "type": "section", "settings": { "heading": "International Shipping", "body": "<p>At the moment, we ship within India only. We’re working on expanding internationally—subscribe to our newsletter to be among the first to know when international shipping becomes available.</p>" } },
+        "timelines": { "type": "section", "settings": { "heading": "Delivery Timelines", "body": "<p>While we strive to deliver every order within the estimated timeframe, delivery schedules may occasionally be affected by factors beyond our control, including courier delays, weather conditions, public holidays, or other unforeseen circumstances.</p><p>Please ensure that your shipping address, contact number, and other delivery details are accurate at the time of placing your order. THODA SOFT is not responsible for delays or additional delivery attempts resulting from incorrect or incomplete shipping information.</p>" } }
       },
-      "block_order": ["charges", "dispatch", "cod", "tracking", "international", "delays"],
+      "block_order": ["charges", "dispatch", "cod", "tracking", "international", "timelines"],
       "settings": {
         "eyebrow": "Thoda Soft",
         "heading": "Shipping Policy",
         "intro": "Everything you need to know about how and when your order arrives.",
-        "updated": "June 2026"
+        "updated": "July 2026"
       }
     }
   },
