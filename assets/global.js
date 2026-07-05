@@ -71,6 +71,32 @@
     contents.innerHTML = inner.innerHTML;
   }
 
+  // Skeleton shown the instant the drawer opens, before the server responds.
+  function showCartLoading() {
+    const contents = $('[data-cart-contents]');
+    if (!contents) return;
+    const row =
+      '<li class="flex gap-4 py-5">' +
+        '<div class="h-24 w-20 flex-shrink-0 animate-pulse rounded-2xl bg-charcoal/10"></div>' +
+        '<div class="flex flex-1 flex-col gap-2 py-1">' +
+          '<div class="h-3.5 w-3/4 animate-pulse rounded bg-charcoal/10"></div>' +
+          '<div class="h-3 w-1/3 animate-pulse rounded bg-charcoal/10"></div>' +
+          '<div class="mt-auto h-3 w-1/4 animate-pulse rounded bg-charcoal/10"></div>' +
+        '</div>' +
+      '</li>';
+    contents.innerHTML =
+      '<div class="flex-1 overflow-y-auto"><ul class="divide-y divide-charcoal/10 px-6">' +
+        row + row +
+      '</ul></div>' +
+      '<div class="border-t border-charcoal/10 px-6 py-5">' +
+        '<div class="mb-4 flex items-center justify-between">' +
+          '<div class="h-3 w-16 animate-pulse rounded bg-charcoal/10"></div>' +
+          '<div class="h-5 w-20 animate-pulse rounded bg-charcoal/10"></div>' +
+        '</div>' +
+        '<div class="h-11 w-full animate-pulse rounded-full bg-charcoal/10"></div>' +
+      '</div>';
+  }
+
   async function cartAdd(items) {
     const res = await fetch(routes.cart_add_url + '.js', {
       method: 'POST',
@@ -117,8 +143,10 @@
     const prev = label && label.textContent;
     if (btn) btn.disabled = true;
     if (label) label.textContent = window.cartStrings ? window.cartStrings.added.replace('✓', '…') : 'Adding…';
+    // Open the drawer immediately with a skeleton; real contents replace it.
+    if (cart) { cart.open(); showCartLoading(); }
     cartAdd([{ id: Number(id), quantity: 1 }])
-      .then(() => { cart && cart.open(); if (label && window.cartStrings) label.textContent = window.cartStrings.added; })
+      .then(() => { if (label && window.cartStrings) label.textContent = window.cartStrings.added; })
       .catch(() => { if (label) label.textContent = 'Try again'; })
       .finally(() => { setTimeout(() => { if (btn) btn.disabled = false; if (label && prev) label.textContent = prev; }, 1400); });
   });
@@ -153,8 +181,8 @@
       const id = add.dataset.variantId;
       if (!id) return;
       add.disabled = true;
+      if (cart) { cart.open(); showCartLoading(); }
       cartAdd([{ id: Number(id), quantity: 1 }])
-        .then(() => cart && cart.open())
         .catch(() => {})
         .finally(() => setTimeout(() => (add.disabled = false), 1200));
     }
