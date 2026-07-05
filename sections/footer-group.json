@@ -7,18 +7,27 @@
       "blocks": {
         "promise_exchange": {
           "type": "promise",
-          "settings": { "icon": "clock", "text": "7-Day Size Exchanges" }
+          "settings": {
+            "icon": "clock",
+            "text": "7-Day Size Exchanges"
+          }
         },
         "promise_secure": {
           "type": "promise",
-          "settings": { "icon": "lock", "text": "Secure Checkout" }
+          "settings": {
+            "icon": "lock",
+            "text": "Secure Checkout"
+          }
         }
       },
-      "block_order": ["promise_exchange", "promise_secure"],
+      "block_order": [
+        "promise_exchange",
+        "promise_secure"
+      ],
       "settings": {
-        "newsletter_text": "Join the mood board. Get 10% off your first capsule piece.",
+        "newsletter_text": "Join the Thoda Soft circle. New pieces, little joys, no spam.",
         "newsletter_placeholder": "your@email.com",
-        "newsletter_button": "Get 10% Off",
+        "newsletter_button": "Subscribe",
         "menu_1_title": "Explore",
         "menu_2_title": "Help",
         "promise_title": "Promise",
@@ -26,5 +35,7 @@
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

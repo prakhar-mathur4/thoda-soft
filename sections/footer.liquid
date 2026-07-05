@@ -17,7 +17,7 @@
           <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="230" height="55" class="h-14 w-auto object-contain sm:h-16">
         {%- endif -%}
         <p class="mt-4 max-w-sm text-pretty text-sm text-charcoal-muted">
-          {{ section.settings.newsletter_text | default: 'Join the mood board. Get 10% off your first capsule piece.' }}
+          {{ section.settings.newsletter_text | default: 'Join the Thoda Soft circle. New pieces, little joys, no spam.' }}
         </p>
         <div class="mt-5 max-w-md">
           {%- form 'customer', class: 'newsletter-form' -%}
@@ -35,7 +35,7 @@
                   placeholder="{{ section.settings.newsletter_placeholder | default: 'your@email.com' }}"
                   aria-label="{{ section.settings.newsletter_placeholder | default: 'your@email.com' }}"
                   class="min-w-0 flex-1 rounded-full border border-charcoal/20 bg-white px-5 py-3 text-sm text-charcoal outline-none transition placeholder:text-charcoal-muted focus:border-charcoal/40">
-                <button type="submit" class="btn-primary shrink-0 whitespace-nowrap">{{ section.settings.newsletter_button | default: 'Get 10% Off' }}</button>
+                <button type="submit" class="btn-primary shrink-0 whitespace-nowrap">{{ section.settings.newsletter_button | default: 'Subscribe' }}</button>
               </div>
               {%- if form.errors -%}
                 <p class="mt-2 text-xs text-charcoal">{{ form.errors | default_errors }}</p>
@@ -117,9 +117,9 @@
 {
   "name": "Footer",
   "settings": [
-    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "Join the mood board. Get 10% off your first capsule piece." },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "Join the Thoda Soft circle. New pieces, little joys, no spam." },
     { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "your@email.com" },
-    { "type": "text", "id": "newsletter_button", "label": "Newsletter button", "default": "Get 10% Off" },
+    { "type": "text", "id": "newsletter_button", "label": "Newsletter button", "default": "Subscribe" },
     { "type": "header", "content": "Column 1 — Explore" },
     { "type": "text", "id": "menu_1_title", "label": "Title", "default": "Explore" },
     { "type": "link_list", "id": "menu_1", "label": "Menu (optional)", "info": "Leave empty to use the default links: Shop, Lookbook, Our Story." },
