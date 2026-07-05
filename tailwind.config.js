@@ -33,6 +33,7 @@ module.exports = {
     fontFamily: {
       serif: ['var(--font-playfair)', 'Georgia', 'serif'],
       sans: ['var(--font-jost)', 'system-ui', 'sans-serif'],
+      script: ['var(--font-playwrite)', 'cursive'],
     },
     extend: {
       screens: {

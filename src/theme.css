@@ -8,6 +8,7 @@
 :root {
   --font-playfair: 'Playfair Display';
   --font-jost: 'Jost';
+  --font-playwrite: 'Playwrite NZ';
 }
 
 @layer base {
