@@ -543,6 +543,61 @@
   })();
 
   /* ----------------------------------------------------------------------
+   * Mobile size sheet — pick a size from a product card, then add to cart
+   * -------------------------------------------------------------------- */
+  const sizeSheet = makeOverlay({
+    root: $('[data-size-sheet]'),
+    overlay: $('[data-size-sheet-overlay]'),
+    panel: $('[data-size-sheet-panel]'),
+    openCls: ['translate-y-0'], closeCls: ['translate-y-full', 'sm:translate-y-4'],
+    ovOpen: ['opacity-100'], ovClose: ['opacity-0'],
+  });
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-mobile-add]');
+    if (trigger) {
+      e.preventDefault();
+      const card = trigger.closest('[data-product-card]');
+      if (!card || !sizeSheet) return;
+      const title = $('[data-size-sheet-title]');
+      const price = $('[data-size-sheet-price]');
+      const options = $('[data-size-sheet-options]');
+      if (title) title.textContent = card.dataset.productTitle || '';
+      if (price) price.textContent = card.dataset.productPrice || '';
+      if (options) {
+        options.innerHTML = '';
+        $$('[data-card-size]', card).forEach((s) => {
+          const soldOut = s.dataset.available === 'false';
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = s.textContent.trim();
+          b.dataset.sizeAdd = soldOut ? '' : s.dataset.variantId;
+          b.disabled = soldOut;
+          b.className =
+            'flex h-12 w-12 items-center justify-center rounded-full border text-sm uppercase transition ' +
+            (soldOut
+              ? 'cursor-not-allowed border-charcoal/15 text-charcoal/30 line-through'
+              : 'border-charcoal/25 text-charcoal hover:border-charcoal hover:bg-charcoal hover:text-cream active:scale-95');
+          options.appendChild(b);
+        });
+      }
+      sizeSheet.open();
+      return;
+    }
+    if (e.target.closest('[data-size-sheet-close]')) { e.preventDefault(); sizeSheet && sizeSheet.close(); }
+    const pick = e.target.closest('[data-size-add]');
+    if (pick && pick.dataset.sizeAdd) {
+      const id = pick.dataset.sizeAdd;
+      sizeSheet && sizeSheet.close();
+      cart && cart.open();
+      showCartLoading();
+      cartAdd([{ id: Number(id), quantity: 1 }]).catch(() => {});
+    }
+  });
+  const sizeSheetOverlay = $('[data-size-sheet-overlay]');
+  if (sizeSheetOverlay) sizeSheetOverlay.addEventListener('click', () => sizeSheet && sizeSheet.close());
+
+  /* ----------------------------------------------------------------------
    * Lookbook — "Shop this Look" toggle (reveals the product cards)
    * -------------------------------------------------------------------- */
   document.addEventListener('click', (e) => {
@@ -631,6 +686,6 @@
    * -------------------------------------------------------------------- */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    [cart, menu, search, quick, sizeGuide].forEach((o) => o && o.isOpen && o.close());
+    [cart, menu, search, quick, sizeGuide, sizeSheet].forEach((o) => o && o.isOpen && o.close());
   });
 })();

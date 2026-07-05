@@ -13,7 +13,7 @@
   assign current_variant = product.selected_or_first_available_variant
 -%}
 
-<article class="group flex flex-col" data-product-card data-product-handle="{{ product.handle }}">
+<article class="group flex flex-col" data-product-card data-product-handle="{{ product.handle }}" data-product-title="{{ product.title | escape }}" data-product-price="{{ product.price | money }}">
   <div class="relative aspect-[4/5] w-full overflow-hidden rounded-4xl bg-blush">
     <a href="{{ product.url }}" aria-label="{{ product.title | escape }}" class="absolute inset-0 z-10">
       {%- if product.featured_media -%}
@@ -75,7 +75,7 @@
       </button>
       <button
         type="button"
-        {% if has_sizes %}data-quickview-open="{{ product.handle }}"{% else %}data-card-add data-variant-id="{{ current_variant.id }}"{% endif %}
+        {% if has_sizes %}data-mobile-add{% else %}data-card-add data-variant-id="{{ current_variant.id }}"{% endif %}
         {% unless product.available %}disabled{% endunless %}
         aria-label="Add {{ product.title | escape }} to cart"
         class="rounded-full bg-charcoal/90 p-2.5 text-cream shadow-sm backdrop-blur transition active:scale-95 disabled:opacity-60">

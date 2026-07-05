@@ -1,0 +1,23 @@
+{%- comment -%}
+  Lightweight mobile size picker. Opened from a product card's bag icon (sized
+  products). Populated by global.js from the tapped card; picking a size adds it
+  straight to the cart.
+{%- endcomment -%}
+<div data-size-sheet class="fixed inset-0 z-[80] flex items-end justify-center pointer-events-none sm:items-center sm:p-6" aria-hidden="true">
+  <div data-size-sheet-overlay class="absolute inset-0 bg-charcoal/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-300"></div>
+  <div
+    data-size-sheet-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="Select a size"
+    class="relative w-full translate-y-full rounded-t-3xl bg-cream p-6 pb-8 text-center shadow-[0_-8px_40px_rgba(46,43,41,0.22)] transition-transform duration-300 ease-soft sm:max-w-xs sm:translate-y-4 sm:rounded-3xl"
+  >
+    <button type="button" data-size-sheet-close aria-label="{{ 'general.accessibility.close' | t }}" class="absolute right-3 top-3 rounded-full p-1.5 text-charcoal-muted transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'close', class: 'h-5 w-5' -%}
+    </button>
+    <p data-size-sheet-title class="font-serif text-lg text-charcoal"></p>
+    <p data-size-sheet-price class="mt-0.5 text-sm text-charcoal-muted"></p>
+    <p class="mb-3 mt-6 text-xs uppercase tracking-[0.18em] text-charcoal-muted">{{ 'products.product.select_size' | t }}</p>
+    <div data-size-sheet-options class="flex flex-wrap justify-center gap-2.5"></div>
+  </div>
+</div>
