@@ -96,6 +96,50 @@ section heading ("What Makes It Great") and whether it's open by default.
 
 ---
 
+---
+
+# Per-product accordions (Size & Fit / Materials & Care / Shipping & Returns)
+
+The three product accordions can also be **per-product**. Each accordion block is
+pre-wired to a product metafield; when a product has that metafield set, its value
+is shown, otherwise the shared fallback text (in the Theme Editor) is used.
+
+| Accordion            | Metafield (namespace.key)   |
+|----------------------|-----------------------------|
+| Size & Fit           | `custom.size_fit`           |
+| Materials & Care     | `custom.materials_care`     |
+| Shipping & Returns   | `custom.shipping_returns`   |
+
+## Setup — create the three product metafields (once)
+
+**Shopify admin → Settings → Custom data → Products → Add definition** (do this
+three times):
+
+| Name              | Namespace and key         | Type        |
+|-------------------|---------------------------|-------------|
+| Size & Fit        | `custom.size_fit`         | Rich text   |
+| Materials & Care  | `custom.materials_care`   | Rich text   |
+| Shipping & Returns| `custom.shipping_returns` | Rich text   |
+
+> Use type **Rich text** so you can add paragraphs, bullet lists, and links.
+
+## Fill per product
+
+Open a product → **Metafields** section → fill any of *Size & Fit*, *Materials &
+Care*, *Shipping & Returns* → **Save**. That product shows its own text; blank
+ones fall back to the shared default.
+
+> The accordion also **auto-hides** if both the metafield and the shared fallback
+> are empty.
+
+## Change which metafield an accordion uses
+
+Theme Editor → product → Product section → an **Accordion** block → the
+**"Per-product metafield"** field (e.g. `custom.materials_care`). Clear it to make
+that accordion always use the shared content.
+
+---
+
 ## Troubleshooting
 
 - **Highlights are blank / not showing** → check the metaobject field **keys** are

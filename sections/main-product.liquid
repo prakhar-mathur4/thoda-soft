@@ -141,10 +141,23 @@
 
         {%- for block in section.blocks -%}
           {%- if block.type == 'accordion' -%}
-            <details class="group border-b border-charcoal/15 py-4" {{ block.shopify_attributes }}>
-              <summary class="flex cursor-pointer list-none items-center justify-between text-sm uppercase tracking-[0.12em] text-charcoal marker:hidden">{{ block.settings.title }}<span class="ml-4 text-lg leading-none text-charcoal-muted transition-transform duration-300 ease-soft group-open:rotate-45">+</span></summary>
-              <div class="mt-3 text-sm leading-relaxed text-charcoal/75 [&_p]:mb-3">{{ block.settings.content }}</div>
-            </details>
+            {%- comment -%}
+              Content is per-product when the block names a product metafield
+              (e.g. "custom.materials_care") and that product has it set; else
+              it falls back to the block's shared content.
+            {%- endcomment -%}
+            {%- assign acc_content = block.settings.content -%}
+            {%- if block.settings.metafield != blank -%}
+              {%- assign mf_parts = block.settings.metafield | split: '.' -%}
+              {%- assign pmf = product.metafields[mf_parts[0]][mf_parts[1]] -%}
+              {%- if pmf != blank -%}{%- assign acc_content = pmf -%}{%- endif -%}
+            {%- endif -%}
+            {%- if acc_content != blank -%}
+              <details class="group border-b border-charcoal/15 py-4" {{ block.shopify_attributes }}>
+                <summary class="flex cursor-pointer list-none items-center justify-between text-sm uppercase tracking-[0.12em] text-charcoal marker:hidden">{{ block.settings.title }}<span class="ml-4 text-lg leading-none text-charcoal-muted transition-transform duration-300 ease-soft group-open:rotate-45">+</span></summary>
+                <div class="mt-3 text-sm leading-relaxed text-charcoal/75 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_a]:underline [&_a]:underline-offset-2">{{ acc_content }}</div>
+              </details>
+            {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -213,7 +226,8 @@
       "name": "Accordion",
       "settings": [
         { "type": "text", "id": "title", "label": "Title", "default": "Size & Fit" },
-        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from S–XXL.</p>" }
+        { "type": "richtext", "id": "content", "label": "Content (shared fallback)", "default": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from S–XXL.</p>" },
+        { "type": "text", "id": "metafield", "label": "Per-product metafield", "info": "Optional. e.g. custom.materials_care — when a product has this metafield, its value is shown instead of the fallback above." }
       ]
     }
   ],
