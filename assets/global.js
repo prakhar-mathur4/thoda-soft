@@ -549,7 +549,7 @@
     root: $('[data-size-sheet]'),
     overlay: $('[data-size-sheet-overlay]'),
     panel: $('[data-size-sheet-panel]'),
-    openCls: ['translate-y-0'], closeCls: ['translate-y-full', 'sm:translate-y-4'],
+    openCls: ['translate-y-0'], closeCls: ['translate-y-full'],
     ovOpen: ['opacity-100'], ovClose: ['opacity-0'],
   });
 
