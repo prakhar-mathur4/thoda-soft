@@ -53,7 +53,6 @@
       <p class="mb-3 text-xs uppercase tracking-[0.25em] text-charcoal-muted">{{ section.settings.eyebrow | default: 'The Debut Capsule' }}</p>
       <h1 class="font-serif text-3xl uppercase leading-tight tracking-[0.02em] sm:text-4xl">{{ product.title }}</h1>
       <p class="mt-4 text-lg text-charcoal" data-product-price>{{ current_variant.price | money }}</p>
-      <p class="mt-2 text-xs uppercase tracking-[0.12em] text-sage-deep">Free shipping on all orders</p>
 
       <form data-product-form novalidate>
         <input type="hidden" name="id" data-variant-id value="{{ current_variant.id }}">
