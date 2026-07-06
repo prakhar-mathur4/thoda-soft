@@ -8,7 +8,7 @@
       "type": "trust-bar",
       "blocks": {
         "b1": { "type": "item", "settings": { "icon": "leaf", "label": "Premium Cotton" } },
-        "b2": { "type": "item", "settings": { "icon": "sparkle", "label": "Inclusive Sizing (S–XXL)" } },
+        "b2": { "type": "item", "settings": { "icon": "sparkle", "label": "Inclusive Sizing (XS–XXL)" } },
         "b3": { "type": "item", "settings": { "icon": "pin", "label": "Designed in India" } },
         "b4": { "type": "item", "settings": { "icon": "clock", "label": "Limited Drop" } }
       },

@@ -16,7 +16,7 @@
         "q_ret_4": { "type": "qa", "settings": { "question": "Can I get a refund?", "answer": "<p>We offer size exchanges and store credit rather than refunds, unless an item arrives defective or incorrect — in which case we’ll make it right.</p>" } },
 
         "cat_size": { "type": "category", "settings": { "title": "Sizing & Fit" } },
-        "q_size_1": { "type": "qa", "settings": { "question": "What sizes do you offer?", "answer": "<p>Every style in the capsule comes in inclusive sizing from S to XXL, designed to drape beautifully on every body.</p>" } },
+        "q_size_1": { "type": "qa", "settings": { "question": "What sizes do you offer?", "answer": "<p>Every style in the capsule comes in inclusive sizing from XS to XXL, designed to drape beautifully on every body.</p>" } },
         "q_size_2": { "type": "qa", "settings": { "question": "How do I find my size?", "answer": "<p>Each product page includes a Size & Fit guide. If you’re between sizes, size down for a closer fit or up for extra ease.</p>" } },
         "q_size_3": { "type": "qa", "settings": { "question": "Do the dresses run true to size?", "answer": "<p>Yes — our pieces are true to size with a relaxed, feminine drape.</p>" } },
 
