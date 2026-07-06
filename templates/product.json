@@ -5,7 +5,7 @@
       "blocks": {
         "hl_design": { "type": "highlight", "settings": { "icon": "sparkle", "title": "The Design", "text": "Thoughtful, flattering tailoring that moves with you." } },
         "hl_fabric": { "type": "highlight", "settings": { "icon": "leaf", "title": "The Fabric", "text": "Premium, breathable cotton that softens with every wash." } },
-        "fit": { "type": "accordion", "settings": { "title": "Size & Fit", "metafield": "custom.size_fit", "content": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from XS–XXL. Between sizes? Size down for a closer fit, up for extra ease.</p>" } },
+        "fit": { "type": "accordion", "settings": { "title": "Size & Fit", "metafield": "custom.size_fit", "content": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from XS–3XL. Between sizes? Size down for a closer fit, up for extra ease.</p>" } },
         "care": { "type": "accordion", "settings": { "title": "Materials & Care", "metafield": "custom.materials_care", "content": "<p>Premium ultra-soft cotton. Machine wash cold on a gentle cycle, line dry, warm iron if needed.</p>" } },
         "shipping": { "type": "accordion", "settings": { "title": "Shipping & Returns", "metafield": "custom.shipping_returns", "content": "<p>Free shipping on all orders. 7-day size exchanges. Secure checkout, every time.</p>" } }
       },
