@@ -10,40 +10,10 @@
   </header>
 
   <div class="mx-auto max-w-3xl space-y-14">
-    {%- comment -%} Size chart with unit toggle {%- endcomment -%}
-    <section data-size-chart>
-      <h2 class="mb-4 font-serif text-2xl">Size Chart</h2>
-      <div class="mb-4 inline-flex rounded-full border border-charcoal/20 p-1">
-        <button type="button" data-size-unit="in" aria-pressed="true" class="rounded-full px-5 py-1.5 text-xs uppercase tracking-[0.12em] transition aria-pressed:bg-charcoal aria-pressed:text-cream text-charcoal hover:opacity-70">Inches</button>
-        <button type="button" data-size-unit="cm" aria-pressed="false" class="rounded-full px-5 py-1.5 text-xs uppercase tracking-[0.12em] transition aria-pressed:bg-charcoal aria-pressed:text-cream text-charcoal hover:opacity-70">Centimetres</button>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[420px] border-collapse text-left text-sm">
-          <thead>
-            <tr class="border-b border-charcoal/20">
-              <th scope="col" class="py-3 pr-4 font-serif text-base font-normal">Size</th>
-              <th scope="col" class="py-3 pr-4 font-serif text-base font-normal">Bust</th>
-              <th scope="col" class="py-3 pr-4 font-serif text-base font-normal">Waist</th>
-              <th scope="col" class="py-3 font-serif text-base font-normal">Hip</th>
-            </tr>
-          </thead>
-          <tbody data-unit="in">
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">S</th><td class="py-3 pr-4 text-charcoal/80">33–34</td><td class="py-3 pr-4 text-charcoal/80">26–27</td><td class="py-3 text-charcoal/80">36–37</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">M</th><td class="py-3 pr-4 text-charcoal/80">35–36</td><td class="py-3 pr-4 text-charcoal/80">28–29</td><td class="py-3 text-charcoal/80">38–39</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">L</th><td class="py-3 pr-4 text-charcoal/80">37–39</td><td class="py-3 pr-4 text-charcoal/80">30–32</td><td class="py-3 text-charcoal/80">40–42</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">XL</th><td class="py-3 pr-4 text-charcoal/80">40–42</td><td class="py-3 pr-4 text-charcoal/80">33–35</td><td class="py-3 text-charcoal/80">43–45</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">XXL</th><td class="py-3 pr-4 text-charcoal/80">43–45</td><td class="py-3 pr-4 text-charcoal/80">36–38</td><td class="py-3 text-charcoal/80">46–48</td></tr>
-          </tbody>
-          <tbody data-unit="cm" hidden>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">S</th><td class="py-3 pr-4 text-charcoal/80">84–86</td><td class="py-3 pr-4 text-charcoal/80">66–69</td><td class="py-3 text-charcoal/80">91–94</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">M</th><td class="py-3 pr-4 text-charcoal/80">89–91</td><td class="py-3 pr-4 text-charcoal/80">71–74</td><td class="py-3 text-charcoal/80">96–99</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">L</th><td class="py-3 pr-4 text-charcoal/80">94–99</td><td class="py-3 pr-4 text-charcoal/80">76–81</td><td class="py-3 text-charcoal/80">102–107</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">XL</th><td class="py-3 pr-4 text-charcoal/80">102–107</td><td class="py-3 pr-4 text-charcoal/80">84–89</td><td class="py-3 text-charcoal/80">109–114</td></tr>
-            <tr class="border-b border-charcoal/10"><th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">XXL</th><td class="py-3 pr-4 text-charcoal/80">109–114</td><td class="py-3 pr-4 text-charcoal/80">91–96</td><td class="py-3 text-charcoal/80">117–122</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mt-3 text-xs text-charcoal-muted">Measurements are body measurements, not garment measurements. Each piece is then cut with a relaxed, feminine drape.</p>
+    {%- comment -%} All size charts + category jump buttons {%- endcomment -%}
+    <section>
+      <h2 class="mb-5 font-serif text-2xl">Size Charts</h2>
+      {%- render 'size-charts' -%}
     </section>
 
     {%- comment -%} How to measure {%- endcomment -%}

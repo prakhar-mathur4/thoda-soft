@@ -1,0 +1,39 @@
+{%- comment -%}
+  Renders one size chart table. Params:
+    id          - anchor id
+    title       - chart title
+    show_title  - render the <h3> title (Size Guide page: true; popup: false)
+    tags        - product tags this chart applies to (data attr, reference)
+    headers     - pipe-separated column labels, e.g. "Size|Chest|Waist|Hip"
+    rows        - rows separated by ";", cells by "|"
+{%- endcomment -%}
+{%- assign header_cells = headers | split: '|' -%}
+{%- assign chart_rows = rows | split: ';' -%}
+<section id="{{ id }}" data-chart data-chart-tags="{{ tags }}" class="scroll-mt-28">
+  {%- if show_title -%}<h3 class="mb-4 font-serif text-xl text-charcoal sm:text-2xl">{{ title }}</h3>{%- endif -%}
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[520px] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-b border-charcoal/20">
+          {%- for h in header_cells -%}
+            <th scope="col" class="py-3 pr-4 font-serif text-base font-normal">{{ h }}</th>
+          {%- endfor -%}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for row in chart_rows -%}
+          {%- assign cells = row | split: '|' -%}
+          <tr class="border-b border-charcoal/10">
+            {%- for c in cells -%}
+              {%- if forloop.first -%}
+                <th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">{{ c }}</th>
+              {%- else -%}
+                <td class="py-3 pr-4 text-charcoal/80">{{ c }}</td>
+              {%- endif -%}
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
