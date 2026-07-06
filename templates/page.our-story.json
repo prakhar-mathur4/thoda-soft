@@ -3,6 +3,21 @@
     "main": {
       "type": "main-our-story",
       "settings": {
+        "eyebrow": "Our Story",
+        "heading": "Meet the Founders",
+        "intro": "THODA SOFT began with two friends, one shared dream, and countless conversations about design.",
+        "narrative": "<p>We met while studying Textile Design at NIFT Jodhpur, where our friendship grew through fabric swatches, print explorations, late-night submissions, and endless mood boards. More than classmates, we became creative partners connected by the same design sensibility — a love for timeless aesthetics, thoughtful details, and clothing that feels as beautiful as it looks.</p><p>Even before THODA SOFT had a name, we knew one thing: someday, we wanted to build something of our own.</p>",
+        "sub1_heading": "Why THODA SOFT",
+        "sub1_body": "<p>Like many women, our Pinterest boards were filled with dreamy dresses we'd saved for “one day.” But when we tried to find them in real life, something was always missing. They either looked beautiful but felt uncomfortable, or they were practical but lacked the charm that made us fall in love with them.</p><p>So we asked ourselves a simple question — <em>why should beautiful clothing ever come at the cost of comfort?</em></p><p>That question became THODA SOFT: a brand created for the space between a beautiful mood board and a real, lived-in life.</p>",
+        "sub2_heading": "Our Philosophy",
+        "sub2_body": "<p>We believe the best pieces in your wardrobe aren't the ones you save for special occasions — they're the ones you keep reaching for.</p><p>Every THODA SOFT piece is thoughtfully designed in India using breathable, carefully chosen fabrics, timeless silhouettes, and considered details that make getting dressed feel effortless. We create fewer, better pieces that become part of your everyday story, not just your wardrobe.</p>",
+        "quote": "Why should beautiful clothing ever come at the cost of comfort?",
+        "quote_footer": "a little pretty, a little you",
+        "split_heading": "Designed For",
+        "split_body": "THODA SOFT is designed for women who love dressing beautifully while living comfortably. For slow mornings with coffee, weekend brunches that turn into evening walks, spontaneous getaways, fresh flowers on the table, and the beautifully ordinary moments in between. Our collections are intentionally small, thoughtfully crafted, and available in inclusive sizes from XS to 3XL — because real wardrobes aren't one size, and neither are the women who wear them.",
+        "cta_heading": "The Soft Manifesto",
+        "cta_body": "To us, softness is more than a fabric — it's a way of living. It's choosing comfort without compromising on beauty, slowing down when life asks you to rush, buying thoughtfully instead of endlessly, and finding joy in the little things. We hope every THODA SOFT piece becomes the one you'll reach for without thinking twice. Because sometimes, a little softer is exactly enough.",
+        "cta_label": "Shop The Capsule",
         "cta_link": "/collections/all"
       }
     }
