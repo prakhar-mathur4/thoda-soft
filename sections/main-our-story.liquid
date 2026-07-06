@@ -38,15 +38,17 @@
     </div>
   </section>
 
-  {%- comment -%} Pull quote {%- endcomment -%}
-  <section class="py-16 sm:py-24" style="background-color: {{ section.settings.quote_bg | default: '#f7dfdf' }};">
-    <blockquote class="container-editorial mx-auto max-w-3xl text-center" data-reveal>
-      <p class="font-serif text-2xl italic leading-snug text-charcoal sm:text-3xl">{{ section.settings.quote | default: 'You shouldn’t have to choose between a beautiful moodboard and breathable comfort.' }}</p>
-      {%- if section.settings.quote_footer != blank -%}
-        <footer class="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal-muted">{{ section.settings.quote_footer }}</footer>
-      {%- endif -%}
-    </blockquote>
-  </section>
+  {%- comment -%} Pull quote (hidden when the quote is empty) {%- endcomment -%}
+  {%- if section.settings.quote != blank -%}
+    <section class="py-16 sm:py-24" style="background-color: {{ section.settings.quote_bg | default: '#f7dfdf' }};">
+      <blockquote class="container-editorial mx-auto max-w-3xl text-center" data-reveal>
+        <p class="font-serif text-2xl italic leading-snug text-charcoal sm:text-3xl">{{ section.settings.quote }}</p>
+        {%- if section.settings.quote_footer != blank -%}
+          <footer class="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal-muted">{{ section.settings.quote_footer }}</footer>
+        {%- endif -%}
+      </blockquote>
+    </section>
+  {%- endif -%}
 
   {%- comment -%} Split: image + craftsmanship {%- endcomment -%}
   <section class="grid grid-cols-1 items-stretch md:grid-cols-2" style="background-color: {{ section.settings.split_bg | default: '#ccd1b2' }};">
