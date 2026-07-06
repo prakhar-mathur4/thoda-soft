@@ -21,7 +21,7 @@
         "q_size_3": { "type": "qa", "settings": { "question": "Do the dresses run true to size?", "answer": "<p>Yes — our pieces are true to size with a relaxed, feminine drape.</p>" } },
 
         "cat_care": { "type": "category", "settings": { "title": "Product & Care" } },
-        "q_care_1": { "type": "qa", "settings": { "question": "What fabric are your pieces made from?", "answer": "<p>Premium, ultra-soft, breathable cotton — thoughtfully designed in India to look flawless and feel weightless.</p>" } },
+        "q_care_1": { "type": "qa", "settings": { "question": "What fabric are your pieces made from?", "answer": "<p>Breathable fabrics — thoughtfully designed in India to look flawless and feel weightless.</p>" } },
         "q_care_2": { "type": "qa", "settings": { "question": "How do I care for my dress?", "answer": "<p>Machine wash cold on a gentle cycle, line dry, and warm iron if needed. Our cotton softens beautifully with every wash.</p>" } },
 
         "cat_pay": { "type": "category", "settings": { "title": "Payments & Checkout" } },
