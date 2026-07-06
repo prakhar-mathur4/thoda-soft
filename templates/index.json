@@ -28,6 +28,7 @@
     "brand-story": {
       "type": "brand-story",
       "settings": {
+        "bg_color": "#F6E7E4",
         "heading": "The Beauty of Dressing Softly.",
         "body": "For women who love dressing beautifully while living comfortably. Thoughtfully designed in India using breathable, carefully chosen fabrics, timeless silhouettes, and details that make everyday moments feel a little more special.",
         "button_label": "Explore Now"
