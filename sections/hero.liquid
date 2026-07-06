@@ -1,6 +1,31 @@
 {%- liquid
   assign primary = section.settings.primary_image
   assign secondary = section.settings.secondary_image
+  assign primary_alt = 'Thoda Soft — the debut capsule'
+  assign secondary_alt = 'Thoda Soft'
+
+  # Hero art from products tagged `hero`: read a collection (picked here, or the
+  # automated collection with handle `hero`). Falls back to the images above.
+  assign hero_col = section.settings.hero_collection
+  if hero_col == blank
+    assign hero_col = collections['hero']
+  endif
+  if hero_col != blank and hero_col.products.size > 0
+    assign hp1 = hero_col.products.first
+    assign primary = hp1.featured_image
+    assign primary_alt = hp1.featured_image.alt | default: hp1.title
+    if hero_col.products.size > 1
+      assign hp2 = hero_col.products[1]
+      assign secondary = hp2.featured_image
+      assign secondary_alt = hp2.featured_image.alt | default: hp2.title
+    else
+      assign secondary = hp1.images[1] | default: hp1.featured_image
+      assign secondary_alt = hp1.title
+    endif
+  else
+    assign primary_alt = primary.alt | default: primary_alt
+    assign secondary_alt = secondary.alt | default: secondary_alt
+  endif
 -%}
 <section
   data-hero
@@ -54,7 +79,7 @@
         <div data-anim="frame-primary" class="relative h-full w-full overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(137,91,58,0.45)] ring-1 ring-white/40">
           <div class="absolute inset-0 scale-105">
             {%- if primary -%}
-              <img src="{{ primary | image_url: width: 900 }}" alt="{{ primary.alt | escape }}" width="900" height="1200" fetchpriority="high" class="h-full w-full object-cover">
+              <img src="{{ primary | image_url: width: 900 }}" alt="{{ primary_alt | escape }}" width="900" height="1200" fetchpriority="high" class="h-full w-full object-cover">
             {%- else -%}
               <div class="h-full w-full bg-blush-deep"></div>
             {%- endif -%}
@@ -66,7 +91,7 @@
         <div data-anim="frame-secondary" class="relative h-full w-full overflow-hidden rounded-[1.5rem] border-[5px] border-cream shadow-[0_24px_50px_-24px_rgba(137,91,58,0.5)]">
           <div class="absolute inset-0 scale-105">
             {%- if secondary -%}
-              <img src="{{ secondary | image_url: width: 600 }}" alt="{{ secondary.alt | escape }}" width="600" height="750" loading="lazy" class="h-full w-full object-cover">
+              <img src="{{ secondary | image_url: width: 600 }}" alt="{{ secondary_alt | escape }}" width="600" height="750" loading="lazy" class="h-full w-full object-cover">
             {%- else -%}
               <div class="h-full w-full bg-lavender"></div>
             {%- endif -%}
@@ -82,8 +107,9 @@
   "name": "Hero",
   "settings": [
     { "type": "header", "content": "Images" },
-    { "type": "image_picker", "id": "primary_image", "label": "Primary (portrait)" },
-    { "type": "image_picker", "id": "secondary_image", "label": "Secondary (overlay)" },
+    { "type": "collection", "id": "hero_collection", "label": "Hero products collection", "info": "Uses the featured images of products in this collection (e.g. an automated collection where Tag = hero). Leave empty to use the collection named 'hero', or the images below." },
+    { "type": "image_picker", "id": "primary_image", "label": "Primary (portrait) — fallback" },
+    { "type": "image_picker", "id": "secondary_image", "label": "Secondary (overlay) — fallback" },
     { "type": "header", "content": "Eyebrow" },
     { "type": "text", "id": "eyebrow_1", "label": "Part 1", "default": "Issue Nº 01" },
     { "type": "text", "id": "eyebrow_2", "label": "Part 2", "default": "The Debut Capsule" },
