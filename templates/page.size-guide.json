@@ -9,6 +9,7 @@
       },
       "block_order": ["q1", "q2", "q3"],
       "settings": {
+        "eyebrow": "Finding Your Soft Fit",
         "cta_link": "/collections/all"
       }
     }
