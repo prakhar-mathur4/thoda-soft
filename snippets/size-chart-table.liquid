@@ -1,37 +1,60 @@
 {%- comment -%}
-  Renders one size chart table. Params:
+  Renders one size chart with an Inches / Centimetres toggle (cm auto-converted
+  from inches). Params:
     id          - anchor id
     title       - chart title
-    show_title  - render the <h3> title (Size Guide page: true; popup: false)
-    tags        - product tags this chart applies to (data attr, reference)
-    headers     - pipe-separated column labels, e.g. "Size|Chest|Waist|Hip"
-    rows        - rows separated by ";", cells by "|"
+    show_title  - render the <h3> (Size Guide page: true; popup: false)
+    tags        - product tags this chart applies to (reference)
+    headers     - column labels separated by header_sep
+    rows        - rows separated by newline or ";", cells by cell_sep (inches)
+    header_sep  - default "|"
+    cell_sep    - default "|"
 {%- endcomment -%}
-{%- assign header_cells = headers | split: '|' -%}
-{%- assign chart_rows = rows | split: ';' -%}
-<section id="{{ id }}" data-chart data-chart-tags="{{ tags }}" class="scroll-mt-28">
+{%- liquid
+  assign hsep = header_sep | default: '|'
+  assign csep = cell_sep | default: '|'
+  assign header_cells = headers | split: hsep
+  assign chart_rows = rows | split: ';'
+-%}
+<section id="{{ id }}" data-chart data-size-chart data-chart-tags="{{ tags }}" class="scroll-mt-28">
   {%- if show_title -%}<h3 class="mb-4 font-serif text-xl text-charcoal sm:text-2xl">{{ title }}</h3>{%- endif -%}
+  <div class="mb-4 inline-flex rounded-full border border-charcoal/20 p-1">
+    <button type="button" data-size-unit="in" aria-pressed="true" class="rounded-full px-5 py-1.5 text-xs uppercase tracking-[0.12em] transition aria-pressed:bg-charcoal aria-pressed:text-cream text-charcoal hover:opacity-70">Inches</button>
+    <button type="button" data-size-unit="cm" aria-pressed="false" class="rounded-full px-5 py-1.5 text-xs uppercase tracking-[0.12em] transition aria-pressed:bg-charcoal aria-pressed:text-cream text-charcoal hover:opacity-70">Centimetres</button>
+  </div>
   <div class="overflow-x-auto">
     <table class="w-full min-w-[520px] border-collapse text-left text-sm">
       <thead>
         <tr class="border-b border-charcoal/20">
-          {%- for h in header_cells -%}
-            <th scope="col" class="py-3 pr-4 font-serif text-base font-normal">{{ h }}</th>
-          {%- endfor -%}
+          {%- for h in header_cells -%}<th scope="col" class="py-3 pr-4 font-serif text-base font-normal">{{ h | strip }}</th>{%- endfor -%}
         </tr>
       </thead>
-      <tbody>
+      <tbody data-unit="in">
         {%- for row in chart_rows -%}
-          {%- assign cells = row | split: '|' -%}
-          <tr class="border-b border-charcoal/10">
-            {%- for c in cells -%}
-              {%- if forloop.first -%}
-                <th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">{{ c }}</th>
-              {%- else -%}
-                <td class="py-3 pr-4 text-charcoal/80">{{ c }}</td>
-              {%- endif -%}
-            {%- endfor -%}
-          </tr>
+          {%- assign rowstr = row | strip -%}
+          {%- if rowstr != blank -%}
+            {%- assign cells = rowstr | split: csep -%}
+            <tr class="border-b border-charcoal/10">
+              {%- for c in cells -%}
+                {%- if forloop.first -%}<th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">{{ c | strip }}</th>
+                {%- else -%}<td class="py-3 pr-4 text-charcoal/80">{{ c | strip }}</td>{%- endif -%}
+              {%- endfor -%}
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      </tbody>
+      <tbody data-unit="cm" hidden>
+        {%- for row in chart_rows -%}
+          {%- assign rowstr = row | strip -%}
+          {%- if rowstr != blank -%}
+            {%- assign cells = rowstr | split: csep -%}
+            <tr class="border-b border-charcoal/10">
+              {%- for c in cells -%}
+                {%- if forloop.first -%}<th scope="row" class="py-3 pr-4 font-medium uppercase text-charcoal">{{ c | strip }}</th>
+                {%- else -%}<td class="py-3 pr-4 text-charcoal/80">{{ c | strip | times: 2.54 | round: 1 }}</td>{%- endif -%}
+              {%- endfor -%}
+            </tr>
+          {%- endif -%}
         {%- endfor -%}
       </tbody>
     </table>

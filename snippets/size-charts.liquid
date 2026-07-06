@@ -1,20 +1,20 @@
 {%- comment -%}
-  Shared size charts (single source of truth), used by the Size Guide page and
-  the product size-chart popup.
+  Shared size charts — used by the Size Guide page and the product popup.
+
+  Source of truth: the `size_chart` metaobject (admin-managed). If no metaobject
+  entries exist, it falls back to the built-in charts below so nothing breaks
+  before setup. See docs/size-charts-setup.md.
 
   Params:
     product (optional) — when passed, only charts whose tag the product carries
       are shown (popup). Without it, every chart is shown (Size Guide page).
-
-  Add / edit a chart below: add its id, title, tag(s), headers, and rows.
-  A product shows a chart when it has the matching tag (e.g. `chart-shirt-dress`).
 {%- endcomment -%}
 {%- liquid
-  assign ids = 'chart-short-coord-top,chart-short-coord-skirt,chart-shirt-dress,chart-lace-top,chart-long-coord-top' | split: ','
-  assign titles = 'Short Co-ord Set — Top~Short Co-ord Set — Skirt~Shirt Dress~Lace Top~Long Co-ord Set — Top' | split: '~'
-  assign tagsets = 'chart-short-coord-top~chart-short-coord-skirt~chart-shirt-dress~chart-lace-top~chart-long-coord-top' | split: '~'
-  assign headersets = 'Size|Chest|Waist|Bottom Hem|Shoulder|Arm Hole~Size|Waist|Hip|Bottom Flare|Length~Size|Chest|Waist|Hip|Sleeve Opening|Length~Size|Chest|Waist|Shoulder|Arm Hole|Length~Size|Chest|Waist|Shoulder|Arm Hole|Length' | split: '~'
-
+  assign meta_charts = shop.metaobjects.size_chart.values
+  assign use_meta = false
+  if meta_charts != blank and meta_charts.size > 0
+    assign use_meta = true
+  endif
   assign show_all = true
   if product != blank
     assign show_all = false
@@ -23,45 +23,92 @@
 -%}
 
 <div data-size-charts>
-  {%- if show_all -%}
-    <div class="mb-8 flex flex-wrap gap-2">
+  {%- if use_meta -%}
+    {%- comment -%} ---------- Admin-managed (metaobjects) ---------- {%- endcomment -%}
+    {%- if show_all -%}
+      <div class="mb-8 flex flex-wrap gap-2">
+        {%- for c in meta_charts -%}
+          <a href="#sizechart-{{ forloop.index }}" class="rounded-full border border-charcoal/20 px-4 py-2 text-sm text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{{ c.title.value }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="space-y-12">
+      {%- for c in meta_charts -%}
+        {%- liquid
+          assign matched = show_all
+          unless show_all
+            assign ctags = c.tag.value | split: ','
+            for t in product.tags
+              assign tl = t | strip | downcase
+              for ct in ctags
+                assign ctl = ct | strip | downcase
+                if ctl == tl
+                  assign matched = true
+                  break
+                endif
+              endfor
+              if matched
+                break
+              endif
+            endfor
+          endunless
+        -%}
+        {%- if matched -%}
+          {%- assign meta_rows = c.rows.value | newline_to_br | replace: '<br />', ';' | replace: '<br>', ';' | strip_newlines -%}
+          {%- assign meta_id = 'sizechart-' | append: forloop.index -%}
+          {%- render 'size-chart-table', id: meta_id, title: c.title.value, show_title: show_all, tags: c.tag.value, headers: c.headers.value, rows: meta_rows, header_sep: ',', cell_sep: ',' -%}
+          {%- assign rendered_any = true -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  {%- else -%}
+    {%- comment -%} ---------- Built-in fallback ---------- {%- endcomment -%}
+    {%- liquid
+      assign ids = 'chart-short-coord-top,chart-short-coord-skirt,chart-shirt-dress,chart-lace-top,chart-long-coord-top' | split: ','
+      assign titles = 'Short Co-ord Set — Top~Short Co-ord Set — Skirt~Shirt Dress~Lace Top~Long Co-ord Set — Top' | split: '~'
+      assign tagsets = 'chart-short-coord-top~chart-short-coord-skirt~chart-shirt-dress~chart-lace-top~chart-long-coord-top' | split: '~'
+      assign headersets = 'Size|Chest|Waist|Bottom Hem|Shoulder|Arm Hole~Size|Waist|Hip|Bottom Flare|Length~Size|Chest|Waist|Hip|Sleeve Opening|Length~Size|Chest|Waist|Shoulder|Arm Hole|Length~Size|Chest|Waist|Shoulder|Arm Hole|Length' | split: '~'
+    -%}
+    {%- if show_all -%}
+      <div class="mb-8 flex flex-wrap gap-2">
+        {%- for i in (0..4) -%}
+          <a href="#{{ ids[i] }}" class="rounded-full border border-charcoal/20 px-4 py-2 text-sm text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{{ titles[i] }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="space-y-12">
       {%- for i in (0..4) -%}
-        <a href="#{{ ids[i] }}" class="rounded-full border border-charcoal/20 px-4 py-2 text-sm text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{{ titles[i] }}</a>
+        {%- liquid
+          assign matched = show_all
+          unless show_all
+            assign chart_tags = tagsets[i] | split: ','
+            for t in product.tags
+              assign tl = t | strip | downcase
+              if chart_tags contains tl
+                assign matched = true
+                break
+              endif
+            endfor
+          endunless
+        -%}
+        {%- if matched -%}
+          {%- assign rows = '' -%}
+          {%- case i -%}
+            {%- when 0 -%}{%- assign rows = 'XS|34|30|38|14.25|17;S|36|32|40|15.25|17.5;M|38|34|42|16.25|18.5;L|40|36|44|16.75|19.5;XL|42|38|46|17.25|20.5;2XL|44|40|48|17.5|22;3XL|46|42|50|18.25|22.5' -%}
+            {%- when 1 -%}{%- assign rows = 'XS|27|38|41|15.5;S|29|40|43|15.75;M|31|42|45|16;L|33|44|47|16.5;XL|35|46|49|17;2XL|37|48|51|17.5;3XL|39|50|53|18' -%}
+            {%- when 2 -%}{%- assign rows = 'XS|38|30|50|15.5|34;S|40|32|52|16|34.25;M|42|34|54|16.5|34.5;L|44|36|56|17|35;XL|46|38|58|17.5|35.5;2XL|48|40|60|18|36;3XL|50|42|62|18.5|36.5' -%}
+            {%- when 3 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
+            {%- when 4 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
+          {%- endcase -%}
+          {%- render 'size-chart-table', id: ids[i], title: titles[i], show_title: show_all, tags: tagsets[i], headers: headersets[i], rows: rows -%}
+          {%- assign rendered_any = true -%}
+        {%- endif -%}
       {%- endfor -%}
     </div>
   {%- endif -%}
 
-  <div class="space-y-12">
-    {%- for i in (0..4) -%}
-      {%- liquid
-        assign matched = show_all
-        unless show_all
-          assign chart_tags = tagsets[i] | split: ','
-          for t in product.tags
-            assign tl = t | strip | downcase
-            if chart_tags contains tl
-              assign matched = true
-              break
-            endif
-          endfor
-        endunless
-      -%}
-      {%- if matched -%}
-        {%- assign rows = '' -%}
-        {%- case i -%}
-          {%- when 0 -%}{%- assign rows = 'XS|34|30|38|14.25|17;S|36|32|40|15.25|17.5;M|38|34|42|16.25|18.5;L|40|36|44|16.75|19.5;XL|42|38|46|17.25|20.5;2XL|44|40|48|17.5|22;3XL|46|42|50|18.25|22.5' -%}
-          {%- when 1 -%}{%- assign rows = 'XS|27|38|41|15.5;S|29|40|43|15.75;M|31|42|45|16;L|33|44|47|16.5;XL|35|46|49|17;2XL|37|48|51|17.5;3XL|39|50|53|18' -%}
-          {%- when 2 -%}{%- assign rows = 'XS|38|30|50|15.5|34;S|40|32|52|16|34.25;M|42|34|54|16.5|34.5;L|44|36|56|17|35;XL|46|38|58|17.5|35.5;2XL|48|40|60|18|36;3XL|50|42|62|18.5|36.5' -%}
-          {%- when 3 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
-          {%- when 4 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
-        {%- endcase -%}
-        {%- render 'size-chart-table', id: ids[i], title: titles[i], show_title: show_all, tags: tagsets[i], headers: headersets[i], rows: rows -%}
-        {%- assign rendered_any = true -%}
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-
-  <p class="mt-4 text-xs text-charcoal-muted">All measurements are in inches (body measurements). Between sizes? Size down for a closer fit, up for extra ease.</p>
+  <p class="mt-4 text-xs text-charcoal-muted">Body measurements. Toggle Inches / Centimetres above. Between sizes? Size down for a closer fit, up for extra ease.</p>
 
   {%- if show_all == false and rendered_any == false -%}
     <div class="text-center">
