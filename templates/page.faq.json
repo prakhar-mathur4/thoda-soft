@@ -36,7 +36,7 @@
         "cat_care", "q_care_1", "q_care_2",
         "cat_pay", "q_pay_1", "q_pay_2", "q_pay_3"
       ],
-      "settings": {}
+      "settings": { "cta_heading": "Need a little help? Let's figure it out together." }
     }
   },
   "order": ["main"]

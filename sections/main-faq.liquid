@@ -7,6 +7,13 @@
 {%- endcomment -%}
 {%- liquid
   assign cta_email = section.settings.cta_email | default: shop.email
+  assign wa = settings.whatsapp_number
+  assign wa_text = 'Hi Thoda Soft! I have a question.' | url_encode
+  if wa != blank
+    assign cta_href = 'https://wa.me/' | append: wa | append: '?text=' | append: wa_text
+  else
+    assign cta_href = 'mailto:' | append: cta_email
+  endif
 -%}
 <div class="container-editorial py-14 sm:py-20">
   <header class="mx-auto mb-12 max-w-2xl text-center" data-reveal>
@@ -45,11 +52,11 @@
 
   {%- if section.settings.show_cta -%}
     <div class="mx-auto mt-16 max-w-3xl border-t border-charcoal/10 pt-10 text-center" data-reveal>
-      <h2 class="font-serif text-2xl">{{ section.settings.cta_heading | default: 'Still have a question?' }}</h2>
+      <h2 class="font-serif text-2xl">{{ section.settings.cta_heading | default: 'Need a little help?' }}</h2>
       {%- if section.settings.cta_body != blank -%}
         <p class="mx-auto mt-3 max-w-md text-sm text-charcoal-muted">{{ section.settings.cta_body }}</p>
       {%- endif -%}
-      <a href="mailto:{{ cta_email }}" class="btn-primary mt-6">{{ section.settings.cta_label | default: 'Email Us' }}</a>
+      <a href="{{ cta_href }}" {% if wa != blank %}target="_blank" rel="noopener"{% endif %} class="btn-primary mt-6">{{ section.settings.cta_label | default: 'Talk to Us' }}</a>
       {%- if section.settings.cta_note != blank -%}
         <p class="mt-6 text-sm text-charcoal-muted">{{ section.settings.cta_note }} <a href="{{ section.settings.cta_note_link | default: '/collections/all' }}" class="underline underline-offset-2 hover:text-charcoal">{{ section.settings.cta_note_link_label | default: 'capsule' }}</a>.</p>
       {%- endif -%}
@@ -78,10 +85,10 @@
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "Everything you need to know about shipping, exchanges, sizing, and caring for your Thoda Soft pieces." },
     { "type": "header", "content": "Contact call to action" },
     { "type": "checkbox", "id": "show_cta", "label": "Show contact CTA", "default": true },
-    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Still have a question?" },
+    { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Need a little help? Let's figure it out together." },
     { "type": "textarea", "id": "cta_body", "label": "Body", "default": "We’re happy to help. Reach out and our team will get back to you within one business day." },
     { "type": "text", "id": "cta_email", "label": "Email", "default": "thodasoft@gmail.com" },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Email Us" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Talk to Us" },
     { "type": "text", "id": "cta_note", "label": "Note before link", "default": "Or keep browsing the" },
     { "type": "text", "id": "cta_note_link_label", "label": "Link label", "default": "capsule" },
     { "type": "url", "id": "cta_note_link", "label": "Link" }
