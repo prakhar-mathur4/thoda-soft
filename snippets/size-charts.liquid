@@ -32,6 +32,36 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
+    {%- comment -%} Show titles on the page, and in the popup when >1 chart matches {%- endcomment -%}
+    {%- liquid
+      assign show_titles = show_all
+      unless show_all
+        assign mcount = 0
+        for c in meta_charts
+          assign ctags = c.tag.value | split: ','
+          assign m = false
+          for t in product.tags
+            assign tl = t | strip | downcase
+            for ct in ctags
+              assign ctl = ct | strip | downcase
+              if ctl == tl
+                assign m = true
+                break
+              endif
+            endfor
+            if m
+              break
+            endif
+          endfor
+          if m
+            assign mcount = mcount | plus: 1
+          endif
+        endfor
+        if mcount > 1
+          assign show_titles = true
+        endif
+      endunless
+    -%}
     <div class="space-y-12">
       {%- for c in meta_charts -%}
         {%- liquid
@@ -56,7 +86,7 @@
         {%- if matched -%}
           {%- assign meta_rows = c.rows.value | newline_to_br | replace: '<br />', ';' | replace: '<br>', ';' | strip_newlines -%}
           {%- assign meta_id = 'sizechart-' | append: forloop.index -%}
-          {%- render 'size-chart-table', id: meta_id, title: c.title.value, show_title: show_all, tags: c.tag.value, headers: c.headers.value, rows: meta_rows, header_sep: ',', cell_sep: ',' -%}
+          {%- render 'size-chart-table', id: meta_id, title: c.title.value, show_title: show_titles, tags: c.tag.value, headers: c.headers.value, rows: meta_rows, header_sep: ',', cell_sep: ',' -%}
           {%- assign rendered_any = true -%}
         {%- endif -%}
       {%- endfor -%}
@@ -77,6 +107,25 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
+    {%- liquid
+      assign show_titles = show_all
+      unless show_all
+        assign mcount = 0
+        for i in (0..4)
+          assign chart_tags = tagsets[i] | split: ','
+          for t in product.tags
+            assign tl = t | strip | downcase
+            if chart_tags contains tl
+              assign mcount = mcount | plus: 1
+              break
+            endif
+          endfor
+        endfor
+        if mcount > 1
+          assign show_titles = true
+        endif
+      endunless
+    -%}
     <div class="space-y-12">
       {%- for i in (0..4) -%}
         {%- liquid
@@ -101,7 +150,7 @@
             {%- when 3 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
             {%- when 4 -%}{%- assign rows = 'XS|34|30|14.25|17|20;S|36|32|15.25|17.5|20.5;M|38|34|16.25|18.5|21;L|40|36|16.75|19.5|21.5;XL|42|38|17.25|20.5|22;2XL|44|40|17.5|22|22.5;3XL|46|42|18.25|22.5|23' -%}
           {%- endcase -%}
-          {%- render 'size-chart-table', id: ids[i], title: titles[i], show_title: show_all, tags: tagsets[i], headers: headersets[i], rows: rows -%}
+          {%- render 'size-chart-table', id: ids[i], title: titles[i], show_title: show_titles, tags: tagsets[i], headers: headersets[i], rows: rows -%}
           {%- assign rendered_any = true -%}
         {%- endif -%}
       {%- endfor -%}
