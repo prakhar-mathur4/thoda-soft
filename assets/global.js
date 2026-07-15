@@ -151,17 +151,61 @@
       .finally(() => { setTimeout(() => { if (btn) btn.disabled = false; if (label && prev) label.textContent = prev; }, 1400); });
   });
 
-  /* Variant pickers (product page + quick view) */
+  /* Variant pickers (product page + quick view) — multi-option aware.
+     Resolves the selected combination (e.g. Top Size + Bottom Size) to a variant
+     and only enables Add to Cart once every option is chosen. */
+  function resolveVariant(form) {
+    const dataEl = $('[data-variant-data]', form);
+    const idInput = $('[data-variant-id]', form);
+    const btn = $('[data-add-to-cart]', form);
+    const label = btn && $('[data-add-label]', btn);
+    const scope = form.closest('[data-product-root], [data-quickview-product]') || document;
+    const price = scope.querySelector('[data-product-price], [data-qv-price]');
+    if (!dataEl) return;
+    let variants = [];
+    try { variants = JSON.parse(dataEl.textContent); } catch (err) { return; }
+
+    const groups = $$('[data-option-group]', form);
+    const selected = [];
+    let complete = true;
+    groups.forEach((g) => {
+      const pos = Number(g.dataset.optionPosition) - 1;
+      const active = $('[data-variant-option][aria-pressed="true"]', g);
+      if (active) selected[pos] = active.dataset.optionValue;
+      else complete = false;
+    });
+
+    const setAdd = (disabled, text) => {
+      if (btn) btn.disabled = disabled;
+      if (label && text != null) label.textContent = text;
+    };
+
+    if (!complete) {
+      if (idInput) idInput.value = '';
+      setAdd(true, form.dataset.selectLabel || 'Select Size');
+      return;
+    }
+    const variant = variants.find((v) => v.options.every((o, i) => String(o) === String(selected[i])));
+    if (!variant || !variant.available) {
+      if (idInput) idInput.value = variant ? variant.id : '';
+      if (variant && price && variant.price) price.textContent = variant.price;
+      setAdd(true, 'Sold out');
+      return;
+    }
+    if (idInput) idInput.value = variant.id;
+    if (price && variant.price) price.textContent = variant.price;
+    setAdd(false, window.cartStrings ? window.cartStrings.addToCart : 'Add to Cart');
+  }
+
   document.addEventListener('click', (e) => {
     const opt = e.target.closest('[data-variant-option]');
-    if (!opt || opt.dataset.available === 'false') return;
-    const root = opt.closest('[data-product-form]') || document;
-    $$('[data-variant-option]', root).forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    if (!opt) return;
+    const group = opt.closest('[data-option-group]');
+    const form = opt.closest('[data-product-form]');
+    if (!group || !form) return;
+    $$('[data-variant-option]', group).forEach((b) => b.setAttribute('aria-pressed', 'false'));
     opt.setAttribute('aria-pressed', 'true');
-    const idInput = $('[data-variant-id]', root);
-    if (idInput) idInput.value = opt.dataset.variantId;
-    const price = (opt.closest('[data-product-root], [data-quickview-product]') || document).querySelector('[data-product-price], [data-qv-price]');
-    if (price && opt.dataset.price) price.textContent = opt.dataset.price;
+    resolveVariant(form);
   });
 
   /* Product-card quick-add + size pills */

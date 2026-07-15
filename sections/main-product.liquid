@@ -1,6 +1,5 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign size_option = product.options_with_values[0]
   assign has_sizes = false
   unless product.has_only_default_variant
     assign has_sizes = true
@@ -54,38 +53,25 @@
       <h1 class="font-serif text-3xl uppercase leading-tight tracking-[0.02em] sm:text-4xl">{{ product.title }}</h1>
       <p class="mt-4 text-lg text-charcoal" data-product-price>{{ current_variant.price | money }}</p>
 
-      <form data-product-form novalidate>
-        <input type="hidden" name="id" data-variant-id value="{{ current_variant.id }}">
+      {%- liquid
+        assign select_label = 'Select Size'
+        if product.options_with_values.size > 1
+          assign select_label = 'Select Sizes'
+        endif
+      -%}
+      <form data-product-form novalidate {% if has_sizes %}data-select-label="{{ select_label }}"{% endif %}>
+        <input type="hidden" name="id" data-variant-id value="{% unless has_sizes %}{{ current_variant.id }}{% endunless %}">
 
         {%- if has_sizes -%}
-          <fieldset class="mt-8">
-            <legend class="mb-3 flex w-full items-center justify-between text-xs uppercase tracking-[0.12em] text-charcoal">
-              <span class="flex items-center gap-2">{{ size_option.name }}<span data-soldout-note class="normal-case tracking-normal text-charcoal-muted{% if current_variant.available %} hidden{% endif %}"> · Sold out</span></span>
-              <button type="button" data-size-guide-open class="normal-case tracking-normal text-charcoal-muted underline underline-offset-2 transition hover:text-charcoal">{{ 'products.product.size_chart' | t }}</button>
-            </legend>
-            <div class="flex flex-wrap gap-2" data-variant-picker>
-              {%- for variant in product.variants -%}
-                <button
-                  type="button"
-                  data-variant-option
-                  data-variant-id="{{ variant.id }}"
-                  data-available="{{ variant.available }}"
-                  data-price="{{ variant.price | money }}"
-                  aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                  class="min-w-12 rounded-full border px-4 py-2.5 text-sm uppercase tracking-wide transition ease-soft border-charcoal/25 text-charcoal hover:border-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream {% unless variant.available %}cursor-not-allowed text-charcoal/30 line-through hover:border-charcoal/25{% endunless %}">
-                  {{ variant.option1 }}
-                </button>
-              {%- endfor -%}
-            </div>
-          </fieldset>
+          {%- render 'variant-picker', product: product, show_size_chart: true -%}
         {%- endif -%}
 
         <button
           type="submit"
           data-add-to-cart
-          {% unless current_variant.available %}disabled{% endunless %}
+          {% if has_sizes %}disabled{% else %}{% unless current_variant.available %}disabled{% endunless %}{% endif %}
           class="mt-8 w-full bg-charcoal py-4 text-xs uppercase tracking-[0.2em] text-cream transition duration-300 ease-soft hover:bg-charcoal/90 disabled:cursor-not-allowed disabled:opacity-50">
-          <span data-add-label>{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+          <span data-add-label>{% if has_sizes %}{{ select_label }}{% else %}{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}{% endif %}</span>
         </button>
       </form>
 

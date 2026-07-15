@@ -9,6 +9,12 @@
   unless product.has_only_default_variant
     assign has_sizes = true
   endunless
+  # Multi-option products (e.g. a co-ord set with Top Size + Bottom Size) can't be
+  # sized inline on the card — the add button opens the quick view to pick both.
+  assign multi_option = false
+  if product.options.size > 1
+    assign multi_option = true
+  endif
   assign hover_image = product.images[1]
   assign current_variant = product.selected_or_first_available_variant
 -%}
@@ -37,7 +43,7 @@
 
     {%- comment -%} Pointer (mouse) controls {%- endcomment -%}
     <div class="absolute inset-x-3 bottom-3 z-20 hidden translate-y-3 flex-col gap-2 opacity-0 transition-all duration-300 ease-soft can-hover:flex group-hover:translate-y-0 group-hover:opacity-100" data-card-controls>
-      {%- if has_sizes -%}
+      {%- if has_sizes and multi_option == false -%}
         <div role="radiogroup" aria-label="Select size" class="flex w-auto max-w-full flex-wrap justify-center gap-1 self-center rounded-full bg-cream/90 px-1.5 py-1.5 shadow-sm backdrop-blur" data-card-sizes>
           {%- for variant in product.variants -%}
             <button
@@ -63,7 +69,7 @@
           {% unless has_sizes %}data-variant-id="{{ current_variant.id }}"{% endunless %}
           {% unless product.available %}disabled{% endunless %}
           class="rounded-full bg-charcoal/90 py-2.5 text-[11px] uppercase tracking-[0.1em] text-cream shadow-sm backdrop-blur transition hover:bg-charcoal disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1">
-          {% if product.available %}{% if has_sizes %}{{ 'products.product.select_size_short' | t | default: 'Select Size' }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+          {% if product.available %}{% if multi_option %}Select Options{% elsif has_sizes %}{{ 'products.product.select_size_short' | t | default: 'Select Size' }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
         </button>
       </div>
     </div>
@@ -75,7 +81,7 @@
       </button>
       <button
         type="button"
-        {% if has_sizes %}data-mobile-add{% else %}data-card-add data-variant-id="{{ current_variant.id }}"{% endif %}
+        {% if has_sizes and multi_option == false %}data-mobile-add{% elsif multi_option %}data-card-add{% else %}data-card-add data-variant-id="{{ current_variant.id }}"{% endif %}
         {% unless product.available %}disabled{% endunless %}
         aria-label="Add {{ product.title | escape }} to cart"
         class="rounded-full bg-charcoal/90 p-2.5 text-cream shadow-sm backdrop-blur transition active:scale-95 disabled:opacity-60">

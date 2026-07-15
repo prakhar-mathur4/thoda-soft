@@ -1,0 +1,36 @@
+{%- comment -%}
+  Multi-option variant picker (handles 1–3 options, e.g. a co-ord set with a
+  separate Top Size and Bottom Size). Renders one pill group per option plus a
+  JSON map of variants; global.js resolves the selected combination to a variant
+  and only enables Add to Cart once every option is chosen.
+
+  Params:
+    product          - the product (required)
+    show_size_chart  - show the "Size chart" link in the first group's legend
+{%- endcomment -%}
+{%- for option in product.options_with_values -%}
+  <fieldset class="mt-7" data-option-group data-option-position="{{ option.position }}">
+    <legend class="mb-3 flex w-full items-center justify-between text-xs uppercase tracking-[0.12em] text-charcoal">
+      <span>{{ option.name }}</span>
+      {%- if show_size_chart and forloop.first -%}
+        <button type="button" data-size-guide-open class="normal-case tracking-normal text-charcoal-muted underline underline-offset-2 transition hover:text-charcoal">{{ 'products.product.size_chart' | t }}</button>
+      {%- endif -%}
+    </legend>
+    <div class="flex flex-wrap gap-2" data-variant-picker>
+      {%- for value in option.values -%}
+        <button
+          type="button"
+          data-variant-option
+          data-option-position="{{ option.position }}"
+          data-option-value="{{ value | escape }}"
+          aria-pressed="false"
+          class="min-w-12 rounded-full border px-4 py-2.5 text-sm uppercase tracking-wide transition ease-soft border-charcoal/25 text-charcoal hover:border-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream">
+          {{ value }}
+        </button>
+      {%- endfor -%}
+    </div>
+  </fieldset>
+{%- endfor -%}
+<script type="application/json" data-variant-data>
+[{% for v in product.variants %}{"id":{{ v.id }},"options":{{ v.options | json }},"available":{{ v.available }},"price":{{ v.price | money | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+</script>

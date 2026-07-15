@@ -32,33 +32,21 @@
       <p class="mt-4 line-clamp-3 text-sm leading-relaxed text-charcoal/70">{{ product.description | strip_html | truncatewords: 40 }}</p>
     {%- endif -%}
 
-    <form data-product-form novalidate>
-      <input type="hidden" name="id" data-variant-id value="{{ current_variant.id }}">
+    {%- liquid
+      assign select_label = 'Select Size'
+      if product.options_with_values.size > 1
+        assign select_label = 'Select Sizes'
+      endif
+    -%}
+    <form data-product-form novalidate {% if has_sizes %}data-select-label="{{ select_label }}"{% endif %}>
+      <input type="hidden" name="id" data-variant-id value="{% unless has_sizes %}{{ current_variant.id }}{% endunless %}">
       {%- if has_sizes -%}
-        <fieldset class="mt-6">
-          <legend class="mb-2 flex w-full items-center justify-between text-xs uppercase tracking-[0.12em] text-charcoal-muted">
-            <span>{{ product.options_with_values[0].name }}</span>
-          </legend>
-          <div class="flex flex-wrap gap-2" data-variant-picker>
-            {%- for variant in product.variants -%}
-              <button
-                type="button"
-                data-variant-option
-                data-variant-id="{{ variant.id }}"
-                data-available="{{ variant.available }}"
-                data-price="{{ variant.price | money }}"
-                aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                class="min-w-11 rounded-full border px-3 py-2 text-sm uppercase transition border-charcoal/25 text-charcoal hover:border-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream {% unless variant.available %}cursor-not-allowed text-charcoal/30 line-through{% endunless %}">
-                {{ variant.option1 }}
-              </button>
-            {%- endfor -%}
-          </div>
-        </fieldset>
+        {%- render 'variant-picker', product: product -%}
       {%- endif -%}
 
       <div class="mt-auto pt-7">
-        <button type="submit" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %} class="w-full bg-charcoal py-3.5 text-xs uppercase tracking-[0.2em] text-cream transition hover:bg-charcoal/90 disabled:cursor-not-allowed disabled:opacity-50">
-          <span data-add-label>{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+        <button type="submit" data-add-to-cart {% if has_sizes %}disabled{% else %}{% unless current_variant.available %}disabled{% endunless %}{% endif %} class="w-full bg-charcoal py-3.5 text-xs uppercase tracking-[0.2em] text-cream transition hover:bg-charcoal/90 disabled:cursor-not-allowed disabled:opacity-50">
+          <span data-add-label>{% if has_sizes %}{{ select_label }}{% else %}{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}{% endif %}</span>
         </button>
         <a href="{{ product.url }}" class="mt-3 block text-center text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal">{{ 'products.product.view_details' | t }} &rarr;</a>
       </div>
