@@ -57,7 +57,7 @@
     {%- comment -%} Legibility overlays: soft bottom gradient + optional tint {%- endcomment -%}
     <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent"></div>
     {%- if section.settings.overlay > 0 -%}
-      <div aria-hidden="true" class="absolute inset-0" style="background-color: rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }});"></div>
+      <div aria-hidden="true" class="absolute inset-0" style="background-color: rgb(0 0 0 / {{ section.settings.overlay }}%);"></div>
     {%- endif -%}
 
     {%- comment -%} Centered caption at the lower third {%- endcomment -%}
