@@ -1,67 +1,102 @@
 {%- liquid
-  assign img = section.settings.image
+  assign primary = section.settings.primary_image
+  assign secondary = section.settings.secondary_image
+  assign primary_alt = 'Thoda Soft — the debut capsule'
+  assign secondary_alt = 'Thoda Soft'
 
-  assign text_light = true
-  if section.settings.text_color == 'dark'
-    assign text_light = false
+  # Hero art from products tagged `hero`: read a collection (picked here, or the
+  # automated collection with handle `hero`). Falls back to the images above.
+  assign hero_col = section.settings.hero_collection
+  if hero_col == blank
+    assign hero_col = collections['hero']
   endif
-  assign text_cls = 'text-cream'
-  assign line_cls = 'bg-cream/60'
-  if text_light == false
-    assign text_cls = 'text-charcoal'
-    assign line_cls = 'bg-charcoal/50'
-  endif
-
-  assign min_h = 'min-h-[calc(100svh-3.5rem)] sm:min-h-[calc(100svh-4rem)]'
-  if section.settings.height == 'tall'
-    assign min_h = 'min-h-[70svh]'
+  if hero_col != blank and hero_col.products.size > 0
+    assign hp1 = hero_col.products.first
+    assign primary = hp1.featured_image
+    assign primary_alt = hp1.featured_image.alt | default: hp1.title
+    if hero_col.products.size > 1
+      assign hp2 = hero_col.products[1]
+      assign secondary = hp2.featured_image
+      assign secondary_alt = hp2.featured_image.alt | default: hp2.title
+    else
+      assign secondary = hp1.images[1] | default: hp1.featured_image
+      assign secondary_alt = hp1.title
+    endif
+  else
+    assign primary_alt = primary.alt | default: primary_alt
+    assign secondary_alt = secondary.alt | default: secondary_alt
   endif
 -%}
-<section data-hero class="relative w-full overflow-hidden bg-blush">
-  <div class="relative w-full {{ min_h }}">
-    {%- comment -%} Full-bleed image {%- endcomment -%}
-    {%- if img != blank -%}
-      <img
-        src="{{ img | image_url: width: 2000 }}"
-        srcset="{{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1400 }} 1400w, {{ img | image_url: width: 2000 }} 2000w"
-        sizes="100vw"
-        alt="{{ img.alt | escape | default: shop.name }}"
-        width="2000" height="1333" fetchpriority="high"
-        class="absolute inset-0 h-full w-full object-cover">
-    {%- else -%}
-      <img
-        src="{{ 'hero-home.jpg' | asset_url }}"
-        alt="{{ shop.name | escape }}"
-        width="2000" height="1333" fetchpriority="high"
-        class="absolute inset-0 h-full w-full object-cover">
-    {%- endif -%}
+<section
+  data-hero
+  id="top"
+  aria-label="{{ section.settings.aria_label | default: shop.name }}"
+  class="relative w-full overflow-hidden bg-gradient-to-br from-cream via-blush/40 to-lavender/30 pb-14 pt-5 md:pb-0 md:pt-5"
+>
+  {%- comment -%} Ambient colour light {%- endcomment -%}
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div data-glow class="absolute -left-24 top-10 h-72 w-72 rounded-full bg-lavender/50 blur-3xl"></div>
+    <div data-glow class="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-blush/60 blur-3xl"></div>
+    <div data-glow class="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-sage/40 blur-3xl"></div>
+  </div>
 
-    {%- comment -%} Legibility overlays {%- endcomment -%}
-    <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent"></div>
-    {%- if section.settings.overlay > 0 -%}
-      <div aria-hidden="true" class="absolute inset-0" style="background-color: rgb(0 0 0 / {{ section.settings.overlay }}%);"></div>
-    {%- endif -%}
+  <span data-anim="spine" aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rotate-90 text-[0.65rem] uppercase tracking-[0.5em] text-charcoal/60 lg:block">{{ section.settings.spine_label | default: 'Dressed in ease' }}</span>
 
-    {%- comment -%} Centered caption {%- endcomment -%}
-    <div class="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-10 text-center {{ text_cls }} sm:pb-14">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.3em] opacity-90">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      {%- if section.settings.title != blank -%}
-        <h1 class="font-serif text-xl uppercase leading-tight tracking-[0.3em] sm:text-3xl"><span class="block pl-[0.3em]">{{ section.settings.title }}</span></h1>
-      {%- endif -%}
-      {%- if section.settings.show_divider -%}
-        <div class="mt-5 flex items-center justify-center gap-4">
-          <span class="h-px w-12 {{ line_cls }} sm:w-16"></span>
-          {%- render 'icon', name: 'sparkle', class: 'h-3.5 w-3.5 opacity-90' -%}
-          <span class="h-px w-12 {{ line_cls }} sm:w-16"></span>
+  <div class="container-editorial grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-8">
+    {%- comment -%} Editorial copy {%- endcomment -%}
+    <div data-scroll-text class="order-2 md:order-none md:col-span-5 md:row-start-1 md:self-center">
+      <div data-anim="eyebrow" class="flex flex-wrap items-center gap-x-3 gap-y-1 font-script text-sm text-charcoal">
+        <span class="font-medium">{{ section.settings.eyebrow_1 | default: 'Issue Nº 01' }}</span>
+        <span aria-hidden="true" class="h-1 w-1 rounded-full bg-charcoal/40"></span>
+        <span>{{ section.settings.eyebrow_2 | default: 'The Debut Capsule' }}</span>
+        <span aria-hidden="true" class="h-1 w-1 rounded-full bg-charcoal/40"></span>
+        <span>{{ section.settings.eyebrow_3 | default: "SS'26" }}</span>
+      </div>
+      <div data-anim="rule" aria-hidden="true" class="mt-4 h-px w-full max-w-sm bg-charcoal/25"></div>
+
+      <h1 class="mt-7 font-script text-[clamp(1.9rem,4.4vw,3.5rem)] font-normal leading-[1.4] text-charcoal">
+        <span class="block" data-line-mask><span data-anim="line" class="block py-[0.08em]">{{ section.settings.headline_1 | default: 'Wear your' }}</span></span>
+        <span class="block" data-line-mask><span data-anim="line" class="block py-[0.08em]">{{ section.settings.headline_2 | default: 'softness' }}</span></span>
+        <span class="block" data-line-mask><span data-anim="line" class="block py-[0.08em]">{{ section.settings.headline_3 | default: 'like confidence.' }}</span></span>
+      </h1>
+
+      <p data-anim="standfirst" class="mt-7 max-w-md text-pretty text-base leading-relaxed text-charcoal sm:text-lg">{{ section.settings.standfirst | default: "Premium, breathable cotton cut for slow mornings and restless nights. Designed in India for women who'd rather feel like themselves than like everyone else." }}</p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <a data-anim="cta" href="{{ section.settings.cta1_link | default: routes.all_products_collection_url }}" class="group inline-flex items-center gap-3 rounded-full bg-charcoal px-8 py-3.5 text-sm tracking-wide text-cream transition duration-300 ease-soft hover:bg-charcoal/90 hover:scale-[1.02] focus-visible:scale-[1.02]">
+          {{ section.settings.cta1_label | default: 'Explore the Shop' }}
+          <span aria-hidden="true" class="transition-transform duration-300 ease-soft group-hover:translate-x-1">&rarr;</span>
+        </a>
+        {%- if section.settings.cta2_label != blank -%}
+          <a data-anim="cta" href="{{ section.settings.cta2_link | default: '/' }}" class="bg-gradient-to-r from-charcoal to-charcoal bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-1 text-sm tracking-wide text-charcoal transition-[background-size] duration-300 ease-soft hover:bg-[length:100%_1px]">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Layered photo collage {%- endcomment -%}
+    <div data-scroll-photo class="relative order-1 mx-auto h-[48svh] min-h-[330px] w-full max-w-[400px] md:order-none md:col-start-7 md:col-span-6 md:row-start-1 md:mx-0 md:h-[80vh] md:max-w-none">
+      <div class="absolute right-0 top-0 h-[82%] w-[74%] md:h-[88%] md:w-[68%]">
+        <div data-anim="frame-primary" class="relative h-full w-full overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(137,91,58,0.45)] ring-1 ring-white/40">
+          <div class="absolute inset-0 scale-105">
+            {%- if primary -%}
+              <img src="{{ primary | image_url: width: 900 }}" alt="{{ primary_alt | escape }}" width="900" height="1200" fetchpriority="high" class="h-full w-full object-cover">
+            {%- else -%}
+              <div class="h-full w-full bg-blush-deep"></div>
+            {%- endif -%}
+          </div>
         </div>
-      {%- endif -%}
-      {%- if section.settings.cta_label != blank -%}
-        <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="mt-7 inline-block border-b border-current pb-1 text-xs uppercase tracking-[0.2em] transition-opacity hover:opacity-70">{{ section.settings.cta_label }}</a>
-      {%- endif -%}
-      <div class="mt-8 h-10 w-px overflow-hidden {{ line_cls }} motion-reduce:hidden" aria-hidden="true">
-        <span class="block h-4 w-px animate-scrollcue {% if text_light %}bg-cream{% else %}bg-charcoal{% endif %}"></span>
+      </div>
+
+      <div class="absolute bottom-0 left-0 h-[52%] w-[50%] md:h-[50%] md:w-[44%]">
+        <div data-anim="frame-secondary" class="relative h-full w-full overflow-hidden rounded-[1.5rem] border-[5px] border-cream shadow-[0_24px_50px_-24px_rgba(137,91,58,0.5)]">
+          <div class="absolute inset-0 scale-105">
+            {%- if secondary -%}
+              <img src="{{ secondary | image_url: width: 600 }}" alt="{{ secondary_alt | escape }}" width="600" height="750" loading="lazy" class="h-full w-full object-cover">
+            {%- else -%}
+              <div class="h-full w-full bg-lavender"></div>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -71,26 +106,26 @@
 {
   "name": "Hero",
   "settings": [
-    { "type": "header", "content": "Image" },
-    { "type": "image_picker", "id": "image", "label": "Hero image", "info": "Upload a wide landscape image. If left empty, a default bundled image is used." },
-    { "type": "header", "content": "Caption" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow (small line above)", "default": "" },
-    { "type": "text", "id": "title", "label": "Title", "default": "The Debut Capsule" },
-    { "type": "checkbox", "id": "show_divider", "label": "Show divider ornament", "default": true },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "" },
-    { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "header", "content": "Style" },
-    {
-      "type": "select", "id": "text_color", "label": "Text colour",
-      "options": [ { "value": "light", "label": "Light (on dark image)" }, { "value": "dark", "label": "Dark (on light image)" } ],
-      "default": "light"
-    },
-    { "type": "range", "id": "overlay", "label": "Image darkening", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 15 },
-    {
-      "type": "select", "id": "height", "label": "Height",
-      "options": [ { "value": "full", "label": "Full screen" }, { "value": "tall", "label": "Tall (70%)" } ],
-      "default": "full"
-    }
+    { "type": "header", "content": "Images" },
+    { "type": "collection", "id": "hero_collection", "label": "Hero products collection", "info": "Uses the featured images of products in this collection (e.g. an automated collection where Tag = hero). Leave empty to use the collection named 'hero', or the images below." },
+    { "type": "image_picker", "id": "primary_image", "label": "Primary (portrait) — fallback" },
+    { "type": "image_picker", "id": "secondary_image", "label": "Secondary (overlay) — fallback" },
+    { "type": "header", "content": "Eyebrow" },
+    { "type": "text", "id": "eyebrow_1", "label": "Part 1", "default": "Issue Nº 01" },
+    { "type": "text", "id": "eyebrow_2", "label": "Part 2", "default": "The Debut Capsule" },
+    { "type": "text", "id": "eyebrow_3", "label": "Part 3", "default": "SS'26" },
+    { "type": "header", "content": "Headline" },
+    { "type": "text", "id": "headline_1", "label": "Line 1", "default": "Wear your" },
+    { "type": "text", "id": "headline_2", "label": "Line 2 (italic)", "default": "softness" },
+    { "type": "text", "id": "headline_3", "label": "Line 3", "default": "like confidence." },
+    { "type": "textarea", "id": "standfirst", "label": "Standfirst", "default": "Premium, breathable cotton cut for slow mornings and restless nights. Designed in India for women who'd rather feel like themselves than like everyone else." },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "cta1_label", "label": "Primary label", "default": "Explore the Shop" },
+    { "type": "url", "id": "cta1_link", "label": "Primary link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary label", "default": "Read our story" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link" },
+    { "type": "header", "content": "Misc" },
+    { "type": "text", "id": "spine_label", "label": "Spine label", "default": "Dressed in ease" }
   ],
   "presets": [{ "name": "Hero" }]
 }
