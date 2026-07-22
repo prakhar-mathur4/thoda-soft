@@ -14,17 +14,10 @@
   assign enc_img = share_img | url_encode
 -%}
 <div class="relative mt-6" data-share data-share-url="{{ share_url }}" data-share-title="{{ share_title | escape }}">
-  <div class="flex flex-wrap items-center gap-x-5 gap-y-3">
-    {%- comment -%} Prominent, direct WhatsApp share {%- endcomment -%}
-    <a href="https://api.whatsapp.com/send?text={{ enc_text }}" target="_blank" rel="noopener" aria-label="Share on WhatsApp" class="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-xs uppercase tracking-[0.14em] text-white shadow-sm transition hover:opacity-90 active:scale-[0.98]">
-      {%- render 'icon', name: 'whatsapp', class: 'h-4 w-4' -%}
-      Share on WhatsApp
-    </a>
-    <button type="button" data-share-toggle aria-haspopup="true" aria-expanded="false" class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal">
-      {%- render 'icon', name: 'share', class: 'h-4 w-4' -%}
-      <span>More ways to share</span>
-    </button>
-  </div>
+  <button type="button" data-share-toggle aria-haspopup="true" aria-expanded="false" class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal">
+    {%- render 'icon', name: 'share', class: 'h-4 w-4' -%}
+    <span>Share the vibe</span>
+  </button>
 
   <div data-share-menu hidden class="absolute left-0 z-30 mt-3 w-56 overflow-hidden rounded-2xl border border-charcoal/10 bg-cream p-1.5 shadow-[0_18px_50px_rgba(46,43,41,0.18)]">
     <a href="https://api.whatsapp.com/send?text={{ enc_text }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-charcoal transition hover:bg-charcoal/5">
