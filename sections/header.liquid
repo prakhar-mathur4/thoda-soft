@@ -146,13 +146,34 @@
           {%- endfor -%}
         {%- endif -%}
       </ul>
-      <a
-        href="{{ account_url }}"
-        class="mt-auto flex items-center gap-3 border-t border-charcoal/10 pt-6 text-sm uppercase tracking-[0.12em] text-charcoal transition hover:opacity-70"
-      >
-        {%- render 'icon', name: 'user' -%}
-        {{ 'general.accessibility.account' | t }}
-      </a>
+      <div class="mt-auto border-t border-charcoal/10 pt-6">
+        <a
+          href="{{ account_url }}"
+          class="flex items-center gap-3 text-sm uppercase tracking-[0.12em] text-charcoal transition hover:opacity-70"
+        >
+          {%- render 'icon', name: 'user' -%}
+          {{ 'general.accessibility.account' | t }}
+        </a>
+
+        {%- comment -%} Social links {%- endcomment -%}
+        {%- assign wa = settings.whatsapp_number -%}
+        {%- if settings.social_instagram != blank or settings.social_facebook != blank or wa != blank or settings.social_pinterest != blank -%}
+          <div class="mt-6 flex items-center gap-2.5">
+            {%- if settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{%- render 'icon', name: 'instagram', class: 'h-4 w-4' -%}</a>
+            {%- endif -%}
+            {%- if settings.social_facebook != blank -%}
+              <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{%- render 'icon', name: 'facebook', class: 'h-4 w-4' -%}</a>
+            {%- endif -%}
+            {%- if wa != blank -%}
+              <a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{%- render 'icon', name: 'whatsapp', class: 'h-4 w-4' -%}</a>
+            {%- endif -%}
+            {%- if settings.social_pinterest != blank -%}
+              <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest" class="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{%- render 'icon', name: 'pinterest', class: 'h-4 w-4' -%}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
     </nav>
   </div>
 </div>
