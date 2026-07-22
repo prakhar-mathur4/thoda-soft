@@ -1,0 +1,40 @@
+{%- comment -%}
+  Product share button. On devices with the Web Share API (mostly mobile) the
+  button opens the native share sheet; elsewhere it opens a small menu with
+  WhatsApp, Facebook, Pinterest, X and copy-link. Params:
+    product (required)
+{%- endcomment -%}
+{%- liquid
+  assign share_url = shop.url | append: product.url
+  assign share_title = product.title | strip_html
+  assign enc_url = share_url | url_encode
+  assign enc_title = share_title | url_encode
+  assign enc_text = share_title | append: ' — ' | append: share_url | url_encode
+  assign share_img = product.featured_image | image_url: width: 1200
+  assign enc_img = share_img | url_encode
+-%}
+<div class="relative mt-6" data-share data-share-url="{{ share_url }}" data-share-title="{{ share_title | escape }}">
+  <button type="button" data-share-toggle aria-haspopup="true" aria-expanded="false" class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-charcoal-muted transition hover:text-charcoal">
+    {%- render 'icon', name: 'share', class: 'h-4 w-4' -%}
+    <span>Share</span>
+  </button>
+
+  <div data-share-menu hidden class="absolute left-0 z-30 mt-3 w-56 overflow-hidden rounded-2xl border border-charcoal/10 bg-cream p-1.5 shadow-[0_18px_50px_rgba(46,43,41,0.18)]">
+    <a href="https://api.whatsapp.com/send?text={{ enc_text }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-charcoal transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'whatsapp', class: 'h-4 w-4 text-[#25D366]' -%} WhatsApp
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ enc_url }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-charcoal transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'facebook', class: 'h-4 w-4 text-[#1877F2]' -%} Facebook
+    </a>
+    <a href="https://pinterest.com/pin/create/button/?url={{ enc_url }}&media={{ enc_img }}&description={{ enc_title }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-charcoal transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'pinterest', class: 'h-4 w-4 text-[#E60023]' -%} Pinterest
+    </a>
+    <a href="https://twitter.com/intent/tweet?url={{ enc_url }}&text={{ enc_title }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-charcoal transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'x', class: 'h-4 w-4 text-charcoal' -%} X
+    </a>
+    <button type="button" data-share-copy class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-charcoal transition hover:bg-charcoal/5">
+      {%- render 'icon', name: 'link', class: 'h-4 w-4 text-charcoal-muted' -%}
+      <span data-copy-label>Copy link</span>
+    </button>
+  </div>
+</div>

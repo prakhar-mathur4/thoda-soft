@@ -208,6 +208,43 @@
     resolveVariant(form);
   });
 
+  /* Product share — native share sheet when available, else a small menu */
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-share-toggle]');
+    if (toggle) {
+      e.preventDefault();
+      const root = toggle.closest('[data-share]');
+      if (!root) return;
+      if (navigator.share) {
+        navigator.share({ title: root.dataset.shareTitle, url: root.dataset.shareUrl }).catch(() => {});
+        return;
+      }
+      const menu = $('[data-share-menu]', root);
+      if (menu) {
+        const willOpen = menu.hasAttribute('hidden');
+        $$('[data-share-menu]').forEach((m) => m.setAttribute('hidden', ''));
+        $$('[data-share-toggle]').forEach((t) => t.setAttribute('aria-expanded', 'false'));
+        if (willOpen) { menu.removeAttribute('hidden'); toggle.setAttribute('aria-expanded', 'true'); }
+      }
+      return;
+    }
+    const copy = e.target.closest('[data-share-copy]');
+    if (copy) {
+      e.preventDefault();
+      const root = copy.closest('[data-share]');
+      const label = $('[data-copy-label]', copy) || copy;
+      const prev = label.textContent;
+      const done = () => { label.textContent = 'Link copied!'; setTimeout(() => { label.textContent = prev; }, 1600); };
+      if (navigator.clipboard && root) navigator.clipboard.writeText(root.dataset.shareUrl).then(done).catch(done);
+      else done();
+      return;
+    }
+    if (!e.target.closest('[data-share]')) {
+      $$('[data-share-menu]').forEach((m) => m.setAttribute('hidden', ''));
+      $$('[data-share-toggle]').forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    }
+  });
+
   /* Product-card quick-add + size pills */
   document.addEventListener('click', (e) => {
     const size = e.target.closest('[data-card-size]');

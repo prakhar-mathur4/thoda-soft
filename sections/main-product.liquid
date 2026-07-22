@@ -75,6 +75,8 @@
         </button>
       </form>
 
+      {%- render 'share-button', product: product -%}
+
       {%- comment -%} Accordions {%- endcomment -%}
       <div class="mt-10">
         {%- if product.description != blank -%}
