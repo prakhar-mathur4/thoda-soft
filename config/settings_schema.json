@@ -50,6 +50,7 @@
     "settings": [
       { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
       { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest URL" },
       { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Country code + number, no + or spaces. e.g. 9198XXXXXXXX" }
     ]
   },
