@@ -8,7 +8,10 @@
     "color_blush": "#F6E7E4",
     "color_lavender_deep": "#B7AEDC",
     "color_sage": "#CBD6C2",
-    "cart_free_shipping_enabled": false
+    "cart_free_shipping_enabled": false,
+    "social_instagram": "https://www.instagram.com/thoda.soft/",
+    "social_facebook": "https://www.facebook.com/thodasoft",
+    "whatsapp_number": "917014019015"
   },
   "presets": {
     "Thoda Soft": {
