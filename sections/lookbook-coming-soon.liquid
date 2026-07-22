@@ -1,0 +1,109 @@
+{%- liquid
+  assign bg = section.settings.bg_color | default: '#F6E7E4'
+  assign ig = settings.social_instagram
+-%}
+<section class="relative overflow-hidden" style="background-color: {{ bg }};">
+  {%- comment -%} Soft ambient glows {%- endcomment -%}
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-lavender/30 blur-3xl"></div>
+    <div class="absolute -bottom-24 right-0 h-80 w-80 rounded-full bg-sage/25 blur-3xl"></div>
+  </div>
+
+  <div class="container-editorial relative py-20 sm:py-28">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      {%- if section.settings.image != blank -%}
+        <div class="mx-auto mb-10 aspect-[4/5] w-40 overflow-hidden rounded-full border-[6px] border-cream shadow-[0_24px_60px_-24px_rgba(137,91,58,0.5)] sm:w-48">
+          <img src="{{ section.settings.image | image_url: width: 500 }}" alt="{{ section.settings.image.alt | escape | default: 'Thoda Soft lookbook' }}" width="500" height="625" loading="lazy" class="h-full w-full object-cover">
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="font-script text-lg text-charcoal sm:text-xl">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      <h1 class="mt-3 font-serif text-4xl leading-tight text-charcoal sm:text-6xl">{{ section.settings.heading | default: 'Coming Soon' }}</h1>
+
+      {%- if section.settings.body != blank -%}
+        <p class="mx-auto mt-5 max-w-lg text-pretty text-sm leading-relaxed text-charcoal/75 sm:text-base">{{ section.settings.body }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Waitlist {%- endcomment -%}
+      {%- if section.settings.show_waitlist -%}
+        <div class="mx-auto mt-9 max-w-md">
+          {%- form 'customer', class: 'w-full' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter, lookbook-waitlist">
+            <input type="hidden" name="contact[accepts_marketing]" value="true">
+            {%- if form.posted_successfully? -%}
+              <p class="rounded-full bg-cream px-6 py-4 text-sm text-charcoal shadow-sm">{{ section.settings.success_text | default: 'You’re on the list — we’ll send you the first look. 💌' }}</p>
+            {%- else -%}
+              <div class="flex flex-col items-center gap-2 sm:flex-row">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  required
+                  autocomplete="email"
+                  placeholder="{{ section.settings.placeholder | default: 'your@email.com' }}"
+                  aria-label="Email"
+                  class="min-w-0 flex-1 rounded-full border border-charcoal/15 bg-cream px-6 py-3.5 text-sm text-charcoal outline-none transition placeholder:text-charcoal-muted focus:border-charcoal/40">
+                <button type="submit" class="btn-primary w-full shrink-0 whitespace-nowrap sm:w-auto">{{ section.settings.button_label | default: 'Notify Me' }}</button>
+              </div>
+              {%- if form.errors -%}
+                <p class="mt-2 text-xs text-charcoal">{{ form.errors | default_errors }}</p>
+              {%- endif -%}
+              {%- if section.settings.waitlist_note != blank -%}
+                <p class="mt-3 text-xs text-charcoal-muted">{{ section.settings.waitlist_note }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Divider {%- endcomment -%}
+      <div class="mx-auto mt-12 flex items-center justify-center gap-4 opacity-80">
+        <span class="h-px w-14 bg-charcoal/30"></span>
+        {%- render 'icon', name: 'sparkle', class: 'h-3.5 w-3.5 text-charcoal' -%}
+        <span class="h-px w-14 bg-charcoal/30"></span>
+      </div>
+
+      {%- comment -%} CTAs {%- endcomment -%}
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <a href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}" class="btn-primary">{{ section.settings.shop_label | default: 'Explore the Capsule' }}</a>
+        {%- if ig != blank -%}
+          <a href="{{ ig }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-charcoal transition hover:opacity-70">
+            {%- render 'icon', name: 'instagram', class: 'h-4 w-4' -%}
+            {{ section.settings.instagram_label | default: 'Follow along' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.ugc_text != blank -%}
+        <p class="mt-8 text-xs uppercase tracking-[0.18em] text-charcoal-muted">{{ section.settings.ugc_text }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook coming soon",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Teaser image (optional)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Lookbook" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Coming Soon" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "We’re styling something soft. Our debut lookbook — real looks, thoughtfully put together — is on its way. Be the first to see it." },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F6E7E4" },
+    { "type": "header", "content": "Waitlist" },
+    { "type": "checkbox", "id": "show_waitlist", "label": "Show waitlist form", "default": true },
+    { "type": "text", "id": "placeholder", "label": "Email placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Notify Me" },
+    { "type": "text", "id": "waitlist_note", "label": "Note under form", "default": "First look, early access. No spam, we promise." },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "You’re on the list — we’ll send you the first look. 💌" },
+    { "type": "header", "content": "Calls to action" },
+    { "type": "text", "id": "shop_label", "label": "Shop button label", "default": "Explore the Capsule" },
+    { "type": "url", "id": "shop_link", "label": "Shop button link" },
+    { "type": "text", "id": "instagram_label", "label": "Instagram label", "default": "Follow along", "info": "Links to the Instagram URL in Theme settings → Social." },
+    { "type": "text", "id": "ugc_text", "label": "UGC line", "default": "Tag @thoda.soft to be featured in our lookbook" }
+  ],
+  "presets": [{ "name": "Lookbook coming soon" }]
+}
+{% endschema %}

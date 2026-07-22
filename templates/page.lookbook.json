@@ -1,36 +1,19 @@
 {
   "sections": {
-    "hero": { "type": "lookbook-hero", "settings": {} },
-    "intro": { "type": "lookbook-intro", "settings": {} },
-    "gallery1": {
-      "type": "lookbook-gallery",
-      "blocks": {
-        "l1": { "type": "look", "settings": { "layout": "half", "title": "Morning Ease", "note": "Soft layers for slower mornings." } },
-        "l2": { "type": "look", "settings": { "layout": "half", "title": "Golden Hour", "note": "Made for golden hour walks." } },
-        "l3": { "type": "look", "settings": { "layout": "full", "title": "The Everyday Edit", "note": "Wear comfort beautifully." } },
-        "l4": { "type": "look", "settings": { "layout": "third", "title": "Coffee Run" } },
-        "l5": { "type": "look", "settings": { "layout": "third", "title": "Bookstore Afternoons" } },
-        "l6": { "type": "look", "settings": { "layout": "third", "title": "Quiet Confidence" } }
-      },
-      "block_order": ["l1", "l2", "l3", "l4", "l5", "l6"],
-      "settings": {}
-    },
-    "quote1": { "type": "lookbook-quote", "settings": { "quote": "Made for coffee runs, bookstores, and golden hour walks.", "bg": true } },
-    "gallery2": {
-      "type": "lookbook-gallery",
-      "blocks": {
-        "m1": { "type": "look", "settings": { "layout": "landscape", "title": "Weekend Layers" } },
-        "m2": { "type": "look", "settings": { "layout": "portrait", "title": "Soft Structure" } },
-        "m3": { "type": "look", "settings": { "layout": "portrait", "title": "Ease, Everyday" } },
-        "m4": { "type": "look", "settings": { "layout": "landscape", "title": "Slow Sundays" } }
-      },
-      "block_order": ["m1", "m2", "m3", "m4"],
-      "settings": {}
-    },
-    "quote2": { "type": "lookbook-quote", "settings": { "quote": "Wear comfort beautifully.", "bg": false } },
-    "masonry": { "type": "lookbook-masonry", "settings": {} },
-    "instagram": { "type": "lookbook-instagram", "settings": {} },
-    "cta": { "type": "lookbook-cta", "settings": {} }
+    "coming-soon": {
+      "type": "lookbook-coming-soon",
+      "settings": {
+        "eyebrow": "The Lookbook",
+        "heading": "Coming Soon",
+        "body": "We’re styling something soft. Our debut lookbook — real looks, thoughtfully put together — is on its way. Be the first to see it.",
+        "show_waitlist": true,
+        "button_label": "Notify Me",
+        "waitlist_note": "First look, early access. No spam, we promise.",
+        "shop_label": "Explore the Capsule",
+        "instagram_label": "Follow along",
+        "ugc_text": "Tag @thoda.soft to be featured in our lookbook"
+      }
+    }
   },
-  "order": ["hero", "intro", "gallery1", "quote1", "gallery2", "quote2", "masonry", "instagram", "cta"]
+  "order": ["coming-soon"]
 }
