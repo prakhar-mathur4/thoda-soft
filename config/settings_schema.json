@@ -16,6 +16,12 @@
         "label": "Logo"
       },
       {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Small square icon shown in the browser tab. Use a simple square image (e.g. the flower emblem or a 'TS' monogram), ~64×64px or larger. Falls back to the logo if empty."
+      },
+      {
         "type": "range",
         "id": "logo_width",
         "min": 120,
