@@ -12,3 +12,6 @@ next-env.d.ts
 
 # Theme upload artifact (rebuilt on demand)
 thoda-soft-theme.zip
+
+# Strategy deliverable (not part of the theme)
+docs/thoda-soft-strategy.html
