@@ -58,7 +58,7 @@
   },
   "cart": {
     "title": "Your Cart",
-    "empty": "Your cart is soft and empty.",
+    "empty": "Your cart is empty",
     "empty_cta": "Start shopping",
     "subtotal": "Subtotal",
     "checkout": "Secure Checkout",

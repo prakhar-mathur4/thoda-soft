@@ -477,8 +477,12 @@
       });
       filtersForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const params = new URLSearchParams(new FormData(filtersForm));
-        window.location.href = window.location.pathname + '?' + params.toString();
+        const params = new URLSearchParams();
+        new FormData(filtersForm).forEach((v, k) => {
+          if (String(v).trim() !== '') params.append(k, v);
+        });
+        const qs = params.toString();
+        window.location.href = window.location.pathname + (qs ? '?' + qs : '');
       });
     }
     const fRoot = $('[data-filters]');

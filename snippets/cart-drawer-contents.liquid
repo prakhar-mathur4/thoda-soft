@@ -18,7 +18,7 @@
 {%- if cart.item_count == 0 -%}
   <div class="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
     {%- render 'icon', name: 'bag', class: 'h-10 w-10 text-charcoal/30' -%}
-    <p class="font-serif text-xl">Your cart is feeling soft &amp; empty</p>
+    <p class="font-serif text-xl">{{ 'cart.empty' | t }}</p>
     <p class="max-w-xs text-sm text-charcoal-muted">Add a piece from the debut capsule and it will appear here.</p>
     <button type="button" data-cart-close class="btn-primary mt-2">{{ 'cart.empty_cta' | t }}</button>
   </div>
