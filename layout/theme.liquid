@@ -100,5 +100,11 @@
         soldOut: {{ 'products.product.sold_out' | t | json }}
       };
     </script>
+
+    {%- comment -%}
+      Injected by the Razorpay Magic Checkout app. Kept in source so a theme
+      push does not strip one-click checkout off the live store.
+    {%- endcomment -%}
+    {% render 'razorpay-magic-checkout' %}
   </body>
 </html>

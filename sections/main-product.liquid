@@ -77,6 +77,21 @@
 
       {%- render 'share-button', product: product -%}
 
+      {%- comment -%}
+        Payment offers / EMI — sits between the share button and the accordions.
+        Two routes, both land here: the `razorpay_offers` block (theme-owned
+        embed, needs a Key ID) and `@app` blocks, so Razorpay's own Shopify app
+        block can be dropped in from the Theme Editor instead.
+      {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'razorpay_offers' -%}
+            {%- render 'razorpay-affordability', product: product, block: block -%}
+          {%- when '@app' -%}
+            <div class="mt-8" {{ block.shopify_attributes }}>{% render block %}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+
       {%- comment -%} Accordions {%- endcomment -%}
       <div class="mt-10">
         {%- if product.description != blank -%}
@@ -228,7 +243,18 @@
         { "type": "richtext", "id": "content", "label": "Content (shared fallback)", "default": "<p>True to size with a relaxed, feminine drape. Inclusive sizing from XS–3XL.</p>" },
         { "type": "text", "id": "metafield", "label": "Per-product metafield", "info": "Optional. e.g. custom.materials_care — when a product has this metafield, its value is shown instead of the fallback above." }
       ]
-    }
+    },
+    {
+      "type": "razorpay_offers",
+      "name": "Razorpay offers & EMI",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Shows Razorpay’s Affordability Widget — EMI, Cardless EMI, Pay Later and your live offers. Appears below “Share the vibe”, above the accordions. The offers themselves are managed in your Razorpay Dashboard → Affordability, not here, and Razorpay renders its own styling." },
+        { "type": "text", "id": "key_id", "label": "Razorpay Key ID", "info": "Razorpay Dashboard → Account & Settings → API keys. Use an rzp_test_… key to preview, then swap in your rzp_live_… key and turn the widget on under Affordability → Go live. Leave empty to hide the widget." },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Offers & EMI", "info": "Leave empty for no heading." }
+      ]
+    },
+    { "type": "@app" }
   ],
   "presets": [
     {

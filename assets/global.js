@@ -195,6 +195,7 @@
     if (idInput) idInput.value = variant.id;
     if (price && variant.price) price.textContent = variant.price;
     setAdd(false, window.cartStrings ? window.cartStrings.addToCart : 'Add to Cart');
+    document.dispatchEvent(new CustomEvent('variant:change', { detail: { variant: variant, form: form } }));
   }
 
   document.addEventListener('click', (e) => {
@@ -414,6 +415,51 @@
   });
   const sgOverlay = $('[data-size-guide-overlay]');
   if (sgOverlay) sgOverlay.addEventListener('click', () => sizeGuide && sizeGuide.close());
+
+  /* ----------------------------------------------------------------------
+   * Razorpay Affordability Widget (product page)
+   * Razorpay's script exposes RazorpayAffordabilitySuite and has no documented
+   * "update amount" method, so a variant change re-mounts a fresh instance.
+   * -------------------------------------------------------------------- */
+  (function razorpayAffordability() {
+    const root = $('[data-razorpay-affordability]');
+    if (!root) return;
+    const key = root.dataset.rzpKey;
+    const mount = $('#razorpay-affordability-widget', root);
+    if (!key || !mount) return;
+
+    let amount = Number(root.dataset.rzpAmount) || 0;
+    let booted = false;
+
+    const render = () => {
+      if (typeof window.RazorpayAffordabilitySuite !== 'function' || !amount) return;
+      mount.innerHTML = '';
+      try {
+        new window.RazorpayAffordabilitySuite({ key: key, amount: amount }).render();
+      } catch (e) { /* never let the widget break the product page */ }
+    };
+
+    // The widget script is deferred and sits after global.js in document order,
+    // so the constructor does not exist yet — wait for whichever signal lands first.
+    const boot = () => { if (booted) return; booted = true; render(); };
+    if (window.RazorpayAffordabilitySuite) boot();
+    else {
+      const script = $('[data-rzp-affordability-script]');
+      if (script) script.addEventListener('load', boot);
+      window.addEventListener('load', boot);
+    }
+
+    // Re-render on variant change, but only for the main product form — a quick
+    // view opened from the recommendations grid must not retarget this widget.
+    document.addEventListener('variant:change', (e) => {
+      const d = e.detail || {};
+      if (!d.form || !d.form.closest('[data-product-root]')) return;
+      const next = Number(d.variant && d.variant.price_amount);
+      if (!next || next === amount) return;
+      amount = next;
+      if (booted) render();
+    });
+  })();
 
   /* ----------------------------------------------------------------------
    * Chat widget

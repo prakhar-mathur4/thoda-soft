@@ -1,0 +1,38 @@
+{%- comment -%}
+  Razorpay Affordability Widget — EMI, Cardless EMI, Pay Later and the live
+  offers configured in your Razorpay Dashboard (Affordability). Razorpay renders
+  its own UI inside the container, so it will not match the theme's fonts and
+  colours; the wrapper below is ours, everything inside #razorpay-affordability-widget
+  is theirs.
+
+  The offer list is NOT editable here — it comes from your Razorpay account.
+
+  Params:
+    product (required) — used for the initial amount
+    block   (required) — the `razorpay_offers` block (key_id, heading)
+
+  Amount: Razorpay expects paise, and Shopify's `variant.price` is already in the
+  currency's smallest unit, so it passes through 1:1 with no conversion.
+  global.js re-renders the widget when the shopper picks a different variant.
+{%- endcomment -%}
+{%- liquid
+  assign rzp_key = block.settings.key_id | strip
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+{%- if rzp_key != blank and variant.price > 0 -%}
+  <div
+    class="mt-8 border-t border-charcoal/15 pt-6"
+    data-razorpay-affordability
+    data-rzp-key="{{ rzp_key | escape }}"
+    data-rzp-amount="{{ variant.price }}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if block.settings.heading != blank -%}
+      <p class="mb-3 text-xs uppercase tracking-[0.12em] text-charcoal">{{ block.settings.heading }}</p>
+    {%- endif -%}
+    <div id="razorpay-affordability-widget"></div>
+  </div>
+
+  <script src="https://cdn.razorpay.com/widgets/affordability/affordability.js" data-rzp-affordability-script defer></script>
+{%- endif -%}
