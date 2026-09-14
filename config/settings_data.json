@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "logo_width": 200,
@@ -8,10 +17,40 @@
     "color_blush": "#F6E7E4",
     "color_lavender_deep": "#B7AEDC",
     "color_sage": "#CBD6C2",
-    "cart_free_shipping_enabled": false,
     "social_instagram": "https://www.instagram.com/thoda.soft/",
     "social_facebook": "https://www.facebook.com/thodasoft",
-    "whatsapp_number": "917014019015"
+    "whatsapp_number": "917014019015",
+    "cart_free_shipping_enabled": false,
+    "content_for_index": [],
+    "blocks": {
+      "12104266310658676657": {
+        "type": "shopify://apps/gst-pro/blocks/app-block/dc0bf9c4-5319-4158-acba-097d71ee1adc",
+        "disabled": false,
+        "settings": {
+          "title": "GST invoice details",
+          "subtitle": "Add your GSTIN to get a GST-compliant invoice for this order.",
+          "gstin_number": "GST Number",
+          "collect_company": false,
+          "company_name": "Company Name",
+          "disable_styles": false,
+          "verify_button_label": "Verify",
+          "verify_accent_color": "#108043",
+          "verify_button_background": "#1a1a1a",
+          "verify_button_text_color": "#ffffff",
+          "verify_corner_radius": "soft"
+        }
+      },
+      "17844675666580048712": {
+        "type": "shopify://apps/razorpay-cod-magic-checkout/blocks/sso-script/c13c688d-5c45-4054-b95f-1edd63faa705",
+        "disabled": true,
+        "settings": {}
+      },
+      "3557650678667880288": {
+        "type": "shopify://apps/razorpay-cod-magic-checkout/blocks/magicx-script/c13c688d-5c45-4054-b95f-1edd63faa705",
+        "disabled": true,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Thoda Soft": {

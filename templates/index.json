@@ -1,24 +1,72 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/website_banner_photo.jpg",
+        "eyebrow": "",
+        "title": "The Debut Capsule",
+        "show_divider": true,
+        "cta_label": "",
+        "cta_link": "",
+        "text_color": "light"
+      }
     },
     "trust-bar": {
       "type": "trust-bar",
       "blocks": {
-        "b1": { "type": "item", "settings": { "icon": "leaf", "label": "Breathable fabrics" } },
-        "b2": { "type": "item", "settings": { "icon": "sparkle", "label": "Inclusive Sizing (XS–3XL)" } },
-        "b3": { "type": "item", "settings": { "icon": "pin", "label": "Designed in India" } },
-        "b4": { "type": "item", "settings": { "icon": "clock", "label": "Limited Drop" } }
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "label": "Breathable fabrics"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "sparkle",
+            "label": "Inclusive Sizing (XS–3XL)"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "pin",
+            "label": "Designed in India"
+          }
+        },
+        "b4": {
+          "type": "item",
+          "settings": {
+            "icon": "clock",
+            "label": "Limited Drop"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4"]
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {}
     },
     "featured-products": {
       "type": "featured-products",
       "settings": {
         "tag": "featured",
         "products_count": 4,
+        "collection": "",
         "eyebrow": "Limited Drop",
         "heading": "The Debut Capsule",
         "subtext": "Four pieces. Endlessly wearable. Made to be lived in.",
@@ -28,12 +76,20 @@
     "brand-story": {
       "type": "brand-story",
       "settings": {
-        "bg_color": "#F6E7E4",
+        "image": "shopify://shop_images/IMG_1528-2.png",
+        "bg_color": "#f6e7e4",
         "heading": "The Beauty of Dressing Softly.",
         "body": "For women who love dressing beautifully while living comfortably. Thoughtfully designed in India using breathable, carefully chosen fabrics, timeless silhouettes, and details that make everyday moments feel a little more special.",
-        "button_label": "Explore Now"
+        "button_label": "Explore Now",
+        "button_link": "",
+        "anchor": "story"
       }
     }
   },
-  "order": ["hero", "trust-bar", "featured-products", "brand-story"]
+  "order": [
+    "hero",
+    "trust-bar",
+    "featured-products",
+    "brand-story"
+  ]
 }
