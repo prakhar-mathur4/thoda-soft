@@ -10,5 +10,7 @@ postcss.config.js
 .gitignore
 .env*
 README.md
+AGENTS.md
+CLAUDE.md
 *.csv
 .DS_Store
