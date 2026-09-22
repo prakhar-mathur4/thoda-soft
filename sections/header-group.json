@@ -11,6 +11,14 @@
   "type": "header",
   "name": "Header group",
   "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "5% off on all products",
+        "bg_color": "#F6E7E4",
+        "text_color": "#895B3A"
+      }
+    },
     "header": {
       "type": "header",
       "blocks": {
@@ -22,5 +30,5 @@
       "settings": {}
     }
   },
-  "order": ["header"]
+  "order": ["announcement", "header"]
 }

@@ -1,0 +1,80 @@
+{%- comment -%}
+  Announcement strip. Lives in the header group, above the header.
+
+  The header group is pinned with `position: fixed` (layout/theme.liquid), so
+  <main> carries a padding-top spacer equal to the group's height — 3.5rem /
+  4rem, matching the header's h-14 / sm:h-16. Adding this bar makes the group
+  taller, so the spacer has to grow by exactly the bar's height or the hero
+  slides underneath.
+
+  `bar_h` below is the single source of truth for that: it sets the bar's own
+  height AND the corrected spacer, so the two can never drift apart. The <style>
+  block only exists while the section is rendered, so removing or disabling the
+  bar restores the original spacer with no leftover override.
+{%- endcomment -%}
+
+{%- liquid
+  assign bar_h = 2.25
+  assign bg = section.settings.bg_color | default: '#F6E7E4'
+  assign fg = section.settings.text_color | default: '#895B3A'
+-%}
+
+{%- if section.settings.text != blank -%}
+  <div
+    data-announcement-bar
+    class="flex w-full items-center justify-center px-4 text-center"
+    style="height: {{ bar_h }}rem; background-color: {{ bg }}; color: {{ fg }};"
+    {{ section.shopify_attributes }}
+  >
+    {%- if section.settings.link != blank -%}
+      <a
+        href="{{ section.settings.link }}"
+        class="truncate text-xs tracking-[0.08em] underline-offset-4 transition hover:underline sm:text-sm"
+      >{{ section.settings.text }}</a>
+    {%- else -%}
+      <p class="truncate text-xs tracking-[0.08em] sm:text-sm">{{ section.settings.text }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}
+    Shopify wraps EACH section of a group in its own div, and every one of them
+    carries .shopify-section-group-header-group — which theme.liquid pins to
+    `position: fixed; top: 0`. With one section that is fine; with two they stack
+    at the same origin and the header paints straight over this bar. So offset
+    every header-group wrapper that follows this one by the bar's height. The
+    sibling combinator keeps it general: add a third header section later and it
+    is offset too, with no extra rule.
+
+    Then grow the <main> spacer to match. `#MainContent` is an id, so it outranks
+    Tailwind's .pt-14 / .sm:pt-16 utilities without needing !important.
+  {%- endcomment -%}
+  <style>
+    .shopify-section-group-header-group[id$="__announcement"] ~ .shopify-section-group-header-group {
+      top: {{ bar_h }}rem;
+    }
+    #MainContent { padding-top: calc(3.5rem + {{ bar_h }}rem); }
+    @media (min-width: 640px) {
+      #MainContent { padding-top: calc(4rem + {{ bar_h }}rem); }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "5% off on all products",
+      "info": "Leave empty to hide the bar."
+    },
+    { "type": "url", "id": "link", "label": "Link (optional)" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F6E7E4" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#895B3A" }
+  ],
+  "presets": [{ "name": "Announcement bar" }],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}
