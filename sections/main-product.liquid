@@ -164,7 +164,14 @@
             {%- if block.settings.metafield != blank -%}
               {%- assign mf_parts = block.settings.metafield | split: '.' -%}
               {%- assign pmf = product.metafields[mf_parts[0]][mf_parts[1]] -%}
-              {%- if pmf != blank -%}{%- assign acc_content = pmf -%}{%- endif -%}
+              {%- if pmf != blank -%}
+                {%- comment -%} rich_text_field is stored as JSON; metafield_tag renders it as HTML {%- endcomment -%}
+                {%- if pmf.type == 'rich_text_field' -%}
+                  {%- assign acc_content = pmf | metafield_tag -%}
+                {%- else -%}
+                  {%- assign acc_content = pmf.value | newline_to_br -%}
+                {%- endif -%}
+              {%- endif -%}
             {%- endif -%}
             {%- if acc_content != blank -%}
               <details class="group border-b border-charcoal/15 py-4" {{ block.shopify_attributes }}>
