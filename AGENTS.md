@@ -8,7 +8,8 @@ the repo does **not** tell you, and what has bitten us before.
 
 | Theme | ID | Role |
 |---|---|---|
-| `Magic Checkout - thoda-soft-theme` | `190346297637` | **live** |
+| `thoda-soft-theme` | `191986368805` | **live** (zip upload, published 2026-10-18) |
+| `Magic Checkout - thoda-soft-theme` | `190346297637` | unpublished, was live until 2026-10-18 |
 | `thoda-soft-theme` | `190125801765` | unpublished original |
 
 Store: `thoda-soft.myshopify.com` (custom domain `thodasoft.com`).
@@ -23,7 +24,7 @@ Apps and the theme editor write directly to the live theme. A full push
 overwrites their files with whatever the repo last saw. Push explicitly:
 
 ```bash
-shopify theme push --theme 190346297637 \
+shopify theme push --theme 191986368805 \
   --only sections/some-section.liquid \
   --only assets/global.js
 ```
@@ -33,7 +34,7 @@ shopify theme push --theme 190346297637 \
 **Pull before you push.** Apps inject between sessions:
 
 ```bash
-shopify theme pull --theme 190346297637 --path /tmp/live
+shopify theme pull --theme 191986368805 --path /tmp/live
 diff -rq . /tmp/live -x node_modules -x .git -x '*.zip' -x src -x docs
 ```
 
