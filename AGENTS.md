@@ -4,19 +4,30 @@ Thoda Soft — a Shopify Online Store 2.0 theme (Liquid + vanilla JS, Tailwind a
 build step). `README.md` covers structure and commands. This file covers only what
 the repo does **not** tell you, and what has bitten us before.
 
-## The store has two themes, and the repo is neither
+## The live theme's ID changes on every zip upload
 
-| Theme | ID | Role |
-|---|---|---|
-| `thoda-soft-theme` | `191986368805` | **live** (zip upload, published 2026-10-18) |
-| `Magic Checkout - thoda-soft-theme` | `190346297637` | unpublished, was live until 2026-10-18 |
-| `thoda-soft-theme` | `190125801765` | unpublished original |
+The merchant ships by **uploading `thoda-soft-theme.zip` in admin and publishing
+it**. That creates a new theme with a new ID each time, and old themes get
+deleted. Never trust a theme ID written down anywhere (including here) — look it
+up first:
 
-Store: `thoda-soft.myshopify.com` (custom domain `thodasoft.com`).
+```bash
+shopify theme list --store zvinc6-7z.myshopify.com   # the row marked [live]
+```
 
-Installing Razorpay Magic Checkout **duplicated** the theme. This repo was built
-against the unpublished one; the live one is a fork that apps keep writing to.
-Treat the live theme as the source of truth for anything merchant- or app-owned.
+As of 2026-11-16 live was `192890405157`. Pushing to a stale ID "succeeds"
+against a theme nobody sees — that has happened.
+
+Store: permanent domain `zvinc6-7z.myshopify.com` (the CLI rejects the
+`thoda-soft.myshopify.com` alias for `store` commands); custom domain
+`thodasoft.com`.
+
+Apps and the theme editor write to the live theme between sessions, so for
+anything merchant- or app-owned, the live theme wins if the two have drifted.
+**Before building a zip, pull live and copy `config/settings_data.json`,
+`templates/*.json` and `sections/*-group.json` into the repo** — a zip built
+from stale copies becomes the new live theme and wipes app embeds and editor
+content.
 
 ## Never run a bare `shopify theme push`
 
@@ -24,7 +35,7 @@ Apps and the theme editor write directly to the live theme. A full push
 overwrites their files with whatever the repo last saw. Push explicitly:
 
 ```bash
-shopify theme push --theme 191986368805 \
+shopify theme push --theme <LIVE_ID> \
   --only sections/some-section.liquid \
   --only assets/global.js
 ```
@@ -34,7 +45,7 @@ shopify theme push --theme 191986368805 \
 **Pull before you push.** Apps inject between sessions:
 
 ```bash
-shopify theme pull --theme 191986368805 --path /tmp/live
+shopify theme pull --theme <LIVE_ID> --path /tmp/live
 diff -rq . /tmp/live -x node_modules -x .git -x '*.zip' -x src -x docs
 ```
 
