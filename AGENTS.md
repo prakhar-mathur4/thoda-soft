@@ -4,30 +4,30 @@ Thoda Soft — a Shopify Online Store 2.0 theme (Liquid + vanilla JS, Tailwind a
 build step). `README.md` covers structure and commands. This file covers only what
 the repo does **not** tell you, and what has bitten us before.
 
-## The live theme's ID changes on every zip upload
+## The live theme is connected to GitHub — `git push` deploys
 
-The merchant ships by **uploading `thoda-soft-theme.zip` in admin and publishing
-it**. That creates a new theme with a new ID each time, and old themes get
-deleted. Never trust a theme ID written down anywhere (including here) — look it
-up first:
+Since 2026-11-16 the published theme is `thoda-soft/shopify-theam`: Shopify's
+GitHub integration on branch **`shopify-theam`** (the other branches hold the old
+Next.js app, not a theme). Two consequences:
+
+- **Pushing to `shopify-theam` ships to the live store** within seconds. There is
+  no staging step — build CSS, run theme check, then push.
+- **The theme editor and apps commit back** to the branch ("Update from Shopify
+  for theme …"). **`git pull` before any work**, or you will conflict with the
+  merchant's edits to `templates/*.json` / `config/settings_data.json`.
+
+Zip uploads and `shopify theme push` are no longer the way to ship. If you ever
+do need the CLI against a theme, look the ID up first — IDs written down go
+stale (pushing to a stale ID "succeeds" against a theme nobody sees; that has
+happened):
 
 ```bash
 shopify theme list --store zvinc6-7z.myshopify.com   # the row marked [live]
 ```
 
-As of 2026-11-16 live was `192890405157`. Pushing to a stale ID "succeeds"
-against a theme nobody sees — that has happened.
-
 Store: permanent domain `zvinc6-7z.myshopify.com` (the CLI rejects the
 `thoda-soft.myshopify.com` alias for `store` commands); custom domain
 `thodasoft.com`.
-
-Apps and the theme editor write to the live theme between sessions, so for
-anything merchant- or app-owned, the live theme wins if the two have drifted.
-**Before building a zip, pull live and copy `config/settings_data.json`,
-`templates/*.json` and `sections/*-group.json` into the repo** — a zip built
-from stale copies becomes the new live theme and wipes app embeds and editor
-content.
 
 ## Never run a bare `shopify theme push`
 
@@ -139,6 +139,22 @@ Metaobjects → product metafields → section blocks (shared fallback). Highlig
 check `custom.highlights` then fall back to `highlight` blocks; accordions name a
 metafield then fall back to richtext; size charts read the `size_chart` metaobject
 then fall back to built-in tables. Setup guides live in `docs/`.
+
+## Product tags the theme reads
+
+- `badge-<text>` — pill badge on the product card image (`badge-bestseller` →
+  "Bestseller"). Max two per product. `snippets/product-card.liquid`.
+- `featured` — homepage featured-products section (tag is a section setting).
+- `chart-<name>` — which size chart the product popup shows.
+
+## Reviews are Judge.me
+
+Widgets are app blocks/embeds placed in the theme editor. App blocks inside the
+`main-product` section always render between the share button and the
+accordions, wherever they sit in the sidebar; full-width widgets belong in the
+template's **Apps** section. `snippets/rating-badge.liquid` (under the product
+title) reads the standard `reviews.rating` / `reviews.rating_count` metafields
+and renders nothing until a product has a review.
 
 ## Tracking pixels are not in the theme
 
