@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "judge_me_reviews_preview_badge_XdrDhC": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "razorpay_affordability_widget_affordability_block_WEgLRa": {
           "type": "shopify://apps/razorpay-affordability-widget/blocks/affordability-block/5bf9b115-5933-4c1b-ade0-ef564b250852",
           "settings": {}
@@ -55,25 +59,16 @@
             "content": "<p>Free shipping on all orders. 7-day size exchanges. Secure checkout, every time.</p>",
             "metafield": "custom.shipping_returns"
           }
-        },
-        "judge_me_reviews_review_widget_9gjwTn": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 600,
-            "show_shop_reviews": true,
-            "empty_state": "empty_widget"
-          }
         }
       },
       "block_order": [
+        "judge_me_reviews_preview_badge_XdrDhC",
         "razorpay_affordability_widget_affordability_block_WEgLRa",
         "hl_design",
         "hl_fabric",
         "fit",
         "care",
-        "shipping",
-        "judge_me_reviews_review_widget_9gjwTn"
+        "shipping"
       ],
       "settings": {
         "eyebrow": "The Debut Capsule",
@@ -90,6 +85,43 @@
     },
     "17948089272310bb9f": {
       "type": "apps",
+      "blocks": {
+        "judge_me_reviews_reviews_grid_widget_DYnhUT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/reviews_grid_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": true,
+            "review_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "show_media_only": false,
+            "display_order": "media_first",
+            "card_grouping": "per_media",
+            "columns_desktop": 3,
+            "rows_desktop": 3,
+            "columns_mobile": "2",
+            "rows_mobile": 6,
+            "show_stars": true,
+            "show_reviewer_name": true,
+            "show_review_title_on_hover_desktop": true,
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "card_spacing": "medium",
+            "header_text_color": "#000000",
+            "star_and_reviewer_name_color": "#F9F9F9",
+            "drop_shadow_color": "#000000",
+            "overlay_and_background_color": "#000000",
+            "content_color": "#F9F9F9",
+            "header_text": "From our customers",
+            "show_average_rating": true,
+            "rating_display": "default"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_reviews_grid_widget_DYnhUT"
+      ],
       "settings": {}
     }
   },
