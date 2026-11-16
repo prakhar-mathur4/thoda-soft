@@ -1,0 +1,30 @@
+{%- comment -%}
+  Star rating + review count for a product. Reads Shopify's standard review
+  metafields (`reviews.rating`, `reviews.rating_count`), which the reviews app
+  (Judge.me) keeps in sync. Renders nothing until a product has a review, so it
+  is safe on products with none.
+
+  Params:
+    product (required)
+    href    (optional) — when set, the badge links there (e.g. the reviews
+                         widget on the product page)
+    class   (optional) — extra classes for the wrapper
+{%- endcomment -%}
+{%- liquid
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  assign rating_value = rating.rating
+  assign rating_max = rating.scale_max
+-%}
+{%- if rating != blank and rating_count > 0 -%}
+  {%- capture rating_label -%}Rated {{ rating_value | round: 1 }} out of {{ rating_max | round }}, {{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}{%- endcapture -%}
+  {%- if href != blank -%}
+    <a href="{{ href }}" aria-label="{{ rating_label | escape }}" class="inline-flex items-center gap-1 text-xs text-charcoal underline-offset-2 transition hover:underline {{ class }}">
+  {%- else -%}
+    <p aria-label="{{ rating_label | escape }}" class="inline-flex items-center gap-1 text-xs text-charcoal {{ class }}">
+  {%- endif -%}
+    {%- render 'icon', name: 'star', class: 'h-3.5 w-3.5' -%}
+    <span class="font-medium">{{ rating_value | round: 1 }}</span>
+    <span class="text-charcoal/70">({{ rating_count }})</span>
+  {%- if href != blank -%}</a>{%- else -%}</p>{%- endif -%}
+{%- endif -%}

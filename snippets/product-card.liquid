@@ -41,6 +41,29 @@
       {%- endif -%}
     </a>
 
+    {%- comment -%}
+      Badges (Bestseller, Recommended, …) — driven by product tags. Any tag that
+      starts with "badge-" becomes a badge: `badge-bestseller` → "Bestseller",
+      `badge-new-arrival` → "New arrival". At most two are shown, in tag order.
+      pointer-events-none keeps the whole image clickable through the badge.
+    {%- endcomment -%}
+    {%- capture card_badges -%}
+      {%- assign badge_count = 0 -%}
+      {%- for tag in product.tags -%}
+        {%- liquid
+          assign tag_l = tag | strip | downcase
+          assign tag_prefix = tag_l | slice: 0, 6
+        -%}
+        {%- if tag_prefix == 'badge-' and badge_count < 2 -%}
+          <span class="rounded-full bg-cream/95 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-charcoal shadow-sm backdrop-blur">{{ tag_l | remove_first: 'badge-' | replace: '-', ' ' | escape }}</span>
+          {%- assign badge_count = badge_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if card_badges != blank -%}
+      <div class="pointer-events-none absolute left-3 top-3 z-20 flex flex-col items-start gap-1.5" data-card-badges>{{ card_badges }}</div>
+    {%- endif -%}
+
     {%- comment -%} Pointer (mouse) controls {%- endcomment -%}
     <div class="absolute inset-x-3 bottom-3 z-20 hidden translate-y-3 flex-col gap-2 opacity-0 transition-all duration-300 ease-soft can-hover:flex group-hover:translate-y-0 group-hover:opacity-100" data-card-controls>
       {%- if has_sizes and multi_option == false -%}
