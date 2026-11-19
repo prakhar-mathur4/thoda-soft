@@ -12,10 +12,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "judge_me_reviews_preview_badge_XdrDhC": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        },
         "razorpay_affordability_widget_affordability_block_WEgLRa": {
           "type": "shopify://apps/razorpay-affordability-widget/blocks/affordability-block/5bf9b115-5933-4c1b-ade0-ef564b250852",
           "settings": {}
@@ -62,7 +58,6 @@
         }
       },
       "block_order": [
-        "judge_me_reviews_preview_badge_XdrDhC",
         "razorpay_affordability_widget_affordability_block_WEgLRa",
         "hl_design",
         "hl_fabric",
@@ -72,6 +67,11 @@
       ],
       "settings": {
         "eyebrow": "The Debut Capsule",
+        "usp_1": "Free shipping across India",
+        "usp_2": "Cash on Delivery available",
+        "usp_3": "7-day size exchange",
+        "usp_4": "Dispatched in 1–2 business days",
+        "low_stock_threshold": 3,
         "highlights_heading": "What Makes It Great",
         "highlights_open": true
       }
