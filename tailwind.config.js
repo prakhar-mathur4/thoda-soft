@@ -24,7 +24,7 @@ module.exports = {
       current: 'currentColor',
       white: '#FFFFFF',
       black: '#000000',
-      cream: '#FEF9EB',
+      cream: '#FFFFFF',
       blush: { DEFAULT: '#F6E7E4', deep: '#EBD3CE' },
       lavender: { DEFAULT: '#D8D2EC', deep: '#B7AEDC' },
       sage: { DEFAULT: '#CBD6C2', deep: '#A7B89C' },

@@ -36,7 +36,7 @@
         <div data-search-default>
           <p class="mb-3 text-xs uppercase tracking-[0.18em] text-charcoal-muted">Popular searches</p>
           <div class="flex flex-wrap gap-2">
-            {%- assign popular = 'Midi,Slip,Wrap,Tiered' | split: ',' -%}
+            {%- assign popular = 'Dress,Co-ord,Top,Shirt' | split: ',' -%}
             {%- for term in popular -%}
               <button type="button" data-search-suggest="{{ term }}" class="rounded-full border border-charcoal/20 px-4 py-1.5 text-sm text-charcoal transition hover:border-charcoal hover:bg-charcoal hover:text-cream">{{ term }}</button>
             {%- endfor -%}

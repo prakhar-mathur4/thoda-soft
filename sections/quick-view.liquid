@@ -41,7 +41,7 @@
     <form data-product-form novalidate {% if has_sizes %}data-select-label="{{ select_label }}"{% endif %}>
       <input type="hidden" name="id" data-variant-id value="{% unless has_sizes %}{{ current_variant.id }}{% endunless %}">
       {%- if has_sizes -%}
-        {%- render 'variant-picker', product: product -%}
+        {%- render 'variant-picker', product: product, show_size_chart: true -%}
       {%- endif -%}
 
       <div class="mt-auto pt-7">
@@ -53,6 +53,15 @@
     </form>
   </div>
 </div>
+
+{%- comment -%}
+  Same size chart popup as the product page. global.js lifts it out of the
+  quick-view dialog into <body> when this section is injected (the dialog is
+  transformed, which would trap a position:fixed child inside it).
+{%- endcomment -%}
+{%- if has_sizes -%}
+  {%- render 'size-guide-modal', product: product -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "Quick view",

@@ -3,7 +3,7 @@
   Usage: {% render 'icon', name: 'bag', class: 'h-5 w-5' %}
   Names: search, bag, eye, chat, whatsapp, menu, user, close, leaf,
          sparkle, pin, clock, lock, arrow-right, share, link,
-         facebook, pinterest, x, instagram, star
+         facebook, pinterest, x, instagram, star, truck, cash, exchange, home, hanger
 {%- endcomment -%}
 {%- liquid
   assign icon_class = class | default: 'h-5 w-5'
@@ -50,6 +50,16 @@
     <svg viewBox="0 0 24 24" class="{{ icon_class }}" fill="currentColor" aria-hidden="true"><path d="M17.53 3h3.13l-6.84 7.82L22 21h-6.3l-4.93-6.44L5.13 21H2l7.32-8.36L2 3h6.46l4.46 5.9L17.53 3Zm-1.1 16.13h1.73L7.65 4.78H5.8l10.63 14.35Z"/></svg>
   {%- when 'star' -%}
     <svg viewBox="0 0 24 24" class="{{ icon_class }}" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.5l-5.9 3.2 1.2-6.6L2.5 9.5l6.6-.9L12 2.5Z"/></svg>
+  {%- when 'home' -%}
+    <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><path d="M4.5 10.5 12 4l7.5 6.5V19a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1v-8.5Z"/></svg>
+  {%- when 'hanger' -%}
+    <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><path d="M10 7a2 2 0 1 1 2 2v1.5"/><path d="m12 10.5 8.2 5.3a.9.9 0 0 1-.5 1.7H4.3a.9.9 0 0 1-.5-1.7L12 10.5Z"/></svg>
+  {%- when 'truck' -%}
+    <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><path d="M2.5 6.5h11v10h-11z"/><path d="M13.5 10h4l3 3.2v3.3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+  {%- when 'cash' -%}
+    <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v5M18 9.5v5"/></svg>
+  {%- when 'exchange' -%}
+    <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><path d="M4 8.5h14"/><path d="m14.5 5 3.5 3.5-3.5 3.5"/><path d="M20 15.5H6"/><path d="m9.5 12-3.5 3.5L9.5 19"/></svg>
   {%- when 'instagram' -%}
     <svg viewBox="0 0 24 24" class="{{ icon_class }}" {{ stroke }} aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.8"/><path d="M17.4 6.6h.01"/></svg>
 {%- endcase -%}

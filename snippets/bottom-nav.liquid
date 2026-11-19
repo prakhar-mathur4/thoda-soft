@@ -1,0 +1,56 @@
+{%- comment -%}
+  Mobile floating bottom navigation ("island"): a frosted pill with the four
+  everyday destinations, plus a separate Help pill that opens the chat panel.
+
+  - Every button reuses an existing delegated hook in global.js
+    (data-search-open, data-cart-open, data-chat-open) — no new controller.
+  - On phones it replaces the round chat bubble (hidden in src/theme.css).
+  - Not rendered on the product page (layout/theme.liquid): the sticky buy bar
+    owns the foot of the screen there, and the chat bubble stays.
+  - On the homepage it stays out of the way while the hero fills the screen:
+    it starts off-screen here (no flash before JS) and global.js slides it in
+    once the visitor has scrolled past half of [data-hero].
+{%- endcomment -%}
+{%- liquid
+  assign active = ''
+  case template.name
+    when 'index'
+      assign active = 'home'
+    when 'collection', 'list-collections'
+      assign active = 'shop'
+  endcase
+  assign item_cls = 'relative flex flex-1 flex-col items-center gap-1 rounded-xl px-2 py-2 text-[11px] leading-none text-charcoal transition active:scale-95'
+  assign active_cls = 'bg-blush font-medium'
+-%}
+<nav
+  data-bottom-nav
+  aria-label="Quick navigation"
+  class="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-center gap-2 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] transition-transform duration-300 ease-soft md:hidden {% if template.name == 'index' %}translate-y-[150%]{% endif %}"
+>
+  <div class="pointer-events-auto flex max-w-sm flex-1 items-stretch rounded-2xl border border-charcoal/10 bg-cream/70 p-1.5 shadow-[0_8px_30px_rgba(46,43,41,0.18)] backdrop-blur-xl">
+    <a href="{{ routes.root_url }}" class="{{ item_cls }} {% if active == 'home' %}{{ active_cls }}{% endif %}" {% if active == 'home' %}aria-current="page"{% endif %}>
+      {%- render 'icon', name: 'home', class: 'h-6 w-6' -%}
+      <span>Home</span>
+    </a>
+    <a href="{{ routes.all_products_collection_url }}" class="{{ item_cls }} {% if active == 'shop' %}{{ active_cls }}{% endif %}" {% if active == 'shop' %}aria-current="page"{% endif %}>
+      {%- render 'icon', name: 'hanger', class: 'h-6 w-6' -%}
+      <span>Shop</span>
+    </a>
+    <button type="button" data-search-open class="{{ item_cls }}">
+      {%- render 'icon', name: 'search', class: 'h-6 w-6' -%}
+      <span>Search</span>
+    </button>
+    <button type="button" data-cart-open class="{{ item_cls }}" aria-label="Open bag">
+      <span class="relative">
+        {%- render 'icon', name: 'bag', class: 'h-6 w-6' -%}
+        <span data-cart-count class="absolute -right-2 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-charcoal px-1 text-[10px] font-medium text-cream {% if cart.item_count == 0 %}hidden{% endif %}">{{ cart.item_count }}</span>
+      </span>
+      <span>Bag</span>
+    </button>
+  </div>
+
+  <button type="button" data-chat-open class="pointer-events-auto flex flex-col items-center justify-center gap-1 rounded-2xl border border-charcoal/10 bg-cream/70 px-4 text-[11px] leading-none text-charcoal shadow-[0_8px_30px_rgba(46,43,41,0.18)] backdrop-blur-xl transition active:scale-95">
+    {%- render 'icon', name: 'chat', class: 'h-6 w-6' -%}
+    <span>Help</span>
+  </button>
+</nav>

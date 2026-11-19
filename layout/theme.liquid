@@ -64,7 +64,15 @@
     {{ content_for_header }}
   </head>
 
-  <body class="bg-cream text-charcoal font-sans antialiased">
+  {%- comment -%}
+    The mobile bottom nav is shown everywhere except the product page, where the
+    sticky buy bar owns the foot of the screen. `has-bottom-nav` lets
+    src/theme.css reserve room for it and hide the chat bubble only when the
+    nav is actually there.
+  {%- endcomment -%}
+  {%- assign show_bottom_nav = true -%}
+  {%- if template.name == 'product' -%}{%- assign show_bottom_nav = false -%}{%- endif -%}
+  <body class="bg-cream text-charcoal font-sans antialiased{% if show_bottom_nav %} has-bottom-nav{% endif %}">
     <a
       href="#MainContent"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-charcoal focus:px-5 focus:py-2 focus:text-cream"
@@ -85,6 +93,7 @@
     {%- render 'search-overlay' -%}
     {%- render 'mobile-size-sheet' -%}
     {%- render 'chat-widget' -%}
+    {%- if show_bottom_nav -%}{%- render 'bottom-nav' -%}{%- endif -%}
 
     <script>
       window.routes = {

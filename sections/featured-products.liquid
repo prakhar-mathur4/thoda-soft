@@ -55,6 +55,12 @@
         <div data-carousel-dots class="mt-6 flex justify-center gap-2 sm:hidden"></div>
       </div>
 
+      {%- if section.settings.button_label != blank and shown > 0 -%}
+        <div class="mt-10 text-center sm:mt-14">
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn-primary">{{ section.settings.button_label }}</a>
+        </div>
+      {%- endif -%}
+
       {%- if shown == 0 and request.design_mode -%}
         <p class="mt-6 text-center text-xs text-charcoal-muted">No products found with the tag &ldquo;{{ tag }}&rdquo;. Tag products with <strong>{{ tag }}</strong> in Shopify admin to feature them here.</p>
       {%- endif -%}
@@ -74,6 +80,8 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Limited Drop" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The Debut Capsule" },
     { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Six pieces. Endlessly wearable. Made to be lived in." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop all pieces", "info": "Leave empty to hide the button." },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to all products." },
     { "type": "text", "id": "anchor", "label": "Section anchor id", "default": "capsule" }
   ],
   "presets": [{ "name": "Featured products" }]

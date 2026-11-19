@@ -175,14 +175,35 @@
       else complete = false;
     });
 
+    // Strike sizes that are sold out with the current selection of the other
+    // option(s). Fully sold-out values are already struck + disabled by Liquid.
+    $$('[data-variant-option]', form).forEach((b) => {
+      if (b.disabled) return;
+      const pos = Number(b.dataset.optionPosition) - 1;
+      const ok = variants.some((v) => v.available && String(v.options[pos]) === b.dataset.optionValue
+        && v.options.every((o, i) => i === pos || selected[i] == null || String(o) === String(selected[i])));
+      b.classList.toggle('line-through', !ok);
+      b.classList.toggle('opacity-40', !ok);
+    });
+
     const setAdd = (disabled, text) => {
       if (btn) btn.disabled = disabled;
       if (label && text != null) label.textContent = text;
+    };
+    // "Only X left" — real tracked stock of the chosen variant, or hidden.
+    const stock = scope.querySelector('[data-stock-note]');
+    const setStock = (v) => {
+      if (!stock) return;
+      const max = Number(stock.dataset.threshold) || 0;
+      const low = v && v.available && typeof v.qty === 'number' && v.qty > 0 && v.qty <= max;
+      stock.textContent = low ? 'Only ' + v.qty + ' left in this size' : '';
+      stock.classList.toggle('hidden', !low);
     };
 
     if (!complete) {
       if (idInput) idInput.value = '';
       setAdd(true, form.dataset.selectLabel || 'Select Size');
+      setStock(null);
       return;
     }
     const variant = variants.find((v) => v.options.every((o, i) => String(o) === String(selected[i])));
@@ -190,11 +211,13 @@
       if (idInput) idInput.value = variant ? variant.id : '';
       if (variant && price && variant.price) price.textContent = variant.price;
       setAdd(true, 'Sold out');
+      setStock(null);
       return;
     }
     if (idInput) idInput.value = variant.id;
     if (price && variant.price) price.textContent = variant.price;
     setAdd(false, window.cartStrings ? window.cartStrings.addToCart : 'Add to Cart');
+    setStock(variant);
     document.dispatchEvent(new CustomEvent('variant:change', { detail: { variant: variant, form: form } }));
   }
 
@@ -208,6 +231,80 @@
     opt.setAttribute('aria-pressed', 'true');
     resolveVariant(form);
   });
+
+  /* Announcement bar — cross-fade between messages when there is more than one */
+  (function announcement() {
+    const items = $$('[data-announcement-item]');
+    if (items.length < 2) return;
+    const show = (el, on) => {
+      el.classList.toggle('opacity-0', !on);
+      el.classList.toggle('pointer-events-none', !on);
+      if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true');
+    };
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      show(items[i], false);
+      i = (i + 1) % items.length;
+      show(items[i], true);
+    }, 4000);
+  })();
+
+  /* Mobile bottom nav — hidden while the homepage hero is on screen */
+  (function bottomNav() {
+    const nav = $('[data-bottom-nav]');
+    if (!nav) return;
+    const hero = $('[data-hero]');
+    const setHidden = (hidden) => {
+      nav.classList.toggle('translate-y-[150%]', hidden);
+      nav.inert = hidden;
+    };
+    // No hero on this page (or no observer support): always show.
+    if (!hero || !('IntersectionObserver' in window)) { setHidden(false); return; }
+    new IntersectionObserver((entries) => setHidden(entries[0].isIntersecting), { threshold: 0.5 }).observe(hero);
+  })();
+
+  /* Mobile sticky buy bar — mirrors the product page's main Add to Cart button */
+  (function stickyAtc() {
+    const bar = $('[data-sticky-atc]');
+    const root = $('[data-product-root]');
+    const form = root && $('[data-product-form]', root);
+    const main = form && $('[data-add-to-cart]', form);
+    if (!bar || !main || !('IntersectionObserver' in window)) return;
+    const btn = $('[data-sticky-atc-btn]', bar);
+    const label = $('[data-sticky-label]', bar);
+    const price = $('[data-sticky-price]', bar);
+    const mainLabel = $('[data-add-label]', main);
+    const mainPrice = $('[data-product-price]', root);
+    const idInput = $('[data-variant-id]', form);
+
+    const sync = () => {
+      if (label && mainLabel) label.textContent = mainLabel.textContent;
+      if (price && mainPrice) price.textContent = mainPrice.textContent;
+      // Disabled with no variant chosen = "Select Size": keep the bar tappable
+      // so it can take the shopper to the size picker.
+      btn.disabled = main.disabled && !!(idInput && idInput.value);
+    };
+    new MutationObserver(sync).observe(root, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['disabled', 'value'] });
+    sync();
+
+    const setVisible = (on) => {
+      bar.classList.toggle('translate-y-full', !on);
+      bar.setAttribute('aria-hidden', on ? 'false' : 'true');
+      btn.tabIndex = on ? 0 : -1;
+      document.body.classList.toggle('has-sticky-atc', on);
+    };
+    new IntersectionObserver((entries) => setVisible(!entries[0].isIntersecting)).observe(main);
+
+    btn.addEventListener('click', () => {
+      if (idInput && !idInput.value) {
+        const picker = $('[data-option-group]', form);
+        if (picker) picker.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        return;
+      }
+      if (form.requestSubmit) form.requestSubmit(); else main.click();
+    });
+  })();
 
   /* Product share — native share sheet when available, else a small menu */
   document.addEventListener('click', (e) => {
@@ -376,6 +473,7 @@
     panel: $('[data-quickview-dialog]'),
     openCls: ['translate-y-0', 'scale-100', 'opacity-100'], closeCls: ['translate-y-4', 'scale-[0.98]', 'opacity-0'],
     ovOpen: ['opacity-100'], ovClose: ['opacity-0'],
+    onClose() { if (qvSizeGuide) qvSizeGuide.close(); },
   });
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('[data-quickview-open]');
@@ -390,7 +488,7 @@
         .then((html) => {
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const inner = doc.querySelector('.shopify-section') || doc.body;
-          if (content) content.innerHTML = inner.innerHTML;
+          if (content) { content.innerHTML = inner.innerHTML; adoptQuickViewSizeGuide(content); }
         })
         .catch(() => { if (content) content.innerHTML = '<p class="p-10 text-center text-sm text-charcoal-muted">Unable to load. Please try again.</p>'; });
     }
@@ -402,19 +500,42 @@
   /* ----------------------------------------------------------------------
    * Size guide modal
    * -------------------------------------------------------------------- */
-  const sizeGuide = makeOverlay({
-    root: $('[data-size-guide]'),
-    overlay: $('[data-size-guide-overlay]'),
-    panel: $('[data-size-guide-dialog]'),
+  const mountSizeGuide = (root, lock) => makeOverlay({
+    root: root,
+    overlay: root && $('[data-size-guide-overlay]', root),
+    panel: root && $('[data-size-guide-dialog]', root),
     openCls: ['translate-y-0', 'opacity-100'], closeCls: ['translate-y-4', 'opacity-0'],
     ovOpen: ['opacity-100'], ovClose: ['opacity-0'],
+    lock: lock,
   });
+  // The product page's own popup (rendered by main-product).
+  const sizeGuide = mountSizeGuide($('[data-size-guide]'), true);
+  // Quick view carries the same popup for ITS product. Each time quick view
+  // loads, lift that popup into <body> (replacing the previous one) so it can
+  // cover the viewport. It never touches scroll lock — quick view holds it.
+  let qvSizeGuide = null;
+  function adoptQuickViewSizeGuide(content) {
+    $$('[data-size-guide-qv]').forEach((el) => el.remove());
+    qvSizeGuide = null;
+    const el = $('[data-size-guide]', content);
+    if (!el) return;
+    el.setAttribute('data-size-guide-qv', '');
+    document.body.appendChild(el);
+    qvSizeGuide = mountSizeGuide(el, false);
+  }
   document.addEventListener('click', (e) => {
-    if (e.target.closest('[data-size-guide-open]')) { e.preventDefault(); sizeGuide && sizeGuide.open(); }
-    if (e.target.closest('[data-size-guide-close]')) { e.preventDefault(); sizeGuide && sizeGuide.close(); }
+    const opener = e.target.closest('[data-size-guide-open]');
+    if (opener) {
+      e.preventDefault();
+      const guide = opener.closest('[data-quickview]') ? qvSizeGuide : sizeGuide;
+      if (guide) guide.open();
+    }
+    if (e.target.closest('[data-size-guide-close], [data-size-guide-overlay]')) {
+      e.preventDefault();
+      if (sizeGuide) sizeGuide.close();
+      if (qvSizeGuide) qvSizeGuide.close();
+    }
   });
-  const sgOverlay = $('[data-size-guide-overlay]');
-  if (sgOverlay) sgOverlay.addEventListener('click', () => sizeGuide && sizeGuide.close());
 
   /* ----------------------------------------------------------------------
    * Razorpay Affordability Widget (product page)
@@ -487,6 +608,8 @@
       if (toggle) toggle.setAttribute('aria-expanded', String(v));
     };
     if (toggle) toggle.addEventListener('click', () => setOpen(!open));
+    // Any other trigger (e.g. the Help pill in the mobile bottom nav).
+    document.addEventListener('click', (e) => { if (e.target.closest('[data-chat-open]')) setOpen(!open); });
     $$('[data-chat-close]', root).forEach((b) => b.addEventListener('click', () => setOpen(false)));
     const openWA = (ctx) => {
       if (!wa) return;
@@ -822,6 +945,9 @@
    * -------------------------------------------------------------------- */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    // A size chart open over quick view closes on its own first; the next Escape
+    // then closes quick view.
+    if (qvSizeGuide && qvSizeGuide.isOpen) { qvSizeGuide.close(); return; }
     [cart, menu, search, quick, sizeGuide, sizeSheet].forEach((o) => o && o.isOpen && o.close());
   });
 })();

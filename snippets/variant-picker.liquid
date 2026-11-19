@@ -18,13 +18,30 @@
     </legend>
     <div class="flex flex-wrap gap-2" data-variant-picker>
       {%- for value in option.values -%}
+        {%- comment -%}
+          Sold out = no purchasable variant carries this value. Struck through
+          and disabled, same as the size pills on the product card. (For
+          multi-option products global.js also strikes values that are only
+          sold out in combination with the current selection.)
+        {%- endcomment -%}
+        {%- liquid
+          assign option_index = option.position | minus: 1
+          assign value_available = false
+          for v in product.variants
+            if v.available and v.options[option_index] == value
+              assign value_available = true
+              break
+            endif
+          endfor
+        -%}
         <button
           type="button"
           data-variant-option
           data-option-position="{{ option.position }}"
           data-option-value="{{ value | escape }}"
           aria-pressed="false"
-          class="min-w-12 rounded-full border px-4 py-2.5 text-sm uppercase tracking-wide transition ease-soft border-charcoal/25 text-charcoal hover:border-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream">
+          {% unless value_available %}disabled title="{{ value | escape }} — sold out"{% endunless %}
+          class="min-w-12 rounded-full border px-4 py-2.5 text-sm uppercase tracking-wide transition ease-soft border-charcoal/25 text-charcoal aria-pressed:border-charcoal aria-pressed:bg-charcoal aria-pressed:text-cream {% if value_available %}hover:border-charcoal{% else %}cursor-not-allowed line-through opacity-40{% endif %}">
           {{ value }}
         </button>
       {%- endfor -%}
@@ -32,5 +49,5 @@
   </fieldset>
 {%- endfor -%}
 <script type="application/json" data-variant-data>
-[{% for v in product.variants %}{"id":{{ v.id }},"options":{{ v.options | json }},"available":{{ v.available }},"price":{{ v.price | money | json }},"price_amount":{{ v.price }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+[{% for v in product.variants %}{"id":{{ v.id }},"options":{{ v.options | json }},"available":{{ v.available }},"price":{{ v.price | money | json }},"price_amount":{{ v.price }}{% if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' %},"qty":{{ v.inventory_quantity }}{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}]
 </script>
