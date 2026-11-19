@@ -18,22 +18,39 @@
   assign bg = section.settings.bg_color | default: '#F6E7E4'
   assign fg = section.settings.text_color | default: '#895B3A'
 -%}
+{%- capture raw_messages -%}{{ section.settings.text }}|||{{ section.settings.text_2 }}|||{{ section.settings.text_3 }}|||{{ section.settings.text_4 }}{%- endcapture -%}
+{%- assign messages = raw_messages | split: '|||' -%}
 
 {%- if section.settings.text != blank -%}
+  {%- comment -%}
+    Up to four messages share the bar's fixed height: they are stacked on top of
+    each other and global.js cross-fades between them ([data-announcement-item]).
+    With a single message nothing rotates. The height never changes, so the
+    spacer maths below is unaffected.
+  {%- endcomment -%}
   <div
     data-announcement-bar
-    class="flex w-full items-center justify-center px-4 text-center"
+    class="relative w-full overflow-hidden"
     style="height: {{ bar_h }}rem; background-color: {{ bg }}; color: {{ fg }};"
     {{ section.shopify_attributes }}
   >
-    {%- if section.settings.link != blank -%}
-      <a
-        href="{{ section.settings.link }}"
-        class="truncate text-xs tracking-[0.08em] underline-offset-4 transition hover:underline sm:text-sm"
-      >{{ section.settings.text }}</a>
-    {%- else -%}
-      <p class="truncate text-xs tracking-[0.08em] sm:text-sm">{{ section.settings.text }}</p>
-    {%- endif -%}
+    {%- assign shown = 0 -%}
+    {%- for message in messages -%}
+      {%- assign msg = message | strip -%}
+      {%- if msg == blank -%}{%- continue -%}{%- endif -%}
+      <p
+        data-announcement-item
+        class="absolute inset-0 flex items-center justify-center px-4 text-center text-xs tracking-[0.08em] transition-opacity duration-500 ease-soft sm:text-sm {% if shown > 0 %}pointer-events-none opacity-0{% endif %}"
+        {% if shown > 0 %}aria-hidden="true"{% endif %}
+      >
+        {%- if section.settings.link != blank -%}
+          <a href="{{ section.settings.link }}" class="truncate underline-offset-4 transition hover:underline">{{ msg }}</a>
+        {%- else -%}
+          <span class="truncate">{{ msg }}</span>
+        {%- endif -%}
+      </p>
+      {%- assign shown = shown | plus: 1 -%}
+    {%- endfor -%}
   </div>
 
   {%- comment -%}
@@ -70,6 +87,9 @@
       "default": "A little something for you — 5% off at checkout",
       "info": "Leave empty to hide the bar."
     },
+    { "type": "text", "id": "text_2", "label": "Message 2 (optional)", "info": "Extra messages rotate with the first one every few seconds." },
+    { "type": "text", "id": "text_3", "label": "Message 3 (optional)" },
+    { "type": "text", "id": "text_4", "label": "Message 4 (optional)" },
     { "type": "url", "id": "link", "label": "Link (optional)" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#F6E7E4" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#895B3A" }

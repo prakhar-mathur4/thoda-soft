@@ -49,6 +49,35 @@
   }
 }
 
+/* Mobile bottom nav (snippets/bottom-nav.liquid) — every page except the
+   product page; layout/theme.liquid sets `has-bottom-nav` when it is rendered.
+   The nav carries its own Help button, so the round chat bubble is hidden on
+   phones, and the page gets room at the foot so the footer's last line clears
+   the island. */
+@media (max-width: 767px) {
+  body.has-bottom-nav {
+    padding-bottom: 5.5rem;
+  }
+  body.has-bottom-nav [data-chat-toggle] {
+    display: none;
+  }
+}
+
+/* Product page: the sticky buy bar sits where the chat bubble lives. While it
+   is showing, lift the bubble and its panel above it and leave room at the
+   foot of the page. */
+@media (max-width: 767px) {
+  body.has-sticky-atc {
+    padding-bottom: 4.75rem;
+  }
+  body.has-sticky-atc [data-chat-toggle] {
+    bottom: 5.75rem;
+  }
+  body.has-sticky-atc [data-chat-panel] {
+    bottom: 10.25rem;
+  }
+}
+
 @layer utilities {
   .container-editorial {
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8;

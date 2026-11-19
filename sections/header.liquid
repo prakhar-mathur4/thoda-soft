@@ -88,15 +88,20 @@
       <a
         href="{{ account_url }}"
         aria-label="{{ 'general.accessibility.account' | t }}"
-        class="hidden rounded-full p-2 transition hover:opacity-70 md:inline-flex"
+        class="rounded-full p-2 transition hover:opacity-70 {% if template.name == 'product' %}hidden md:inline-flex{% else %}inline-flex{% endif %}"
       >
         {%- render 'icon', name: 'user' -%}
       </a>
+      {%- comment -%}
+        Always on desktop. On phones the bag lives in the floating bottom nav
+        (snippets/bottom-nav.liquid), so the header only shows it on the
+        product page — the one page that has no bottom nav.
+      {%- endcomment -%}
       <button
         type="button"
         data-cart-open
         aria-label="{{ 'general.accessibility.cart' | t }}"
-        class="relative rounded-full p-2 transition hover:opacity-70"
+        class="relative rounded-full p-2 transition hover:opacity-70 {% if template.name == 'product' %}inline-flex{% else %}hidden md:inline-flex{% endif %}"
       >
         {%- render 'icon', name: 'bag' -%}
         <span

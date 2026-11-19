@@ -43,7 +43,7 @@
   {
     "name": "Colors",
     "settings": [
-      { "type": "color", "id": "color_cream", "label": "Background (cream)", "default": "#FEF9EB" },
+      { "type": "color", "id": "color_cream", "label": "Background (white)", "default": "#FFFFFF" },
       { "type": "color", "id": "color_charcoal", "label": "Text & buttons (warm brown)", "default": "#895B3A" },
       { "type": "color", "id": "color_charcoal_muted", "label": "Secondary text", "default": "#A98A73" },
       { "type": "color", "id": "color_blush", "label": "Blush accent", "default": "#F6E7E4" },

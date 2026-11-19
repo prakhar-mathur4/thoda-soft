@@ -27,29 +27,29 @@
         "b1": {
           "type": "item",
           "settings": {
-            "icon": "leaf",
-            "label": "Breathable fabrics"
+            "icon": "truck",
+            "label": "Free Shipping Across India"
           }
         },
         "b2": {
           "type": "item",
           "settings": {
-            "icon": "sparkle",
-            "label": "Inclusive Sizing (XS–3XL)"
+            "icon": "cash",
+            "label": "Cash on Delivery"
           }
         },
         "b3": {
           "type": "item",
           "settings": {
-            "icon": "pin",
-            "label": "Designed in India"
+            "icon": "exchange",
+            "label": "7-Day Size Exchange"
           }
         },
         "b4": {
           "type": "item",
           "settings": {
-            "icon": "clock",
-            "label": "Limited Drop"
+            "icon": "sparkle",
+            "label": "Inclusive Sizing (XS–3XL)"
           }
         }
       },

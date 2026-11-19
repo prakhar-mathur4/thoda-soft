@@ -117,7 +117,7 @@
     <h3 class="line-clamp-2 min-h-[2lh] font-serif text-base leading-snug text-charcoal sm:text-lg">
       <a href="{{ product.url }}" class="transition hover:text-charcoal-muted">{{ product.title }}</a>
     </h3>
-    <span class="whitespace-nowrap text-sm text-charcoal-muted">
+    <span class="whitespace-nowrap text-sm font-medium text-charcoal">
       {%- if product.price_varies -%}{{ 'products.product.from' | t }} {% endif -%}{{ product.price | money }}
     </span>
   </div>

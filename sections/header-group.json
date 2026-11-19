@@ -15,6 +15,9 @@
       "type": "announcement-bar",
       "settings": {
         "text": "A little something for you — 5% off at checkout",
+        "text_2": "Free shipping across India — no minimum order",
+        "text_3": "Cash on Delivery available",
+        "text_4": "Easy 7-day size exchanges",
         "bg_color": "#F6E7E4",
         "text_color": "#895B3A"
       }
