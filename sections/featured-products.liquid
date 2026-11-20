@@ -23,9 +23,15 @@
     assign track_desktop = 'sm:mr-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:pr-0 sm:pb-0'
     assign slide_desktop = 'sm:w-full'
   endif
+
+  # Top padding: tighten when this section follows another product row.
+  assign pad_top = 'pt-16 sm:pt-24'
+  if section.settings.spacing_top == 'small'
+    assign pad_top = 'pt-4 sm:pt-6'
+  endif
 -%}
 <section id="{{ section.settings.anchor | default: 'capsule' }}" class="scroll-mt-24 bg-cream">
-  <div class="container-editorial py-16 sm:py-24">
+  <div class="container-editorial {{ pad_top }} pb-16 sm:pb-24">
     <div class="mx-auto mb-12 max-w-xl text-center" data-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="mb-3 text-xs uppercase tracking-[0.25em] text-charcoal-muted">{{ section.settings.eyebrow }}</p>
@@ -105,6 +111,11 @@
       "type": "select", "id": "desktop_layout", "label": "Desktop layout",
       "options": [ { "value": "grid", "label": "Grid (2 columns)" }, { "value": "carousel", "label": "Carousel (swipe / arrows)" } ],
       "default": "grid", "info": "Phones always use the swipeable carousel."
+    },
+    {
+      "type": "select", "id": "spacing_top", "label": "Space above",
+      "options": [ { "value": "normal", "label": "Normal" }, { "value": "small", "label": "Small" } ],
+      "default": "normal", "info": "Use Small when this section sits right below another product section."
     },
     { "type": "header", "content": "Text" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Limited Drop" },
