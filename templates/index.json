@@ -12,9 +12,11 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "image": "shopify://shop_images/website_banner_photo.jpg",
+        "image": "shopify://shop_images/Thoda_soft_banner_photo_laptop_1.png",
+        "image_mobile": "shopify://shop_images/THE_FALL_ISSUE.png",
+        "show_caption": false,
         "eyebrow": "",
-        "title": "The Debut Capsule",
+        "title": "The Fall Issue",
         "show_divider": true,
         "cta_label": "",
         "cta_link": "",
