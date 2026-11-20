@@ -695,6 +695,19 @@
     window.addEventListener('resize', update);
   });
 
+  // Carousel arrows (desktop carousel layout): step one slide at a time.
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-carousel-prev], [data-carousel-next]');
+    if (!btn) return;
+    const car = btn.closest('[data-carousel]');
+    const track = car && $('[data-carousel-track]', car);
+    const first = track && track.firstElementChild;
+    if (!first) return;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const step = first.getBoundingClientRect().width + gap;
+    track.scrollBy({ left: btn.hasAttribute('data-carousel-next') ? step : -step, behavior: 'smooth' });
+  });
+
   /* ----------------------------------------------------------------------
    * Reveal-on-scroll (IntersectionObserver)
    * -------------------------------------------------------------------- */
