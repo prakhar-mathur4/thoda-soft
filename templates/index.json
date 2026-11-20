@@ -18,8 +18,8 @@
         "eyebrow": "",
         "title": "The Fall Issue",
         "show_divider": true,
-        "cta_label": "",
-        "cta_link": "",
+        "cta_label": "Shop now",
+        "cta_link": "shopify://products/espresso-co-ord-set",
         "text_color": "light"
       }
     },
