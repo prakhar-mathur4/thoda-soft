@@ -19,7 +19,7 @@
         "title": "The Fall Issue",
         "show_divider": true,
         "cta_label": "Shop now",
-        "cta_link": "shopify://products/espresso-co-ord-set",
+        "cta_link": "shopify://collections/the-fall-issue",
         "text_color": "light"
       }
     },
@@ -70,6 +70,7 @@
         "products_count": 3,
         "collection": "the-fall-issue",
         "desktop_layout": "carousel",
+        "spacing_top": "normal",
         "eyebrow": "New In",
         "heading": "The Fall Issue",
         "subtext": "Your fall wardrobe, thoughtfully reimagined\nAUTUMN/WINTER 2026-27",
@@ -89,6 +90,8 @@
         "eyebrow": "",
         "heading": "The Debut Capsule",
         "subtext": "Six pieces. Endlessly wearable. Made to be lived in.",
+        "button_label": "Shop all pieces",
+        "button_link": "",
         "anchor": "capsule"
       }
     },
