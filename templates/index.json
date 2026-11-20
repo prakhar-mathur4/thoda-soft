@@ -63,6 +63,20 @@
       ],
       "settings": {}
     },
+    "fall-issue": {
+      "type": "featured-products",
+      "settings": {
+        "tag": "fall-issue",
+        "products_count": 3,
+        "collection": "the-fall-issue",
+        "eyebrow": "New In",
+        "heading": "The Fall Issue",
+        "subtext": "Three new pieces for the cooler days.",
+        "button_label": "Shop the collection",
+        "button_link": "shopify://collections/the-fall-issue",
+        "anchor": "fall-issue"
+      }
+    },
     "featured-products": {
       "type": "featured-products",
       "settings": {
@@ -91,6 +105,7 @@
   "order": [
     "hero",
     "trust-bar",
+    "fall-issue",
     "featured-products",
     "brand-story"
   ]
