@@ -27,6 +27,7 @@
     {%- endif -%}
 
     {%- render 'meta-tags' -%}
+    {%- if template.name == 'index' -%}{%- render 'schema-organization' -%}{%- endif -%}
 
     {%- comment -%} Fonts: Playfair Display (serif headings) + Jost (sans body) {%- endcomment -%}
     <link rel="preconnect" href="https://fonts.googleapis.com">

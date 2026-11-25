@@ -1,0 +1,47 @@
+{%- comment -%}
+  Organization + WebSite structured data, rendered on the homepage only.
+  Gives Google the brand name, logo and social profiles for brand searches.
+{%- endcomment -%}
+{%- liquid
+  if settings.logo != blank
+    assign org_logo = settings.logo | image_url: width: 600 | prepend: 'https:'
+  else
+    assign org_logo = 'logo.png' | asset_url | prepend: 'https:'
+  endif
+  assign org_profiles = ''
+  if settings.social_instagram != blank
+    assign org_profiles = org_profiles | append: settings.social_instagram | append: '|'
+  endif
+  if settings.social_facebook != blank
+    assign org_profiles = org_profiles | append: settings.social_facebook | append: '|'
+  endif
+  if settings.social_pinterest != blank
+    assign org_profiles = org_profiles | append: settings.social_pinterest | append: '|'
+  endif
+  assign org_profiles = org_profiles | split: '|'
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": {{ shop.url | append: '/#organization' | json }},
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "logo": {{ org_logo | json }},
+      {%- if org_profiles.size > 0 %}
+      "sameAs": {{ org_profiles | json }},
+      {%- endif %}
+      "hasMerchantReturnPolicy": {% render 'schema-policies', part: 'returns' %}
+    },
+    {
+      "@type": "WebSite",
+      "@id": {{ shop.url | append: '/#website' | json }},
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "publisher": { "@id": {{ shop.url | append: '/#organization' | json }} }
+    }
+  ]
+}
+</script>
