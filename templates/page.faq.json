@@ -13,7 +13,7 @@
       "type": "main-faq",
       "blocks": {
         "cat_ship": { "type": "category", "settings": { "title": "Orders & Shipping" } },
-        "q_ship_1": { "type": "qa", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders are dispatched within 1–2 business days. Standard delivery across India takes 4–7 business days, and metro cities are usually a little faster.</p>" } },
+        "q_ship_1": { "type": "qa", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders are dispatched within 3–4 business days. Standard delivery across India takes 4–7 business days, and metro cities are usually a little faster.</p>" } },
         "q_ship_2": { "type": "qa", "settings": { "question": "Do you offer free shipping?", "answer": "<p>Yes — shipping is free on all orders within India, with no minimum spend.</p>" } },
         "q_ship_3": { "type": "qa", "settings": { "question": "Do you ship internationally?", "answer": "<p>Right now we ship within India only. International shipping is on the way — join our newsletter to be the first to know.</p>" } },
         "q_ship_4": { "type": "qa", "settings": { "question": "How do I track my order?", "answer": "<p>Once your order ships, you’ll receive a tracking link by email and SMS. You can also use the Track Order link in the menu or your account page.</p>" } },
