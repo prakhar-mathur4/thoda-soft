@@ -1,0 +1,34 @@
+{%- comment -%}
+  Shipping + return policy as schema.org JSON, shared by the product offers
+  and the homepage Organization so the numbers live in one place.
+
+  These mirror the Shipping Policy and Returns & Exchanges pages — change the
+  pages and this file together:
+    - free shipping across India, dispatch in 3–4 business days, delivery 4–7
+    - 7-day size exchange, first exchange free (no refunds for change of mind)
+
+  Usage: {% render 'schema-policies', part: 'shipping' %}  or  part: 'returns'
+{%- endcomment -%}
+{%- if part == 'shipping' -%}
+{
+  "@type": "OfferShippingDetails",
+  "shippingRate": { "@type": "MonetaryValue", "value": 0, "currency": "INR" },
+  "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" },
+  "deliveryTime": {
+    "@type": "ShippingDeliveryTime",
+    "handlingTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 4, "unitCode": "DAY" },
+    "transitTime": { "@type": "QuantitativeValue", "minValue": 4, "maxValue": 7, "unitCode": "DAY" }
+  }
+}
+{%- elsif part == 'returns' -%}
+{
+  "@type": "MerchantReturnPolicy",
+  "applicableCountry": "IN",
+  "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+  "merchantReturnDays": 7,
+  "returnMethod": "https://schema.org/ReturnByMail",
+  "returnFees": "https://schema.org/FreeReturn",
+  "refundType": "https://schema.org/ExchangeRefund",
+  "merchantReturnLink": {{ shop.url | append: '/pages/returns-exchanges' | json }}
+}
+{%- endif -%}
