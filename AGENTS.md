@@ -140,6 +140,15 @@ check `custom.highlights` then fall back to `highlight` blocks; accordions name 
 metafield then fall back to richtext; size charts read the `size_chart` metaobject
 then fall back to built-in tables. Setup guides live in `docs/`.
 
+## Floating product video (phones)
+
+`snippets/product-video-bubble.liquid` shows a muted looping bubble bottom-left
+on the product page, tap for the full player. The video comes from the
+`custom.product_video` metafield (file reference, video only) — deliberately
+**not** product media, so it stays out of the gallery, product cards and sales
+channels. The Product section has an on/off checkbox and an optional fallback
+video. `body.has-sticky-atc` lifts the bubble above the sticky buy bar.
+
 ## Product tags the theme reads
 
 - `badge-<text>` — pill badge on the product card image (`badge-bestseller` →

@@ -954,6 +954,43 @@
   });
 
   /* ----------------------------------------------------------------------
+   * Product video bubble (phones) — muted loop in the corner, tap for the
+   * full player with sound
+   * -------------------------------------------------------------------- */
+  const videoBubble = $('[data-video-bubble]');
+  const videoThumb = videoBubble && $('[data-video-thumb]', videoBubble);
+  const videoPlayer = $('[data-video-pop-player] video');
+  const phoneOnly = window.matchMedia('(max-width: 767px)');
+  const playSafe = (v) => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  const playThumb = () => {
+    if (videoThumb && videoBubble.isConnected && phoneOnly.matches) playSafe(videoThumb);
+  };
+  const videoPop = makeOverlay({
+    root: $('[data-video-pop]'),
+    overlay: $('[data-video-pop-overlay]'),
+    panel: $('[data-video-pop-dialog]'),
+    openCls: ['translate-y-0', 'scale-100', 'opacity-100'], closeCls: ['translate-y-4', 'scale-[0.98]', 'opacity-0'],
+    ovOpen: ['opacity-100'], ovClose: ['opacity-0'],
+    onOpen() {
+      if (videoThumb) videoThumb.pause();
+      if (videoPlayer) { videoPlayer.muted = false; playSafe(videoPlayer); }
+    },
+    onClose() {
+      if (videoPlayer) videoPlayer.pause();
+      playThumb();
+    },
+  });
+  playThumb();
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-video-open]')) { e.preventDefault(); videoPop && videoPop.open(); }
+    if (e.target.closest('[data-video-close], [data-video-pop-overlay]')) { e.preventDefault(); videoPop && videoPop.close(); }
+    if (e.target.closest('[data-video-dismiss]') && videoBubble) {
+      if (videoThumb) videoThumb.pause();
+      videoBubble.remove();
+    }
+  });
+
+  /* ----------------------------------------------------------------------
    * Global Escape closes any open overlay
    * -------------------------------------------------------------------- */
   document.addEventListener('keydown', (e) => {
@@ -961,6 +998,6 @@
     // A size chart open over quick view closes on its own first; the next Escape
     // then closes quick view.
     if (qvSizeGuide && qvSizeGuide.isOpen) { qvSizeGuide.close(); return; }
-    [cart, menu, search, quick, sizeGuide, sizeSheet].forEach((o) => o && o.isOpen && o.close());
+    [cart, menu, search, quick, sizeGuide, sizeSheet, videoPop].forEach((o) => o && o.isOpen && o.close());
   });
 })();
