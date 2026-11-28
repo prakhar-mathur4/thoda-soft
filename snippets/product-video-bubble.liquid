@@ -1,0 +1,77 @@
+{%- comment -%}
+  Floating product video — phones only. A small muted loop pinned bottom-left;
+  tapping it opens the full player with sound. global.js drives both
+  (`data-video-*`), and `body.has-sticky-atc` (src/theme.css) lifts the bubble
+  clear of the sticky buy bar.
+
+  Usage: {% render 'product-video-bubble', video: video %}
+  `video` is a Shopify-hosted video: the product's custom.product_video
+  metafield, or the section's fallback `video` setting.
+{%- endcomment -%}
+{%- liquid
+  comment
+    The corner loop only needs the lightest MP4 rendition.
+  endcomment
+  assign thumb_url = ''
+  assign thumb_w = 0
+  for s in video.sources
+    unless s.mime_type == 'video/mp4'
+      continue
+    endunless
+    if thumb_url == '' or s.width < thumb_w
+      assign thumb_url = s.url
+      assign thumb_w = s.width
+    endif
+  endfor
+-%}
+
+{%- if thumb_url != '' -%}
+  <div data-video-bubble class="fixed bottom-5 left-4 z-40 md:hidden">
+    <button
+      type="button"
+      data-video-open
+      aria-label="Watch the product video"
+      class="relative block h-28 w-20 overflow-hidden rounded-2xl bg-blush shadow-[0_8px_24px_rgba(46,43,41,0.25)] ring-2 ring-white transition active:scale-95"
+    >
+      <video
+        data-video-thumb
+        muted
+        loop
+        playsinline
+        preload="none"
+        tabindex="-1"
+        aria-hidden="true"
+        {% if video.preview_image %}poster="{{ video.preview_image | image_url: width: 240 }}"{% endif %}
+        class="h-full w-full object-cover"
+      >
+        <source src="{{ thumb_url }}" type="video/mp4">
+      </video>
+    </button>
+    <button
+      type="button"
+      data-video-dismiss
+      aria-label="Hide the video"
+      class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full border border-white/40 bg-white/25 text-white shadow-[0_2px_8px_rgba(0,0,0,0.18)] backdrop-blur-md transition active:scale-90"
+    >
+      {%- render 'icon', name: 'close', class: 'h-3 w-3' -%}
+    </button>
+  </div>
+
+  <div data-video-pop class="pointer-events-none fixed inset-0 z-[70] flex items-center justify-center p-5" aria-hidden="true">
+    <div data-video-pop-overlay class="absolute inset-0 bg-charcoal/60 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 ease-soft"></div>
+    <div
+      data-video-pop-dialog
+      role="dialog"
+      aria-modal="true"
+      aria-label="Product video"
+      class="relative w-full max-w-sm translate-y-4 scale-[0.98] overflow-hidden rounded-3xl bg-black opacity-0 shadow-[0_24px_70px_rgba(46,43,41,0.35)] transition-all duration-300 ease-soft"
+    >
+      <button type="button" data-video-close aria-label="{{ 'general.accessibility.close' | t }}" class="absolute right-3 top-3 z-10 rounded-full bg-cream/85 p-2 text-charcoal backdrop-blur transition active:scale-90">
+        {%- render 'icon', name: 'close' -%}
+      </button>
+      <div data-video-pop-player class="[&_video]:block [&_video]:max-h-[80dvh] [&_video]:w-full">
+        {{ video | video_tag: controls: true, playsinline: true, preload: 'none', image_size: '720x' }}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

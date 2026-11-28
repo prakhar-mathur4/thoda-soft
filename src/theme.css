@@ -76,6 +76,13 @@
   body.has-sticky-atc [data-chat-panel] {
     bottom: 10.25rem;
   }
+  /* The floating product video (bottom-left) rides up with it too. */
+  [data-video-bubble] {
+    transition: bottom 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  body.has-sticky-atc [data-video-bubble] {
+    bottom: 5.75rem;
+  }
 }
 
 @layer utilities {
